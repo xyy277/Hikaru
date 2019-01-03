@@ -88,17 +88,15 @@ public class TestController {
         return new ResponseEntity(user1, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.GET)
-    public ResponseEntity<String> remove() {
-        String id = userService.query(User.class).get(DateUtil.random(1)).getId();
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
+    public ResponseEntity<String> remove(@PathVariable String id) {
         userService.remove(id);
         return new ResponseEntity(id, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/fetch", method = RequestMethod.GET)
-    public ResponseEntity<Boolean> fetch() {
+    @RequestMapping(value = "/fetch/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Boolean> fetch(@PathVariable String id) {
         User user = new User();
-        String id = userService.query(User.class).get(DateUtil.random(1)).getId();
         user.setId(id);
         return new ResponseEntity(userService.findOne(user), HttpStatus.OK);
     }

@@ -26,8 +26,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     private Log log = LogFactory.getLog();
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+//    @Autowired
+//    private RedisTemplate<String, Object> redisTemplate;
 //    @Override
 //    public Dao dao() {
 //        return super.dao();
@@ -53,8 +53,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Override
     public User save(User user) {
         user = insert(user);
-//        RedisUtil.me().set(user.getId(), user);
-        ApplicationBeanFactory.getBean(RedisUtil.class).set(user.getId(), user);
+        RedisUtil.me().set(user.getId(), user);
+//        ApplicationBeanFactory.getBean(RedisUtil.class).set(user.getId(), user);
 //        redisTemplate.opsForValue().set(user.getId(), user);
         log.log("缓存：" + user);
         return user;
@@ -70,9 +70,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Override
     public User findOne(User user) {
         User user1 = (User) RedisUtil.me().get(user.getId());
-        log.log("获取缓存：" + user);
-        log.log(select(user.getClass(), CDT.where("id", "=", user.getId())) == user1);
-        return select(user.getClass(), CDT.where("id", "=", user.getId()));
+        log.log("获取缓存：" + user1);
+        return user1 != null ? user1 : select(user.getClass(), CDT.where("id", "=", user.getId()));
     }
 }
 

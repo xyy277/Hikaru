@@ -260,7 +260,7 @@ public class DaoImpl<T> implements Dao<T> {
     @Override
     public boolean delete(Cdt cdt, Class clazz) throws SQLException {
         boolean success;
-        String sql = new String("Delete * from " + clazz.getSimpleName().toLowerCase() + cdt.getCondition());
+        String sql = new String("Delete from " + clazz.getSimpleName().toLowerCase() + cdt.getCondition());
         Connection connection = db.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         try {

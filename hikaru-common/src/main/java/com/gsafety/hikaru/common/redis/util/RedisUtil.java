@@ -1,5 +1,6 @@
 package com.gsafety.hikaru.common.redis.util;
 
+import com.gsafety.hikaru.common.application.ApplicationBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -23,12 +24,13 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtil {
 
     public static RedisUtil me() {
-        return LazyInit.INITIALIZATION;
+//        return LazyInit.INITIALIZATION;
+        return ApplicationBeanFactory.getBean(RedisUtil.class);
     }
 
-    private static class LazyInit {
-        private static RedisUtil INITIALIZATION = new RedisUtil();
-    }
+//    private static class LazyInit {
+//        private static RedisUtil INITIALIZATION = new RedisUtil();
+//    }
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
