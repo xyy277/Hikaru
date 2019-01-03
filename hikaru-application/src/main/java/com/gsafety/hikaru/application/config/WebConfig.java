@@ -78,17 +78,17 @@ public class WebConfig  extends WebMvcConfigurerAdapter{
         super.configureMessageConverters(converters);
     }
 
-    /**
-     * 视图解析器
-     * @return
-     */
-    @Bean
-    public ViewResolver viewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/pages/");
-        resolver.setSuffix(".jsp");
-        return resolver;
-    }
+//    /**
+//     * 视图解析器
+//     * @return
+//     */
+//    @Bean
+//    public ViewResolver viewResolver() {
+//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//        resolver.setPrefix("/WEB-INF/views/pages/");
+//        resolver.setSuffix(".jsp");
+//        return resolver;
+//    }
 
     /**
      * odata跨域
