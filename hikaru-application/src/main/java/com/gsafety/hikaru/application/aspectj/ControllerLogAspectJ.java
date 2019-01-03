@@ -23,7 +23,7 @@ public class ControllerLogAspectJ {
      * @param joinPoint the join point
      */
 //  前置通知：
-    @Before("execution(public * com.gsafety.kafka.api..*.*(..))")
+    @Before("execution(public * com.gsafety.hikaru.api..*.*(..))")
     public void logBefore(JoinPoint joinPoint) {
         String args = "";
         for (int i = 0; i < joinPoint.getArgs().length; i++) {
@@ -38,7 +38,7 @@ public class ControllerLogAspectJ {
      * @param joinPoint the join point
      */
 /*最终通知（after advice）在连接点结束之后执行，不管返回结果还是抛出异常。*/
-    @After("execution(public * com.gsafety.kafka.api..*.*(..))")
+    @After("execution(public * com.gsafety.hikaru.api..*.*(..))")
     public void logAfter(JoinPoint joinPoint) {
         logger.info("The method " + joinPoint.getSignature().getName() + " end");
     }
@@ -50,7 +50,7 @@ public class ControllerLogAspectJ {
      * @param throwable the throwable
      */
 /*异常通知：仅当连接点抛出异常时执行。*/
-    @AfterThrowing(pointcut = "execution(public * com.gsafety.kafka.api..*.*(..))", throwing = "throwable")
+    @AfterThrowing(pointcut = "execution(public * com.gsafety.hikaru.api..*.*(..))", throwing = "throwable")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable throwable) {
         logger.error("exception " + throwable + " in method"
                 + joinPoint.getSignature().getName());
