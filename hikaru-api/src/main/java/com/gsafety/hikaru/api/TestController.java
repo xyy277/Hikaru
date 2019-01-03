@@ -73,6 +73,11 @@ public class TestController {
         return index + "\t service stop success \t" + DateUtil.getNow();
     }
 
+    @RequestMapping("/page")
+    public String page() {
+        return "hello";
+    }
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<User>> test() {
         List<User> users = userService.query(User.class, CDT.where("username", "like", "%admin%"));
