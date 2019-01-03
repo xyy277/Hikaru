@@ -1,5 +1,6 @@
-package savvy.wit.framework.test.model;
+package com.gsafety.hikaru.model.system;
 
+import com.gsafety.hikaru.model.BaseModel;
 import savvy.wit.framework.core.base.interfaces.dao.annotation.*;
 
 /*******************************
@@ -7,12 +8,13 @@ import savvy.wit.framework.core.base.interfaces.dao.annotation.*;
  * Title : 
  * File name : User
  * Author : zhoujiajun
- * Date : 2018/12/24 11:02
+ * Date : 2019/1/3 15:15
  * Version : 1.0
  * Description : 
  ******************************/
 @Table
-public class User {
+public class User extends BaseModel {
+
 
     @Id
     @Column
@@ -25,15 +27,10 @@ public class User {
     @Comment("姓名")
     private String name;
 
-    @Column
-    @Type(type = CType.VARCHAR)
-    @Comment("密码")
-    private String password;
-
-    @Column
-    @Type(type = CType.VARCHAR)
-    @Comment("用户名")
-    private String username;
+    @Column()
+    @Type(type = CType.INT)
+    @Comment("年龄")
+    private Integer age;
 
     public String getId() {
         return id;
@@ -51,20 +48,12 @@ public class User {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public Integer getAge() {
+        return age;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     @Override
@@ -72,8 +61,7 @@ public class User {
         return "User{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
+                ", age=" + age +
                 '}';
     }
 }

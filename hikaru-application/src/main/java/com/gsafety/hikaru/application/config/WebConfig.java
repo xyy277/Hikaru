@@ -41,7 +41,8 @@ import java.util.List;
  ******************************/
 @Configuration
 @EnableWebMvc
-@ComponentScan({"com.gsafety.hikaru","savvy.wit.framework.core.base.interfaces.dao"})
+@ComponentScan({"com.gsafety.hikaru","savvy.wit.framework.core.base.interfaces.dao",
+"com.gsafety.hikaru.common"})
 @ServletComponentScan("com.gsafety.hikaru.common.filter") // 扫描自定义过滤器
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootConfiguration
