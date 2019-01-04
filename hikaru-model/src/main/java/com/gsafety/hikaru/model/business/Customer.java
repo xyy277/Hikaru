@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.model;
+package com.gsafety.hikaru.model.business;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

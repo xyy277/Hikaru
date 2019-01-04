@@ -1,6 +1,7 @@
 package com.gsafety.hikaru.api;
 
 
+import com.gsafety.hikaru.model.system.User;
 import com.gsafety.hikaru.service.KafkaProviderService;
 import com.gsafety.hikaru.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.adapter.TimerAdapter;
 import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
-import savvy.wit.framework.test.model.User;
 
 import java.util.List;
 import java.util.TimerTask;
@@ -75,27 +75,39 @@ public class TestController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<User>> test() {
-        List<User> users = userService.query(User.class, CDT.where("username", "like", "%admin%"));
+        List<User> users = null;
+//        users = userService.query(User.class, CDT.where("name", "like", "%zhou%"));
+        users = userService.query(CDT.where("name", "like", "%zhou%"));
         return new ResponseEntity(users, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ResponseEntity<User> add() {
         User user = new User();
-//        user.setId(UUID.randomUUID().toString().replaceAll("-", ""));
         user.setName("zhoujiajun");
-        user.setUsername("admin");
-        user.setPassword("123456");
-        User user1 = userService.insert(user);
+        user.setAge(DateUtil.random(100));
+        User user1 = userService.save(user);
         return new ResponseEntity(user1, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
+    public ResponseEntity<String> remove(@PathVariable String id) {
+        userService.remove(id);
+        return new ResponseEntity(id, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/fetch/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Boolean> fetch(@PathVariable String id) {
+        User user = new User();
+        user.setId(id);
+        return new ResponseEntity(userService.findOne(user), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     public ResponseEntity<Boolean> update() {
         User user = new User();
-        user.setId(userService.query(User.class, CDT.where("username", "like", "%admin%")).get(DateUtil.random(10)).getId());
-        user.setUsername("superadmin");
         user.setName("ZJJ");
+        user.setAge(0);
         return new ResponseEntity(userService.update(user, CDT.where("name", "=", "zhoujiajun")), HttpStatus.OK);
     }
 }

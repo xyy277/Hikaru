@@ -55,8 +55,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.hikaru</groupId>
-            <artifactId>spring-hikaru</artifactId>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
         </dependency>
 
     </dependencies>

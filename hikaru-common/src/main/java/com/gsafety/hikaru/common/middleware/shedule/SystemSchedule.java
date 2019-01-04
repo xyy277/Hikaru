@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.common.shedule;
+package com.gsafety.hikaru.common.middleware.shedule;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,20 +7,20 @@ import org.springframework.stereotype.Component;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
- * File name : SystemShedule
+ * Title : 系统计划
+ * File name : SystemSchedule
  * Author : zhoujiajun
  * Date : 2018/12/28 14:17
  * Version : 1.0
- * Description : 
+ * Description : 模板
  ******************************/
 @Component
 public class SystemSchedule {
 
     private Logger log = LoggerFactory.getLogger(SystemSchedule.class);
 
-    @Scheduled(cron = "*/1 * * * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
     public void checkLog() {
-        log.info("checkLog");
+        log.info("check SystemSchedule Log->>>>>>>");
     }
 }

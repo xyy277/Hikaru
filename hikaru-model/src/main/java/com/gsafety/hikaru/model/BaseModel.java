@@ -1,15 +1,15 @@
-package com.gsafety.hikaru.common.quartz.config;
+package com.gsafety.hikaru.model;
 
+import java.io.Serializable;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 
- * File name : QuartzConfig
+ * File name : BaseModel
  * Author : zhoujiajun
- * Date : 2018/12/25 15:28
+ * Date : 2019/1/3 15:16
  * Version : 1.0
  * Description : 
  ******************************/
-public class QuartzConfig {
-
+public class BaseModel implements Serializable {
 }

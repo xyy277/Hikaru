@@ -1,20 +1,17 @@
-package zjj;
+package com.gsafety.kafka.api.test;
 
+import com.gsafety.hikaru.model.system.User;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import savvy.wit.framework.core.base.interfaces.Cdt;
 import savvy.wit.framework.core.base.interfaces.Log;
-import savvy.wit.framework.core.base.interfaces.dao.Dao;
+import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.service.BaseService;
 import savvy.wit.framework.core.service.impl.BaseServiceImpl;
-import savvy.wit.framework.test.model.User;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -49,8 +46,7 @@ public class ServiceTest {
             User user = new User();
             user.setId(UUID.randomUUID().toString().replaceAll("-", ""));
             user.setName(StringUtil.createCode(10));
-            user.setUsername(StringUtil.createCode(20));
-            user.setPassword(StringUtil.createCode(20));
+            user.setAge(DateUtil.random(100));
             userList.add(user);
         }
 //        baseService.insertBath(userList);

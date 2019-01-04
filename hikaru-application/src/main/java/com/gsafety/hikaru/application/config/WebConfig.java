@@ -6,17 +6,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gsafety.hikaru.common.interceptor.LegalVerifyInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import savvy.wit.framework.core.base.util.JsonUtil;
 
 import java.nio.charset.Charset;
@@ -25,7 +32,7 @@ import java.util.List;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : web模块配置
  * File name : WebConfig
  * Author : zhoujiajun
  * Date : 2018/12/18 10:26
@@ -34,7 +41,8 @@ import java.util.List;
  ******************************/
 @Configuration
 @EnableWebMvc
-@ComponentScan({"com.gsafety.hikaru","savvy.wit.framework.core.base.interfaces.dao"})
+@ComponentScan({"com.gsafety.hikaru","savvy.wit.framework.core.base.interfaces.dao",
+"com.gsafety.hikaru.common"})
 @ServletComponentScan("com.gsafety.hikaru.common.filter") // 扫描自定义过滤器
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootConfiguration
@@ -70,4 +78,35 @@ public class WebConfig  extends WebMvcConfigurerAdapter{
         converters.add(stringHttpMessageConverter);
         super.configureMessageConverters(converters);
     }
+
+//    /**
+//     * 视图解析器
+//     * @return
+//     */
+//    @Bean
+//    public ViewResolver viewResolver() {
+//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//        resolver.setPrefix("/WEB-INF/views/pages/");
+//        resolver.setSuffix(".jsp");
+//        return resolver;
+//    }
+
+    /**
+     * odata跨域
+     * @return
+     */
+//    @Bean
+//    public FilterRegistrationBean corsFilter() {
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.setAllowCredentials(true);
+//        corsConfiguration.addAllowedOrigin("*");
+//        corsConfiguration.addAllowedHeader("*");
+//        corsConfiguration.addAllowedMethod("*");
+//        source.registerCorsConfiguration("/**", corsConfiguration);
+//        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+//        bean.setOrder(0);
+//        return bean;
+//    }
+
 }

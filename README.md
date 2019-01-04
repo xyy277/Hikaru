@@ -11,13 +11,13 @@
     hikaru-entity          | 实体          - 业务实体
     hikaru-model           | model         - 业务模型
     hikaru-service         | 业务          - 业务实现
-    logs                  | log           - core测试日志输出
-    out                   | build         - 打包
-    .gitignore            |
-    hs_err_pid24096.log   |
+    logs                   | log           - core测试日志输出
+    out                    | build         - 打包
+    .gitignore             |
+    hs_err_pid24096.log    |
     hikaru-server.iml      |
-    pom.xml               |
-    README.md             |
+    pom.xml                |
+    README.md              |
 ```
 
 

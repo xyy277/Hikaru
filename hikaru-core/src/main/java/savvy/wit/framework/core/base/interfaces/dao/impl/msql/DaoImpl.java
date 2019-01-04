@@ -260,7 +260,7 @@ public class DaoImpl<T> implements Dao<T> {
     @Override
     public boolean delete(Cdt cdt, Class clazz) throws SQLException {
         boolean success;
-        String sql = new String("Delete * from " + clazz.getSimpleName().toLowerCase() + cdt.getCondition());
+        String sql = new String("Delete from " + clazz.getSimpleName().toLowerCase() + cdt.getCondition());
         Connection connection = db.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         try {
@@ -506,7 +506,8 @@ public class DaoImpl<T> implements Dao<T> {
     private void setValueAdapter(PreparedStatement preparedStatement,String name, Object value, int index) {
         if (Integer.class.getSimpleName().equals(name)) {
             name = int.class.getSimpleName();
-            value = 0;
+            if (null == value)
+                value = 0;
         }
         if (Boolean.parseBoolean(config.getValue("vacancy"))) {
             value = (value == null ? "" : value);
@@ -516,6 +517,9 @@ public class DaoImpl<T> implements Dao<T> {
     }
 
     private Object getValueAdapter(ResultSet resultSet, String type, String name) {
+        if ("Integer".equals(type)) {
+            type = "int";
+        }
         Object o = ObjectUtil.getValue(resultSet, type, name);
         return o;
     }

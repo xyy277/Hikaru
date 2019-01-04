@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : boot启动类
  * File name : Application
  * Author : zhoujiajun
  * Date : 2018/12/17 10:07

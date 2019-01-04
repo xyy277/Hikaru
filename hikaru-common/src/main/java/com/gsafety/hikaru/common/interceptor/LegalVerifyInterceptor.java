@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : 合法性校验拦截器
  * File name : LegalVerifyInterceptor
  * Author : zhoujiajun
  * Date : 2018/12/21 14:55
