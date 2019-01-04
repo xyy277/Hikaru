@@ -1,16 +1,17 @@
 package com.gsafety.hikaru.service.user;
 
-import com.gsafety.hikaru.common.application.ApplicationBeanFactory;
-import com.gsafety.hikaru.common.redis.util.RedisUtil;
+import com.gsafety.hikaru.common.middleware.redis.util.RedisUtil;
 import com.gsafety.hikaru.model.system.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import savvy.wit.framework.core.base.interfaces.Cdt;
 import savvy.wit.framework.core.base.interfaces.Log;
 import savvy.wit.framework.core.base.interfaces.dao.Dao;
 import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.service.impl.BaseServiceImpl;
+
+import java.util.List;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -56,7 +57,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         RedisUtil.me().set(user.getId(), user);
 //        ApplicationBeanFactory.getBean(RedisUtil.class).set(user.getId(), user);
 //        redisTemplate.opsForValue().set(user.getId(), user);
-        log.log("缓存：" + user);
+        log.log("写入缓存：" + user);
         return user;
     }
 
@@ -71,7 +72,31 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     public User findOne(User user) {
         User user1 = (User) RedisUtil.me().get(user.getId());
         log.log("获取缓存：" + user1);
-        return user1 != null ? user1 : select(user.getClass(), CDT.where("id", "=", user.getId()));
+        try {
+            user = user1 != null ? user1 : select(user.getClass(), CDT.where("id", "=", user.getId()));
+            return user;
+        }finally {
+            if (user1 == null && user != null && user.getId() != null) {
+                RedisUtil.me().set(user.getId(), user);
+                log.log("写入缓存：" + user);
+            }
+        }
+    }
+
+    @Override
+    public List<User> query(Cdt cdt) {
+        List<User> users = null;
+        users = (List<User>)(Object) RedisUtil.me().lGet("users", 0 , -1);
+        if (users == null || users.size() <= 0) {
+            users = query(User.class, cdt);
+            try {
+                return users;
+            }finally {
+                RedisUtil.me().lSet("users", (List<Object>)(Object)users);
+                log.log("写入缓存：" + users.size());
+            }
+        }
+        return users;
     }
 }
 

@@ -1,7 +1,10 @@
 package com.gsafety.hikaru.service.user;
 
 import com.gsafety.hikaru.model.system.User;
+import savvy.wit.framework.core.base.interfaces.Cdt;
 import savvy.wit.framework.core.service.BaseService;
+
+import java.util.List;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -20,4 +23,6 @@ public interface UserService extends BaseService<User> {
     void remove(String id);
 
     User findOne(User user);
+
+    List<User> query(Cdt cdt);
 }

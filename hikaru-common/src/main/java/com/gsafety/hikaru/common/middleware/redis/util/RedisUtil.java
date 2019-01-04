@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.common.redis.util;
+package com.gsafety.hikaru.common.middleware.redis.util;
 
 import com.gsafety.hikaru.common.application.ApplicationBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : redis工具类
  * File name : RedisUtil
  * Author : zhoujiajun
  * Date : 2019/1/3 15:01
@@ -494,13 +494,9 @@ public class RedisUtil {
         }
     }
         /**
-         521
          * 移除N个值为value
-         522
          * @param key 键
-        523
          * @param count 移除多少个
-        524
          * @param value 值
          * @return 移除的个数
          */

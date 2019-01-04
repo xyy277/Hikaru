@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : 错误页面配置
  * File name : ErrorPageConfig
  * Author : zhoujiajun
  * Date : 2018/12/17 18:11

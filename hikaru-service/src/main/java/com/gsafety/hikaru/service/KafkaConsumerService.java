@@ -27,7 +27,7 @@ public class KafkaConsumerService extends Thread {
 
 //    @KafkaListener(topics = {KafkaTopic.TOPIC_0, KafkaTopic.TOPIC_1, KafkaTopic.TOPIC_2, KafkaTopic.TOPIC_3,
 //    KafkaTopic.TOPIC_4, KafkaTopic.TOPIC_5, KafkaTopic.TOPIC_6, KafkaTopic.TOPIC_7,KafkaTopic.SAVVY_0 })
-    @KafkaListener(topics = "test")
+//    @KafkaListener(topics = "test")
     public void consumer(String message) {
         log.log("consumer message: " + message);
     }

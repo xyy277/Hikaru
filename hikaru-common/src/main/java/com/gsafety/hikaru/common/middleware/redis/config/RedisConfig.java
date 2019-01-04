@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.common.redis.config;
+package com.gsafety.hikaru.common.middleware.redis.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -12,7 +12,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : redis配置
  * File name : RedisConfig
  * Author : zhoujiajun
  * Date : 2019/1/3 14:55

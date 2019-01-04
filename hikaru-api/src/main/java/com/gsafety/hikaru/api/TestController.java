@@ -75,7 +75,9 @@ public class TestController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<User>> test() {
-        List<User> users = userService.query(User.class, CDT.where("name", "like", "%zhou%"));
+        List<User> users = null;
+//        users = userService.query(User.class, CDT.where("name", "like", "%zhou%"));
+        users = userService.query(CDT.where("name", "like", "%zhou%"));
         return new ResponseEntity(users, HttpStatus.OK);
     }
 

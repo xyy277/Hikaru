@@ -9,7 +9,7 @@ import org.springframework.core.io.Resource;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : 系统配置文件
  * File name : ApplicationBeanConfig
  * Author : zhoujiajun
  * Date : 2019/1/3 13:27

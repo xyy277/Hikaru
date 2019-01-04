@@ -15,7 +15,7 @@ import java.util.Locale;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : 国际化配置
  * File name : LocaleConfig
  * Author : zhoujiajun
  * Date : 2019/1/3 13:03

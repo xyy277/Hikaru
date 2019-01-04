@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.common.quartz.config;
+package com.gsafety.hikaru.common.middleware.quartz.config;
 
 
 /*******************************

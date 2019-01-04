@@ -32,7 +32,7 @@ import java.util.List;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : web模块配置
  * File name : WebConfig
  * Author : zhoujiajun
  * Date : 2018/12/18 10:26
