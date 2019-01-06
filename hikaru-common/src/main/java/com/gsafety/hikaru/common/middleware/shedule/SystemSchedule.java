@@ -23,4 +23,10 @@ public class SystemSchedule {
     public void checkLog() {
         log.info("check SystemSchedule Log->>>>>>>");
     }
+
+
+    @Scheduled(cron = "0 0/5 * * * ?")
+    public void auto() {
+        log.info("<<<<<<<-auto ");
+    }
 }

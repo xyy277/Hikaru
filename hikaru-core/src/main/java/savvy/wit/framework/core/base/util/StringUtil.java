@@ -46,7 +46,7 @@ public class StringUtil extends DateUtil {
     public static String createCode(int length) {
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i<length; i++) {
-            sb.append( random(2)%2 == 0 ? POOL.charAt(random(POOL.length())) : String.valueOf(POOL.charAt(random(POOL.length()))) );
+            sb.append( POOL.charAt(random(POOL.length())) );
         }
         return sb.toString();
     }

@@ -36,7 +36,7 @@ public class RouterFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse)servletResponse;
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-        logger.info(request.getRequestURI());
+        logger.info("uri - - ->>>\t" + request.getRequestURI());
         filterChain.doFilter(request, response);
     }
 
