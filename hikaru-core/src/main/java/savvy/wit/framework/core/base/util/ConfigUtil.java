@@ -1,6 +1,4 @@
-package savvy.wit.framework.core.base.util;/**
- * Created by zhoujiajun on 2018/6/28.
- */
+package savvy.wit.framework.core.base.util;
 
 import savvy.wit.framework.core.base.interfaces.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
@@ -26,11 +24,21 @@ public class ConfigUtil {
         return new ConfigUtil(fileName);
     }
 
-    Properties properties=new Properties();
+    public static ConfigUtil me (Properties properties) {
+        return new ConfigUtil(properties);
+    }
+
+
+    Properties properties;
     private static ResourceBundle bundle=null;
     public ConfigUtil() {
 
     }
+
+    public ConfigUtil(Properties properties) {
+        this.properties = properties;
+    }
+
     public ConfigUtil(String fileName) {
         try {
             /**
@@ -39,6 +47,9 @@ public class ConfigUtil {
              * 所以需要对文件名做一些处理才能使得两种方式都能很好的被使用
              */
             InputStream inputStream=ConfigUtil.class.getResourceAsStream(fileName);
+            if (properties == null) {
+                properties  = new Properties();
+            }
             properties.load(inputStream);
 //            bundle=ResourceBundle.getBundle(fileName.substring(fileName.lastIndexOf("/")+1, fileName.lastIndexOf(".")));
         } catch (Exception e) {

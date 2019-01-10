@@ -1,5 +1,8 @@
 package com.gsafety.hikaru.api;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,14 +31,17 @@ import java.io.IOException;
  ******************************/
 @RestController
 @RequestMapping("/image")
+@Api(value = "image控制器", description = "后台图片Api")
 public class ImageController {
 
     private static final int WIDTH = 480;
     private static final int HEIGHT = 360;
     private Log log = LogFactory.getLog();
 
+    @ApiOperation(value = "获取图片", notes = "根据名称随机生成图片")
     @RequestMapping(value = "/{name}/{time}", method = RequestMethod.GET)
-    public void image(@PathVariable String name, @PathVariable String time,
+    public void image(@ApiParam(value = "图片名称") @PathVariable String name,
+                      @ApiParam(value = "时间") @PathVariable String time,
                       HttpServletRequest request, HttpServletResponse response) {
         int excursion = 10;
         Object object = request.getSession().getAttribute(name);

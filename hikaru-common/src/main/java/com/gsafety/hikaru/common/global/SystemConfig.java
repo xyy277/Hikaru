@@ -10,4 +10,8 @@ package com.gsafety.hikaru.common.global;
  * Description : hikaru-server 系统配置
  ******************************/
 public class SystemConfig {
+
+    public static final String SYSTEM_BASE = "/";
+
+    public static final String  SWAGGER_URI = "swagger-ui.html";
 }

@@ -1,29 +1,32 @@
-package com.gsafety.hikaru.application.aspectj;
+package com.gsafety.hikaru.common.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 
- * File name : ExtendExceptionHandler
+ * File name : CommonExceptionHandler
  * Author : zhoujiajun
- * Date : 2018/12/28 9:38
+ * Date : 2019/1/7 17:00
  * Version : 1.0
  * Description : 
  ******************************/
-@ControllerAdvice // 作用于@RequestMapping method
-public class ExtendExceptionHandler {
+public class CommonExceptionHandler {
 
-    private Logger log = LoggerFactory.getLogger(ExtendExceptionHandler.class);
+    private Logger log = LoggerFactory.getLogger(CommonExceptionHandler.class);
 
-    @ExceptionHandler(Exception.class)
+    // exception
+    @ExceptionHandler({})
     public ResponseEntity modelNotFoundExceptionHandler(Exception exception) {
-        log.error("exception happened",exception);
+        log.error("redis happened",exception);
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }

@@ -16,6 +16,10 @@ import savvy.wit.framework.core.base.interfaces.dao.impl.msql.DaoImpl;
 public class Daos {
 
     public static Dao get() {
-        return new DaoImpl();
+        String source = "/properties/db.properties";
+        return new DaoImpl(source);
+    }
+    public static Dao get(String source) {
+        return new DaoImpl(source);
     }
 }

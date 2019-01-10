@@ -1,7 +1,9 @@
 package com.gsafety.hikaru.common.filter;
 
+import com.gsafety.hikaru.common.global.SystemConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 
 import javax.servlet.*;
@@ -25,6 +27,9 @@ public class RouterFilter implements Filter {
 
     private Logger logger = LoggerFactory.getLogger(RouterFilter.class);
 
+    @Value("${server.context-path}")
+    private String path;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         logger.info("filter init ");
@@ -36,8 +41,11 @@ public class RouterFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse)servletResponse;
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-        logger.info(request.getRequestURI());
-        filterChain.doFilter(request, response);
+        String uri = request.getRequestURI();
+        logger.info(uri);
+        if ((path + "/").equals(uri) ){
+            response.sendRedirect(uri + SystemConfig.SWAGGER_URI);
+        }else filterChain.doFilter(request, response);
     }
 
     @Override
