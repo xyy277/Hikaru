@@ -3,6 +3,7 @@ package savvy.wit.framework.core.base.util;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.GetConnectionTimeoutException;
 import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.pattern.factory.DbFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.pattern.adapter.TimerAdapter;
 
@@ -21,8 +22,6 @@ import java.util.TimerTask;
  * Description :
  ******************************/
 public class DbUtil {
-
-    private static ConfigUtil config = ConfigUtil.me("/properties/db.properties");
 
     public DbUtil() {
         init();
@@ -49,6 +48,10 @@ public class DbUtil {
 
     private void init() {
         try {
+            ConfigUtil config = ConfigUtil.me("/properties/db.properties");
+            if (null == config) {
+                config = ConfigUtil.me(DbFactory.me().getProperties());
+            }
             driver = config.getValue("driver");
             url = config.getValue("url");
             user = config.getValue("user");
@@ -69,6 +72,7 @@ public class DbUtil {
             dataSource.setLoginTimeout(maxWaitMillis);
             Class.forName(driver);
         }catch (ClassNotFoundException e){
+
         }
     }
 

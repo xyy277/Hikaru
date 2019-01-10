@@ -112,4 +112,23 @@ public class Strings {
         return "";
     }
 
+    /**
+     * 比较字符串的前length位是否相等
+     * @param var1
+     * @param var2
+     * @param length
+     * @return
+     */
+    public static boolean equals(String var1, String var2, int length) {
+        boolean status = false;
+        if (var1.length() >= length && var2.length() >= length) {
+            for (int i = 0; i < length; i++) {
+                if (var1.toCharArray()[i] != var2.toCharArray()[i]) {
+                    return status;
+                }
+            }
+            status = true;
+        }
+        return status;
+    }
 }

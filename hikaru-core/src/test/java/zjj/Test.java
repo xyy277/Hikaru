@@ -1,8 +1,12 @@
 package zjj;
 
 import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.util.MapUtil;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -20,19 +24,20 @@ public class Test {
 
 
     public static void test(String s) {
+        s.indexOf("");
+        s.lastIndexOf("");
         initPool();
-        Counter counters = Counter.create();
+        Counter counter = Counter.create();
         for (char t : chars) {
-            Counter counter = Counter.create();
             for (char c : s.toCharArray()) {
                 if (c == t) {
-                    counter.counting();
+                    int count = counter.getValue(String.valueOf(t)) == null ? 0 : (int) counter.getValue(String.valueOf(t));
+                    counter.setValue(String.valueOf(t), count + 1);
                 }
             }
-            if (counter.getCount() == 1 ){
-                log.log(counters.getIndex(1) + " 字符：" + t + " 出现（次）：" + counter.getCount());
-            }
         }
+        counter.setValue( MapUtil.sortMapValue( counter.getValue(), (o1, o2) -> ( (Integer)o1.getValue() ).compareTo( (Integer) o2.getValue() ) ) );
+        log.log(counter.getValue());
     }
 
     private static void initPool() {
@@ -46,5 +51,11 @@ public class Test {
             chars[index + 10 + 26] = (char) (var + 32);
             index++;
         }
+    }
+
+    public static void main(String[] args) {
+        Map<String, Object> map = new HashMap<>();
+        MapUtil.sortByKey(map, (o1, o2) -> o1.compareTo(o2));
+        MapUtil.sortByValue(map, (o1, o2) -> o1.getValue().toString().compareTo(o2.getValue().toString()));
     }
 }

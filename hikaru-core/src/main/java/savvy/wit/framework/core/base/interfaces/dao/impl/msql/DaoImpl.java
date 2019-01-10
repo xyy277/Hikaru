@@ -11,19 +11,18 @@ import savvy.wit.framework.core.base.util.DbUtil;
 import savvy.wit.framework.core.base.util.ObjectUtil;
 import savvy.wit.framework.core.base.util.Strings;
 import savvy.wit.framework.core.pattern.factory.Config;
+import savvy.wit.framework.core.pattern.factory.DbFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*******************************
@@ -40,9 +39,21 @@ public class DaoImpl<T> implements Dao<T> {
 
     private Log log = LogFactory.getLog();
     private DbUtil db = DbUtil.me();
+    private DbFactory dbFactory = DbFactory.me();
     private Config config = Config.init("/json/config.json");
 
-    public DaoImpl() {
+    private DaoImpl() {
+    }
+
+    public DaoImpl(String dbSource) {
+        Properties properties = new Properties();
+        try {
+            properties.load(DaoImpl.class.getResourceAsStream(dbSource));
+
+        }catch (IOException e) {
+
+        }
+        dbFactory.setProperties(properties);
     }
 
     @Override

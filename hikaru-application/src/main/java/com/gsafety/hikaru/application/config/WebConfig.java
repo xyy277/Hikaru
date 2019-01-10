@@ -19,10 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import savvy.wit.framework.core.base.util.JsonUtil;
 
@@ -41,9 +38,9 @@ import java.util.List;
  ******************************/
 @Configuration
 @EnableWebMvc
-@ComponentScan({"com.gsafety.hikaru","savvy.wit.framework.core.base.interfaces.dao",
+@ComponentScan({"com.gsafety.hikaru", "savvy.wit.framework.core.base.interfaces.dao",
 "com.gsafety.hikaru.common"})
-@ServletComponentScan("com.gsafety.hikaru.common.filter") // 扫描自定义过滤器
+@ServletComponentScan("com.gsafety.hikaru.common") // 扫描自定义 监听器 过滤器
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootConfiguration
 public class WebConfig  extends WebMvcConfigurerAdapter{
@@ -59,6 +56,19 @@ public class WebConfig  extends WebMvcConfigurerAdapter{
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(legalVerifyInterceptor).addPathPatterns("/**");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+        super.addResourceHandlers(registry);
     }
 
     @Override

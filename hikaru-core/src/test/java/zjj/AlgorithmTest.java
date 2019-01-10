@@ -33,15 +33,19 @@ public class AlgorithmTest {
     /**
      * 为测试提供前提条件
      */
-    @Before
+//    @Before
     public void initEnvironment() {
         initParamString();
     }
 
     @Test
     public void testAlgorithm() {
-        log.log("第一个出现次数唯一的字符：" + getBoOnlyOnceCode());
-        zjj.Test.test(paramString);
+        while (true) {
+            initParamString();
+            log.log("第一个出现次数唯一的字符：" + getBoOnlyOnceCode());
+            zjj.Test.test(paramString);
+            log.log(() -> Thread.sleep(1000 * 5));
+        }
     }
 
     /**

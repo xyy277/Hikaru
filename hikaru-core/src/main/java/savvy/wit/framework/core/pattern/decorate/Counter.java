@@ -22,7 +22,7 @@ public class Counter {
     private Counter counter;
 
     // 存值
-    private Map<Object, Object> value = new HashMap();
+    private Map<String, Object> value = new HashMap();
 
     public static Counter create() {
         return new Counter();
@@ -55,15 +55,19 @@ public class Counter {
         this.count = count + excursion;
     }
 
-    public Map<Object, Object> getValue() {
+    public Map<String, Object> getValue() {
         return value;
     }
 
-    public Object getValue(Object key) {
+    public Object getValue(String key) {
         return value.get(key);
     }
 
-    public void setValue(Object key, Object value) {
+    public void setValue(Map<String, Object> value) {
+        this.value = value;
+    }
+
+    public void setValue(String key, Object value) {
         if (counter == null) {
             counter = new Counter();
         }
