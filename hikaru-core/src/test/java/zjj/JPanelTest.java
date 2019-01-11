@@ -35,7 +35,7 @@ public class JPanelTest {
     }
 
 
-    @Test
+//    @Test
     public void test() {
         Curve curve = loop.calculateCurve();
         log.log(() -> Arrays.asList(curve.getPoints()));

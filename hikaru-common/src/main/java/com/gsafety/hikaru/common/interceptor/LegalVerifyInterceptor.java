@@ -33,6 +33,7 @@ public class LegalVerifyInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        logger.info(httpServletRequest.getRequestURI());
         return true;
     }
 

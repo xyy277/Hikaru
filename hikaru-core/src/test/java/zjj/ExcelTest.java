@@ -76,7 +76,7 @@ public class ExcelTest {
         }
     }
 
-    @Test
+//    @Test
     public void test() {
 
 //        FileAdapter.NEW().readFile("test/pt_PT-test.json", true, "UTF-8" , "UTF-8", (br, bw) -> {

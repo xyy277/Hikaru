@@ -115,6 +115,22 @@ public class FileAdapter {
 
     }
 
+    public void readLine(String name, StringCallBack callBack) {
+        try {
+            File file = new File(name);
+            String inEnCoding =  Files.getEncoding(file);
+            BufferedReader br = getBuffReader(file, inEnCoding);
+            String line;
+            while ((line = br.readLine()) != null) {
+                callBack.use(line);
+            }
+            if (br != null) br.close();
+        } catch (Exception e) {
+            log.error(e);
+        }
+
+    }
+
     public void readCacheFile(FileCacheCallBack callBack, File... files) {
         setFiles(files);
         for(File file1 : files) {

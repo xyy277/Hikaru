@@ -2,7 +2,9 @@ package zjj;
 
 import savvy.wit.framework.core.base.interfaces.Log;
 import savvy.wit.framework.core.base.util.MapUtil;
+import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.decorate.Counter;
+import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.util.HashMap;
@@ -57,5 +59,14 @@ public class Test {
         Map<String, Object> map = new HashMap<>();
         MapUtil.sortByKey(map, (o1, o2) -> o1.compareTo(o2));
         MapUtil.sortByValue(map, (o1, o2) -> o1.getValue().toString().compareTo(o2.getValue().toString()));
+        log.log(        Files.getEncoding("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java"));
+//        FileAdapter.me().readLine("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java",
+//                string -> log.log(string));
+        FileAdapter.me().readFile(null, false, "utf8", "", (bufferedReader, bufferedWriter) -> {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                log.log(line + "\n");
+            }
+        }, "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java");
     }
 }

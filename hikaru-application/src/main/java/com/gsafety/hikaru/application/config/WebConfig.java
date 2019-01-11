@@ -55,7 +55,7 @@ public class WebConfig  extends WebMvcConfigurerAdapter{
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(legalVerifyInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(legalVerifyInterceptor).addPathPatterns("/**").excludePathPatterns("/**.*");
     }
 
     @Override

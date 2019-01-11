@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : swagger
  * File name : SwaggerConfig
  * Author : zhoujiajun
  * Date : 2019/1/10 9:52

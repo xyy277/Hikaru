@@ -17,7 +17,7 @@
         <module>hikaru-application</module>
     </modules>
     <packaging>pom</packaging>
-    <name>hikaru-server-test</name>
+    <name>hikaru-server</name>
     <description>test for hikaru cluster</description>
     <parent>
         <groupId>org.springframework.boot</groupId>

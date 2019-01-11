@@ -41,7 +41,7 @@ public class ListTest {
 
     }
 
-    @Test
+//    @Test
     public void test() {
         Map<String, Integer> keys = (Map<String, Integer>) ScExcelAdapter.NEW().readExcel("/excel/test.xlsx", ListTest::use).getResult();
         List<String> list = new ArrayList<>();

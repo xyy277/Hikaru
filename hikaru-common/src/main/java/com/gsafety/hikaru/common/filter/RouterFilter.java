@@ -42,7 +42,7 @@ public class RouterFilter implements Filter {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         String uri = request.getRequestURI();
-        logger.info(uri);
+//        logger.info(uri);
         if ((path + "/").equals(uri) ){
             response.sendRedirect(uri + SystemConfig.SWAGGER_URI);
         }else filterChain.doFilter(request, response);
