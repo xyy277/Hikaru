@@ -21,12 +21,12 @@
 ```
 
 
-####kafka server：三台云服务器，172.21.15.29 - 31
+####一键打包部署 运行服务
  
-#####hikaru消息系统对于消息存储并不是消费完了就进行删除，而是根据时间策略（默认保存一周）或者文件定制大小，删除旧消息。
-######故此，启动服务访问/kafka/{topic}/{amount}/{num} 将由num个线程并发生产消息存入hikaru，测试hikaru及zookeeper日志文件增长情况。
-######控制台会即时打印消费信息 
-######/kafka/stop 停止生产线程
+#####打包命令：mvn clean package
+######运行命令：java -jar hikaru-server.jar，jar包同一级目录可手动定制配置properties
+######访问地址默认跳转swagger首页：${server.address}:${server.port}/${server.context-path}
+######rest接口
 
 
 
