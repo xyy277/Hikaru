@@ -1,5 +1,8 @@
 package savvy.wit.framework.core.base.util;
 
+import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.pattern.factory.LogFactory;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -20,6 +23,7 @@ import java.util.jar.JarFile;
  ******************************/
 public class ClassUtil {
 
+    private static final Log log = LogFactory.getLog();
 
     public static List<Class<?>> getClasses(String... packs) {
         List<Class<?>> list = new ArrayList<>();
@@ -63,7 +67,7 @@ public class ClassUtil {
                 String protocol = url.getProtocol();
                 // 如果是以文件的形式保存在服务器上
                 if ("file".equals(protocol)) {
-                    System.err.println("file类型的扫描");
+                    log.warn("file类型的扫描");
                     // 获取包的物理路径
                     String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
                     // 以文件的方式扫描整个包下的文件 并添加到集合中
@@ -71,7 +75,7 @@ public class ClassUtil {
                 } else if ("jar".equals(protocol)) {
                     // 如果是jar包文件
                     // 定义一个JarFile
-                    // System.err.println("jar类型的扫描");
+                    log.warn("jar类型的扫描");
                     JarFile jar;
                     try {
                         // 获取jar
@@ -106,20 +110,20 @@ public class ClassUtil {
                                             // 添加到classes
                                             classes.add(Class.forName(packageName + '.' + className));
                                         } catch (ClassNotFoundException e) {
-                                            e.printStackTrace();
+                                            log.error(e);
                                         }
                                     }
                                 }
                             }
                         }
                     } catch (IOException e) {
-                        // log.error("在扫描用户定义视图时从jar包获取文件出错");
-                        e.printStackTrace();
+                         log.warn("在扫描用户定义视图时从jar包获取文件出错");
+                        log.error(e);
                     }
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
 
         return classes;
@@ -143,14 +147,14 @@ public class ClassUtil {
             return;
         }
         // 如果存在 就获取包下的所有文件 包括目录
-        File[] dirfiles = dir.listFiles(new FileFilter() {
+        File[] dirFiles = dir.listFiles(new FileFilter() {
             // 自定义过滤规则 如果可以循环(包含子目录) 或则是以.class结尾的文件(编译好的java类文件)
             public boolean accept(File file) {
                 return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"));
             }
         });
         // 循环所有文件
-        for (File file : dirfiles) {
+        for (File file : dirFiles) {
             // 如果是目录 则继续扫描
             if (file.isDirectory()) {
                 findAndAddClassesInPackageByFile(packageName + "." + file.getName(), file.getAbsolutePath(), recursive,
@@ -165,8 +169,8 @@ public class ClassUtil {
                     classes.add(
                             Thread.currentThread().getContextClassLoader().loadClass(packageName + '.' + className));
                 } catch (ClassNotFoundException e) {
-                    // log.error("添加用户自定义视图类错误 找不到此类的.class文件");
-                    e.printStackTrace();
+                     log.warn("添加用户自定义视图类错误 找不到此类的.class文件");
+                    log.error(e);
                 }
             }
         }
@@ -199,7 +203,8 @@ public class ClassUtil {
                     }
                 }
             } catch (Exception e) {
-                System.out.println("出现异常");
+               log.warn("出现异常");
+               log.error(e);
             }
         }
         return classes;

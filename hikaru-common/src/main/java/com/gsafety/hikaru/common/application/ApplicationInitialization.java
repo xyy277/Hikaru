@@ -2,13 +2,7 @@ package com.gsafety.hikaru.common.application;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import savvy.wit.framework.core.base.interfaces.dao.annotation.Table;
-import savvy.wit.framework.core.base.util.ClassUtil;
 import savvy.wit.framework.core.pattern.factory.Daos;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -34,10 +28,12 @@ public class ApplicationInitialization {
     private ApplicationInitialization () {}
 
 
-    public void initialization(boolean refactor, String... pack) {
+    public void initialization(boolean automation, boolean refactor, String... pack) {
         // 创建表
-        Daos.get().createAtPackage(refactor, pack);
-        log.warn("Table Initialization complete");
+        if (automation) {
+            Daos.get().createAtPackage(refactor, pack);
+            log.info("Table Initialization complete");
+        }
 
         // 系统数据
 

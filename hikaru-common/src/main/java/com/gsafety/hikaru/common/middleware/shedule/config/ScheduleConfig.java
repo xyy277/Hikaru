@@ -1,5 +1,7 @@
 package com.gsafety.hikaru.common.middleware.shedule.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -22,8 +24,11 @@ import java.util.concurrent.Executors;
 @EnableScheduling // 启用定时任务
 public class ScheduleConfig implements SchedulingConfigurer {
 
+    private Logger log = LoggerFactory.getLogger(ScheduleConfig.class);
+
     @Override
     public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
+        log.info("Scheduler configureTasks init");
         scheduledTaskRegistrar.setScheduler(taskExecutor());
     }
 
