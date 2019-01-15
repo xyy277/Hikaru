@@ -29,6 +29,13 @@ public class ClassUtil {
         return list;
     }
 
+    public static List<Class<?>> getClasses(List<String> packs) {
+        List<Class<?>> list = new ArrayList<>();
+        for (String pack : packs) {
+            list.addAll(getClasses(pack));
+        }
+        return list;
+    }
 
     /**
      * 从包package中获取所有的Class

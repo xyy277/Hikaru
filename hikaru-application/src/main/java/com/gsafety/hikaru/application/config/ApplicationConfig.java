@@ -26,18 +26,22 @@ public class ApplicationConfig implements CommandLineRunner {
 
     private Logger log = LoggerFactory.getLogger(ApplicationConfig.class);
 
-//    @Value("application.table.refactor")
+    @Value("${application.table.refactor}")
     private boolean refactor = false; // 默认false
 
-    @Autowired
-    private Environment env;
+    @Value("${application.table.pack}")
+    private String pack;
+
+//    @Autowired
+//    private Environment env;
 
     @Override
     public void run(String... strings) throws Exception {
         log.info("ApplicationConfig start init");
-        String property = env.getProperty("application.table.refactor");
-        refactor = StringUtil.isBlank(property) ? refactor : Boolean.parseBoolean(property);
-        ApplicationInitialization.me().initialization(refactor, "com.gsafety.hikaru.model");
+//        String property = env.getProperty("application.table.refactor");
+//        String pack = env.getProperty("application.table.pack");
+//        refactor = StringUtil.isBlank(property) ? refactor : Boolean.parseBoolean(property);
+        ApplicationInitialization.me().initialization(refactor, pack);
         log.info("ApplicationConfig init completed");
     }
 }

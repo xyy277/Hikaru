@@ -37,15 +37,6 @@ public class ApplicationInitialization {
     public void initialization(boolean refactor, String... pack) {
         // 创建表
         Daos.get().createAtPackage(refactor, pack);
-//        List<Class<?>> classList =  ClassUtil.getClasses(pack);
-//        if (classList.size() == 0) {
-//            log.warn("nothing has init");
-//        }
-//        classList.parallelStream()
-//                .filter(clazz -> clazz.isAnnotationPresent(Table.class))
-//                .forEach(clazz -> {
-//                    Daos.get().create(refactor, clazz);
-//                });
         log.warn("Table Initialization complete");
 
         // 系统数据

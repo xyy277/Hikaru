@@ -206,7 +206,15 @@ public class DaoImpl<T> implements Dao<T> {
 
     @Override
     public void createAtPackage(boolean refactor, String... pack) {
-        List<Class<?>> classList = ClassUtil.getClasses(pack);
+        List<String> packList = new ArrayList<>();
+        for (String name: pack) {
+            if (name.indexOf(",") != -1) {
+                packList.addAll(Arrays.asList(name.split(",")));
+            }else {
+                packList.add(name);
+            }
+        }
+        List<Class<?>> classList = ClassUtil.getClasses(packList);
         create(refactor,
                 classList.parallelStream()
                 .filter(aClass -> aClass.isAnnotationPresent(Table.class)).collect(Collectors.toList()));
