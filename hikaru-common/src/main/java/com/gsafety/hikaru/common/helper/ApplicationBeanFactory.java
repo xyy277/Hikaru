@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.common.application;
+package com.gsafety.hikaru.common.helper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package com.gsafety.hikaru.common.middleware.redis.util;
 
-import com.gsafety.hikaru.common.application.ApplicationBeanFactory;
+import com.gsafety.hikaru.common.helper.ApplicationBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;

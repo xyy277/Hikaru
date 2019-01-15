@@ -11,7 +11,7 @@ package com.gsafety.kafka.api.test;
  ******************************/
 
 import com.gsafety.hikaru.api.TestController;
-import com.gsafety.hikaru.common.application.ApplicationBeanFactory;
+import com.gsafety.hikaru.common.helper.ApplicationBeanFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

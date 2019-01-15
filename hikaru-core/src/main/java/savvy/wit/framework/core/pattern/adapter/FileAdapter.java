@@ -21,7 +21,6 @@ import java.io.*;
  ******************************/
 public class FileAdapter {
     private Log log = LogFactory.getLog();
-    // TODO: 2018/11/30 增加文件缓存属性 一级方法 二级对象、属性 三级全局
     private static class LazyInit {
         private static FileAdapter INITIALIZATION = new FileAdapter();
     }
@@ -119,6 +118,21 @@ public class FileAdapter {
         try {
             File file = new File(name);
             String inEnCoding =  Files.getEncoding(file);
+            BufferedReader br = getBuffReader(file, inEnCoding);
+            String line;
+            while ((line = br.readLine()) != null) {
+                callBack.use(line);
+            }
+            if (br != null) br.close();
+        } catch (Exception e) {
+            log.error(e);
+        }
+
+    }
+
+    public void readLine(String name, String inEnCoding, StringCallBack callBack) {
+        try {
+            File file = new File(name);
             BufferedReader br = getBuffReader(file, inEnCoding);
             String line;
             while ((line = br.readLine()) != null) {

@@ -7,6 +7,7 @@ import savvy.wit.framework.core.base.interfaces.Cdt;
 import savvy.wit.framework.core.base.interfaces.Log;
 import savvy.wit.framework.core.base.interfaces.dao.Dao;
 import savvy.wit.framework.core.base.interfaces.dao.annotation.*;
+import savvy.wit.framework.core.base.util.ClassUtil;
 import savvy.wit.framework.core.base.util.DbUtil;
 import savvy.wit.framework.core.base.util.ObjectUtil;
 import savvy.wit.framework.core.base.util.Strings;
@@ -144,7 +145,29 @@ public class DaoImpl<T> implements Dao<T> {
     }
 
     @Override
-    public void create(Class... clazz) {
+    public void drop(Class[] clazz) {
+        for (Class aClass :clazz) {
+            try {
+                drop(aClass);
+            }catch (SQLException e) {
+                log.error(e);
+            }
+        }
+    }
+
+    @Override
+    public void drop(List<Class<?>> clazz) {
+        for (Class aClass :clazz) {
+            try {
+                drop(aClass);
+            }catch (SQLException e) {
+                log.error(e);
+            }
+        }
+    }
+
+    @Override
+    public void create(Class[] clazz) {
         Arrays.asList(clazz).forEach(aClass -> {
             try {
                 create(aClass);
@@ -152,6 +175,59 @@ public class DaoImpl<T> implements Dao<T> {
                 log.error(e);
             }
         });
+    }
+
+    @Override
+    public void create(boolean refactor, Class[] clazz) {
+        if (refactor) {
+            drop(clazz);
+        }
+        create(clazz);
+    }
+
+    @Override
+    public void create(List<Class<?>> clazz) {
+        clazz.forEach(aClass -> {
+            try {
+                create(aClass);
+            }catch (SQLException e) {
+                log.error(e);
+            }
+        });
+    }
+
+    @Override
+    public void create(boolean refactor, List<Class<?>> clazz) {
+        if (refactor) {
+            drop(clazz);
+        }
+        create(clazz);
+    }
+
+    @Override
+    public void createAtPackage(boolean refactor, String... pack) {
+        List<Class<?>> classList = ClassUtil.getClasses(pack);
+        create(refactor,
+                classList.parallelStream()
+                .filter(aClass -> aClass.isAnnotationPresent(Table.class)).collect(Collectors.toList()));
+    }
+
+    private void drop(Class clazz) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        String sql = "";
+        try {
+            connection = db.getConnection();
+            sql = "DROP TABLE if EXISTS " + clazz.getSimpleName();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.execute();
+        }catch (Exception e){
+            connection.rollback();
+            log.error(e);
+        }finally {
+            log.sql(sql);
+            db.close(connection,preparedStatement);
+        }
     }
 
     /**
@@ -165,46 +241,25 @@ public class DaoImpl<T> implements Dao<T> {
      * @param clazz 类型
      * @throws SQLException sql异常
      */
-    public void create(Class clazz) throws SQLException {
+    private void create(Class clazz) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
+        StringBuilder sql = new StringBuilder();
         try {
-            StringBuilder sql = new StringBuilder("create table if not exists" + decorateName(clazz.getSimpleName()) + "( \n");
-            Field key = null;
-            for (Field field : clazz.getDeclaredFields()){
-                if (field.isAnnotationPresent(Column.class)) {
-                    sql.append(decorateName(field.getName()));
-                }
-                if (field.isAnnotationPresent(Type.class)) {
-                    Type type = field.getAnnotation(Type.class);
-                    String cType = "";
-                    if (type.type() == CType.AUTO) {
-                        cType = field.getType().getSimpleName().toLowerCase();
-                    }else {
-                        cType = type.type().toString().toLowerCase();
-                    }
-                    int width = type.width();
-                    sql.append(decorateField(cType, width));
-                    if (type.vacancy()) {
-                        sql.append(" DEFAULT NULL ");
-                    } else {
-                        sql.append(" NOT NULL ");
-                    }
-                }
-                if (field.isAnnotationPresent(Comment.class)) {
-                    Comment comment = field.getAnnotation(Comment.class);
-                    sql.append(Comment.Parameter.COMMENT.toString() + " '" + comment.value() + "' ");
-                }
-                if (field.isAnnotationPresent(Id.class)) {
-                    Id id = field.getAnnotation(Id.class);
-                    boolean auto = id.auto();
-                    if (auto) sql.append(" AUTO_INCREMENT ");
-                    key = field;
-                }
-                sql.append(",\n");
-            }
-            sql.append("PRIMARY KEY (`"+key.getName()+"`)").append("\n )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
-            log.log(sql);
+            connection = db.getConnection();
+            sql.append("create table if not exists" + decorateName(clazz.getSimpleName()) + "( \n");
+            sql.append(decorateSql(clazz));
+            if (clazz.getSuperclass() != null)
+                sql.append(decorateSql(clazz.getSuperclass()));
+            sql.replace(sql.lastIndexOf(","), sql.lastIndexOf(",") + 1, "");
+            List<Field> fields = Arrays.asList(clazz.getDeclaredFields())
+                    .parallelStream()
+                    .filter(field -> field.isAnnotationPresent(Id.class))
+                    .collect(Collectors.toList());
+            if(fields.size() > 0)
+                sql.append(", PRIMARY KEY (`"+fields.get(0).getName()+"`)");
+            sql.append("\n )ENGINE=InnoDB");
+            sql.append(" DEFAULT CHARSET=utf8;");
             connection = db.getConnection();
             preparedStatement = connection.prepareStatement(sql.toString());
             preparedStatement.execute();
@@ -212,8 +267,45 @@ public class DaoImpl<T> implements Dao<T> {
             connection.rollback();
             log.error(e);
         }finally {
+            log.sql(sql);
             db.close(connection,preparedStatement);
         }
+    }
+
+    private StringBuilder decorateSql(Class clazz) {
+        StringBuilder sql = new StringBuilder();
+        for (Field field : clazz.getDeclaredFields()){
+            if (field.isAnnotationPresent(Column.class)) {
+                sql.append(decorateName(field.getName()));
+            }
+            if (field.isAnnotationPresent(Type.class)) {
+                Type type = field.getAnnotation(Type.class);
+                String cType = "";
+                if (type.type() == CType.AUTO) {
+                    cType = field.getType().getSimpleName().toLowerCase();
+                }else {
+                    cType = type.type().toString().toLowerCase();
+                }
+                int width = type.width();
+                sql.append(decorateField(cType, width));
+                if (type.vacancy()) {
+                    sql.append(" DEFAULT NULL ");
+                } else {
+                    sql.append(" NOT NULL ");
+                }
+            }
+            if (field.isAnnotationPresent(Comment.class)) {
+                Comment comment = field.getAnnotation(Comment.class);
+                sql.append(Comment.Parameter.COMMENT.toString() + " '" + comment.value() + "' ");
+            }
+            if (field.isAnnotationPresent(Id.class)) {
+                Id id = field.getAnnotation(Id.class);
+                boolean auto = id.auto();
+                if (auto) sql.append(" AUTO_INCREMENT ");
+            }
+            sql.append(",\n");
+        }
+        return sql;
     }
 
     @Override

@@ -56,17 +56,33 @@ public class Test {
     }
 
     public static void main(String[] args) {
+        StringBuilder sql = new StringBuilder("create table if not exists `user` ( \n" +
+                " `id`  varchar(255)  NOT NULL COMMENT 'id' ,\n" +
+                " `name`  varchar(255)  NOT NULL COMMENT '姓名' ,\n" +
+                " `age`  int(255)  NOT NULL COMMENT '年龄' ,\n" +
+                " `opt_time`  varchar(255)  NOT NULL COMMENT '操作时间' ,\n" +
+                " `opt_user`  varchar(255)  NOT NULL COMMENT '操作人',\n");
+        sql.replace(sql.lastIndexOf(","), sql.lastIndexOf(",") + 1, " ");
+        log.log(        sql.charAt(sql.lastIndexOf(",")));
+//        sql.delete(sql.lastIndexOf(","), sql.lastIndexOf(",") + 1);
+        log.log(sql.lastIndexOf(","));
+        log.log(sql);
+
         Map<String, Object> map = new HashMap<>();
         MapUtil.sortByKey(map, (o1, o2) -> o1.compareTo(o2));
         MapUtil.sortByValue(map, (o1, o2) -> o1.getValue().toString().compareTo(o2.getValue().toString()));
-        log.log(        Files.getEncoding("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java"));
+//        log.log(        Files.getEncoding("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java"));
 //        FileAdapter.me().readLine("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java",
 //                string -> log.log(string));
-        FileAdapter.me().readFile(null, false, "utf8", "", (bufferedReader, bufferedWriter) -> {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                log.log(line + "\n");
-            }
-        }, "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java");
+//        FileAdapter.me().readFile(null, false, "utf8", "", (bufferedReader, bufferedWriter) -> {
+//            String line;
+//            while ((line = bufferedReader.readLine()) != null) {
+//                log.log(line + "\n");
+//            }
+//        }, "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java");
+
+//        FileAdapter.me().readLine(
+//                "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-application\\src\\main\\resources\\bootstrap.properties",
+//                "utf8", string -> log.log(string));
     }
 }
