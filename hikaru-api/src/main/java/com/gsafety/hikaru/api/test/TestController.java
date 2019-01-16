@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.api;
+package com.gsafety.hikaru.api.test;
 
 
 import com.gsafety.hikaru.model.system.User;

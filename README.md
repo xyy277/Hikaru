@@ -1,5 +1,6 @@
 ##framework for 512
 ###spring boot project
+#####可插拔式升级cloud，分布式framework
 **代码结构**
 ```
  hikaru-server/
@@ -40,15 +41,16 @@
 #####目前现有的一些参考的技术选型，非最终版本
 ```
    application  |   framework自定义配置
-   exception    |   自定义exception
+   exception    |   自定义exception处理
    filter       |   自定义过滤器
    global       |   全局参数配置
-   helper       |   helper函数
+   helper       |   常用helper函数
    interceptor  |   自定义拦截器
    listener     |   自定义监听器
    middleware   |   集成的框架与中间件
                 activity        -   工作流
-                elasticsearch   -   elk 日志管理
+                camunda         -   一个流程引擎框架，fork activiti得来
+                elasticsearch   -   elasticsearch + logstash + kibana 日志管理
                 generator       -   分布式Id生成器
                 kafka           -   kafka，吞度量大，数据的存储和获取是本地磁盘顺序批量操作，O(1)，消息处理的效率很高
                 quartz          -   quartz持久化定时任务，适合更复杂应用场景，支持分布式，与spring独立
@@ -56,8 +58,10 @@
                 redis           -   redis缓存
                 shedule         -   shedule，不支持分布式，需用分布式锁自己实现
                 shiro           -   shiro，java安全框架
-   websocket    |   单个TCP连接上进行全双工通信的协议，使得客户端和服务器之间的数据交换变得更加简单
+   websocket    |   消息推送，单个TCP连接上进行全双工通信的协议，使得客户端和服务器之间的数据交换变得更加简单
    ```
+
+####对降低学习成本的思考：
 
 
 
@@ -78,4 +82,5 @@
 #
 #
 ####author:zhoujiajun@gsafety.com(大神manito)，QQ: 907507646
+#####group:
 

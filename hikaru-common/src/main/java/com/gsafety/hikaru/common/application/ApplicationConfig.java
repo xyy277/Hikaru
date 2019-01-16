@@ -23,7 +23,7 @@ import savvy.wit.framework.core.base.util.StringUtil;
 @Component
 @Order(2)
 // 自定义读取配置文件，将bootstrap加入到environment中
-@PropertySource(value = {"file:./bootstrap.properties", "classpath:bootstrap.properties"},
+@PropertySource(value = {"classpath:bootstrap.properties", "file:./bootstrap.properties"},
         ignoreResourceNotFound = true) // 忽略找不到文件的报错
 public class ApplicationConfig implements CommandLineRunner {
 
@@ -74,7 +74,7 @@ public class ApplicationConfig implements CommandLineRunner {
         log.info("ApplicationConfig start init");
         String automation = env.getProperty("hikaru.table.automation");
         String refactor = env.getProperty("hikaru.table.refactor");
-        String pack = env.getProperty("application.table.pack");
+        String pack = env.getProperty("hikaru.table.pack");
         if(StringUtil.isNotBlank(automation))
             this.automation = Boolean.parseBoolean(automation);
         if(StringUtil.isNotBlank(refactor))

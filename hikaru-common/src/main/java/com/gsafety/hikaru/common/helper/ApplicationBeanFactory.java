@@ -7,6 +7,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
+
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : bean工厂
@@ -57,5 +61,18 @@ public class ApplicationBeanFactory implements ApplicationContextAware {
     //通过name,以及Clazz返回指定的Bean
     public static <T> T getBean(String name,Class<T> clazz){
         return getApplicationContext().getBean(name, clazz);
+    }
+
+    /**
+     * 通过annotationType 获取class
+     * @param annotationType
+     * @return
+     */
+    public static List<Class> getClassByAnnotation(Class<? extends Annotation> annotationType) {
+        List<Class> list = new ArrayList<>();
+        for (String name: getApplicationContext().getBeanNamesForAnnotation(annotationType)) {
+            list.add(getApplicationContext().getBean(name).getClass());
+        }
+        return list;
     }
 }

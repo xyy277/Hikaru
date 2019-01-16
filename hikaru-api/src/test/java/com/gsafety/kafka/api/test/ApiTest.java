@@ -10,7 +10,7 @@ package com.gsafety.kafka.api.test;
  * Description : 
  ******************************/
 
-import com.gsafety.hikaru.api.TestController;
+import com.gsafety.hikaru.api.test.TestController;
 import com.gsafety.hikaru.common.helper.ApplicationBeanFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;

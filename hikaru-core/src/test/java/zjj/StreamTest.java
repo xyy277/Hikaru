@@ -36,9 +36,9 @@ public class StreamTest {
         log.log(firstElements);
     }
 
-//    @Test
+    @Test
     public void test() throws IOException {
-        Path path = Paths.get("D:\\WorkSpace\\Test\\Personal\\Java\\kafka-server\\kafka-core\\src\\main\\resources\\properties\\db.properties");
+        Path path = Paths.get("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-core\\src\\main\\resources\\properties\\db.properties");
         String contents = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
         Stream<String> words = Stream.of(contents.split("\\PL+"));
         show("words", words);

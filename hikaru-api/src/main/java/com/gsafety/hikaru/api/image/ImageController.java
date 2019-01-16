@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.api;
+package com.gsafety.hikaru.api.image;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
