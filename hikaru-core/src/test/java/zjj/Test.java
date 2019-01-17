@@ -26,12 +26,10 @@ public class Test {
 
 
     public static void test(String s) {
-        s.indexOf("");
-        s.lastIndexOf("");
         initPool();
         Counter counter = Counter.create();
-        for (char t : chars) {
-            for (char c : s.toCharArray()) {
+        for (char t : s.toCharArray()) {
+            for (char c : chars) {
                 if (c == t) {
                     int count = counter.getValue(String.valueOf(t)) == null ? 0 : (int) counter.getValue(String.valueOf(t));
                     counter.setValue(String.valueOf(t), count + 1);
@@ -68,12 +66,13 @@ public class Test {
 //        log.log(sql.lastIndexOf(","));
 //        log.log(sql);
 
-        Map<String, Object> map = new HashMap<>();
-        MapUtil.sortByKey(map, (o1, o2) -> o1.compareTo(o2));
-        MapUtil.sortByValue(map, (o1, o2) -> o1.getValue().toString().compareTo(o2.getValue().toString()));
+//        Map<String, Object> map = new HashMap<>();
+//        MapUtil.sortByKey(map, (o1, o2) -> o1.compareTo(o2));
+//        MapUtil.sortByValue(map, (o1, o2) -> o1.getValue().toString().compareTo(o2.getValue().toString()));
 //        log.log(        Files.getEncoding("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java"));
 //        FileAdapter.me().readLine("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java",
 //                string -> log.log(string));
+
 //        FileAdapter.me().readFile(null, false, "utf8", "", (bufferedReader, bufferedWriter) -> {
 //            String line;
 //            while ((line = bufferedReader.readLine()) != null) {
@@ -81,8 +80,8 @@ public class Test {
 //            }
 //        }, "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java");
 
-        FileAdapter.me().readLine(
-                "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\helper\\ApplicationBeanFactory.java",
-                "utf8", string -> log.log(string));
+//        FileAdapter.me().readLine(
+//                "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\helper\\ApplicationBeanFactory.java",
+//                "utf8", string -> log.log(string));
     }
 }

@@ -1,6 +1,7 @@
 package com.gsafety.hikaru.application.config;
 
 import io.swagger.annotations.Api;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -21,7 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * Version : 1.0
  * Description : 
  ******************************/
-@Configuration
+@SpringBootConfiguration
 @EnableSwagger2
 public class SwaggerConfig {
 
@@ -30,9 +31,9 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 // 带Api注解
-                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
+//                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 // 包路径
-//                .apis(RequestHandlerSelectors.basePackage("com.gsafety.hikaru.api"))
+                .apis(RequestHandlerSelectors.basePackage("com.gsafety.hikaru.api"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());

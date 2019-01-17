@@ -43,36 +43,6 @@ public class TestController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/kafka/{num}")
-    public String kafkaSender(@PathVariable int num) {
-        ThreadPool.me().clean();
-        for (int var = 0; var < (num > 200 ? 200 : num); var++) {
-            ThreadPool.me().newThread(() -> {
-                TimerAdapter.me().execute(new TimerTask() {
-                    @Override
-                    public void run() {
-                        kafkaProviderService.sender("test", StringUtil.createCode(77));
-                    }
-                }, 2000, 100);
-            }, (pool, thread) -> thread.start());
-        }
-        log.warn(ThreadPool.me().getPoolList().size() + " started \t" + DateUtil.getNow());
-        return ThreadPool.me().getPoolList().size() + " started \t" + DateUtil.getNow();
-    }
-
-    @RequestMapping("/kafka/stop")
-    public String stop() {
-//        log.log(ThreadPool.me().getPoolList());
-        int index = ThreadPool.me().getPoolList().size();
-        ThreadPool.me().getPoolList().forEach(thread -> {
-            log.warn(thread.getName() + " \tstopped");
-            thread.interrupt();
-        });
-        TimerAdapter.me().cancel();
-        log.warn(index + "\t service stop success \t" + DateUtil.getNow());
-        return index + "\t service stop success \t" + DateUtil.getNow();
-    }
-
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<User>> test() {
         List<User> users = null;

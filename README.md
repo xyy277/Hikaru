@@ -84,3 +84,6 @@
 ####author:zhoujiajun@gsafety.com(大神manito)，QQ: 907507646
 #####group:
 
+
+####采坑记录：spring boot1.x —> spring boot2.x
+#####对于WebMvcConfigurerAdapter不推荐使用暂时还没有找到好的解决方法。

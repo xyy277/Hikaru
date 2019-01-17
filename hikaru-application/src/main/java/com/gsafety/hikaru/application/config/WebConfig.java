@@ -3,8 +3,10 @@ package com.gsafety.hikaru.application.config;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gsafety.hikaru.common.global.SystemConfig;
 import com.gsafety.hikaru.common.interceptor.LegalVerifyInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -18,9 +20,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import savvy.wit.framework.core.base.util.JsonUtil;
 
 import java.nio.charset.Charset;
@@ -36,14 +36,13 @@ import java.util.List;
  * Version : 1.0
  * Description : 
  ******************************/
-@Configuration
 @EnableWebMvc
 @ComponentScan({"com.gsafety.hikaru", "savvy.wit.framework.core.base.interfaces.dao",
 "com.gsafety.hikaru.common"})
 @ServletComponentScan("com.gsafety.hikaru.common") // 扫描自定义 监听器 过滤器
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootConfiguration
-public class WebConfig  extends WebMvcConfigurerAdapter{
+public class WebConfig  extends WebMvcConfigurerAdapter {
 
     @Autowired
     private LegalVerifyInterceptor legalVerifyInterceptor;
