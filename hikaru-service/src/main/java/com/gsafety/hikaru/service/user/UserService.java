@@ -1,6 +1,7 @@
 package com.gsafety.hikaru.service.user;
 
 import com.gsafety.hikaru.model.system.User;
+import org.springframework.http.ResponseEntity;
 import savvy.wit.framework.core.base.interfaces.Cdt;
 import savvy.wit.framework.core.service.BaseService;
 
@@ -17,6 +18,8 @@ import java.util.List;
  ******************************/
 public interface UserService extends BaseService<User> {
 
+
+    ResponseEntity<String> testFeign(String num);
 
     User save(User user);
 

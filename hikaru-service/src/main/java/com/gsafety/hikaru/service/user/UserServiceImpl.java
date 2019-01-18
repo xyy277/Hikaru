@@ -1,8 +1,10 @@
 package com.gsafety.hikaru.service.user;
 
 import com.gsafety.hikaru.common.middleware.redis.util.RedisUtil;
+import com.gsafety.hikaru.feign.TestFeign;
 import com.gsafety.hikaru.model.system.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import savvy.wit.framework.core.base.interfaces.Cdt;
 import savvy.wit.framework.core.base.interfaces.Log;
@@ -27,6 +29,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     private Log log = LogFactory.getLog();
 
+    @Autowired
+    private TestFeign testFeign;
+
 //    @Autowired
 //    private RedisTemplate<String, Object> redisTemplate;
 //    @Override
@@ -50,6 +55,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 //        return super.getDao();
 //    }
 
+    @Override
+    public ResponseEntity<String> testFeign(String num) {
+        log.log(testFeign);
+        return testFeign.test(num);
+    }
 
     @Override
     public User save(User user) {

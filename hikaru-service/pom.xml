@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>com.gsafety.hikaru</groupId>
-            <artifactId>hikaru-model</artifactId>
+            <artifactId>hikaru-feign</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

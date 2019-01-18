@@ -1,6 +1,7 @@
 package com.gsafety.hikaru.api.test;
 
 
+import com.gsafety.hikaru.feign.TestFeign;
 import com.gsafety.hikaru.model.system.User;
 import com.gsafety.hikaru.service.KafkaProviderService;
 import com.gsafety.hikaru.service.user.UserService;
@@ -38,16 +39,24 @@ public class TestController {
     private Log log = LogFactory.getLog();
 
     @Autowired
-    private KafkaProviderService kafkaProviderService;
-
-    @Autowired
     private UserService userService;
+
+
+    @RequestMapping(value = "/{num}", method = RequestMethod.GET)
+    public ResponseEntity<String> test(@PathVariable String num) {
+        return new ResponseEntity(StringUtil.createCode(num.length(), true), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/feign/{num}", method = RequestMethod.GET)
+    public ResponseEntity<String> testFeign(@PathVariable String num) {
+        return userService.testFeign(num);
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<User>> test() {
         List<User> users = null;
 //        users = userService.query(User.class, CDT.where("name", "like", "%zhou%"));
-        users = userService.query(CDT.where("name", "like", "%zhou%"));
+        users = userService.query(User.class);
         return new ResponseEntity(users, HttpStatus.OK);
     }
 
@@ -56,6 +65,8 @@ public class TestController {
         User user = new User();
         user.setName("zhoujiajun");
         user.setAge(DateUtil.random(100));
+        user.setOptTime(DateUtil.getNow());
+        user.setOptUser(StringUtil.createCode());
         User user1 = userService.save(user);
         return new ResponseEntity(user1, HttpStatus.OK);
     }

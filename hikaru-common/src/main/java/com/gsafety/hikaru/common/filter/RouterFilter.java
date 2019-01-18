@@ -45,7 +45,7 @@ public class RouterFilter implements Filter {
 //        logger.info(uri);
         if ((path + "/").equals(uri) ){
 //            request.getRequestDispatcher(SystemConfig.SWAGGER_URI).forward(request, response);
-            response.sendRedirect(uri + SystemConfig.SWAGGER_URI);
+            response.sendRedirect(path + SystemConfig.SWAGGER_URI);
         }else filterChain.doFilter(request, response);
     }
 

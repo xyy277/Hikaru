@@ -1,4 +1,5 @@
-##framework for 512
+#拿来就用主义
+##framework for company
 ###spring boot project
 #####可插拔式升级cloud，分布式framework
 **代码结构**
@@ -60,8 +61,8 @@
                 shiro           -   shiro，java安全框架
    websocket    |   消息推送，单个TCP连接上进行全双工通信的协议，使得客户端和服务器之间的数据交换变得更加简单
    ```
-
-####对降低学习成本的思考：
+####对技术栈广度和深度的考量：
+####对降低学习成本的设计：
 
 
 
@@ -81,9 +82,10 @@
 #
 #
 #
-####author:zhoujiajun@gsafety.com(大神manito)，QQ: 907507646
-#####group:
+####作者:zhoujiajun@gsafety.com(绰号：manito)，QQ（邮箱微信同号）: 907507646
+#####group:等待你的加入
 
 
 ####采坑记录：spring boot1.x —> spring boot2.x
 #####对于WebMvcConfigurerAdapter不推荐使用暂时还没有找到好的解决方法。
+###by the way 既然你都来了点个star再走吧。
