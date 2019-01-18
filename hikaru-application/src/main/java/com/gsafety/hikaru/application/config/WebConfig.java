@@ -6,13 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gsafety.hikaru.common.global.SystemConfig;
 import com.gsafety.hikaru.common.interceptor.LegalVerifyInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -88,17 +86,14 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
         super.configureMessageConverters(converters);
     }
 
-//    /**
-//     * 视图解析器
-//     * @return
-//     */
-//    @Bean
-//    public ViewResolver viewResolver() {
-//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//        resolver.setPrefix("/WEB-INF/views/pages/");
-//        resolver.setSuffix(".jsp");
-//        return resolver;
-//    }
+    /**
+     * 默认跳转swagger 同 router filter
+     * @param registry
+     */
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addRedirectViewController("", SystemConfig.SWAGGER_URI);
+    }
 
     /**
      * odata跨域
