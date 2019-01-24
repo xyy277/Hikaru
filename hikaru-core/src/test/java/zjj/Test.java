@@ -54,6 +54,8 @@ public class Test {
     }
 
     public static void main(String[] args) {
+        String s = "consul agent -SERVER -bootstrap-expect 2 -DATA-dir C:\\Users\\Administrator\\Desktop\\consul -node=n4 -bind=192.168.67.241 -ui-dir C:\\Users\\Administrator\\Desktop\\consul\\dist -dc=dc1 -CLIENT=0.0.0.0 &";
+        log.log(s.length());
 //        StringBuilder sql = new StringBuilder("create table if not exists `user` ( \n" +
 //                " `id`  varchar(255)  NOT NULL COMMENT 'id' ,\n" +
 //                " `name`  varchar(255)  NOT NULL COMMENT '姓名' ,\n" +

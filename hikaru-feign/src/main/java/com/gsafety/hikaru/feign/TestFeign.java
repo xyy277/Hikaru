@@ -8,14 +8,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : 测试FeignClient
  * File name : TestFeign
  * Author : zhoujiajun
  * Date : 2019/1/17 14:41
  * Version : 1.0
- * Description : 
+ * Description : FeignClient
+ * value()和name()一样，是被调用的服务的ServiceId。
+ * url()直接填写硬编码URL地址。decode404（）即404是被解码，还是抛异常。
+ * configuration（）指明FeignClient的配置类，默认的配置类为FeignClientsConfiguration类，在缺省情况下，这个类注入了默认的Decoder、Encoder和Constant等配置的bean。
+ * fallback()为配置熔断器的处理类
  ******************************/
-@FeignClient( name = "hikaru", url = "192.168.67.241:8889/hikaru")
+@FeignClient( name = "${hikaruServerName}", url = "${hikaruServerUrl}")
 public interface TestFeign {
 
     /**

@@ -1,6 +1,6 @@
 package com.gsafety.hikaru.service.user;
 
-import com.gsafety.hikaru.common.middleware.redis.util.RedisUtil;
+import com.gsafety.hikaru.common.helper.RedisUtil;
 import com.gsafety.hikaru.feign.TestFeign;
 import com.gsafety.hikaru.model.system.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +67,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         RedisUtil.me().set(user.getId(), user);
 //        ApplicationBeanFactory.getBean(RedisUtil.class).set(user.getId(), user);
 //        redisTemplate.opsForValue().set(user.getId(), user);
-        log.log("写入缓存：" + user);
+//        log.log("写入缓存：" + user);
         return user;
     }
 

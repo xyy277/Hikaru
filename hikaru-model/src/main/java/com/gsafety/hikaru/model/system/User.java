@@ -1,7 +1,11 @@
 package com.gsafety.hikaru.model.system;
 
 import com.gsafety.hikaru.model.BaseModel;
+import io.swagger.annotations.ApiModelProperty;
 import savvy.wit.framework.core.base.interfaces.dao.annotation.*;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -20,17 +24,24 @@ public class User extends BaseModel {
     @Column
     @Type(type = CType.VARCHAR)
     @Comment("id")
+    @ApiModelProperty(value = "编号", required = true)
     private String id;
 
     @Column()
     @Type(type = CType.VARCHAR)
     @Comment("姓名")
+    @NotNull(message = "${property.null}")
+    @ApiModelProperty(value = "姓名", required = true)
     private String name;
 
     @Column()
     @Type(type = CType.INT)
     @Comment("年龄")
+    @ApiModelProperty(value = "年龄", required = true)
     private Integer age;
+
+    public User() {
+    }
 
     public String getId() {
         return id;
@@ -61,7 +72,8 @@ public class User extends BaseModel {
         return "User{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", age=" + age +
+                ", age=" + age + '\'' +
+                super.toString() +
                 '}';
     }
 }

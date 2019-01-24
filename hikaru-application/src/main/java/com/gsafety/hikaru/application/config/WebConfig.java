@@ -5,16 +5,21 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gsafety.hikaru.common.global.SystemConfig;
 import com.gsafety.hikaru.common.interceptor.LegalVerifyInterceptor;
+import org.hibernate.validator.HibernateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -40,7 +45,7 @@ import java.util.List;
 @ServletComponentScan("com.gsafety.hikaru.common") // 扫描自定义 监听器 过滤器
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootConfiguration
-public class WebConfig  extends WebMvcConfigurerAdapter {
+public class WebConfig  implements WebMvcConfigurer  {
 
     @Autowired
     private LegalVerifyInterceptor legalVerifyInterceptor;
@@ -48,6 +53,24 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasenames("messages", "classpath:org/hibernate/validator/ValidationMessages");
+        messageSource.setUseCodeAsDefaultMessage(true);
+        messageSource.setDefaultEncoding("UTF-8");
+
+        return messageSource;
+    }
+
+    @Override
+    public Validator getValidator() {
+        LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
+        localValidatorFactoryBean.setProviderClass(HibernateValidator.class);
+        localValidatorFactoryBean.setValidationMessageSource(messageSource());
+        return localValidatorFactoryBean;
     }
 
     @Override
@@ -65,7 +88,6 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
 
-        super.addResourceHandlers(registry);
     }
 
     @Override
@@ -83,7 +105,6 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
         mapper.registerModule(JsonUtil.getEnumSimpleModule());
         converters.add(jackson2HttpMessageConverter);
         converters.add(stringHttpMessageConverter);
-        super.configureMessageConverters(converters);
     }
 
     /**

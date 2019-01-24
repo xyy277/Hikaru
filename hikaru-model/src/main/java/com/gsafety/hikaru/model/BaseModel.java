@@ -1,5 +1,6 @@
 package com.gsafety.hikaru.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import savvy.wit.framework.core.base.interfaces.dao.annotation.CType;
 import savvy.wit.framework.core.base.interfaces.dao.annotation.Column;
 import savvy.wit.framework.core.base.interfaces.dao.annotation.Comment;
@@ -18,14 +19,16 @@ import java.io.Serializable;
  ******************************/
 public class BaseModel implements Serializable {
 
-    @Column()
-    @Type(type = CType.VARCHAR)
+    @Column
+    @Type(type = CType.VARCHAR, width = 32, vacancy = true)
     @Comment("操作时间")
+    @ApiModelProperty(value = "操作时间")
     private String optTime;
 
-    @Column()
-    @Type(type = CType.VARCHAR)
+    @Column
+    @Type(type = CType.VARCHAR, width = 128,  vacancy = true)
     @Comment("操作人")
+    @ApiModelProperty(value = "操作人")
     private String optUser;
 
     public String getOptTime() {
@@ -42,5 +45,11 @@ public class BaseModel implements Serializable {
 
     public void setOptUser(String optUser) {
         this.optUser = optUser;
+    }
+
+    @Override
+    public String toString() {
+        return ", optTime='" + optTime + '\'' +
+                ", optUser='" + optUser + '\'' ;
     }
 }

@@ -11,7 +11,8 @@ import savvy.wit.framework.core.base.interfaces.dao.impl.msql.DaoImpl;
  * Author : zhoujiajun
  * Date : 2018/10/16 11:11
  * Version : 1.0
- * Description : 
+ * Description :
+ * TODO：可扩展配置
  ******************************/
 public class Daos {
 
