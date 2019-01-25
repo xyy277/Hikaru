@@ -92,6 +92,10 @@ https://blog.csdn.net/songhaifengshuaige/article/details/79111676
 #
 ####作者:zhoujiajun@gsafety.com(manito)，QQ（邮箱微信同号）: 907507646
 #####group:等待你的加入
+######Fork 本项目
+     1、新建 Feat_xxx 分支
+     2、提交代码
+     3、新建 Pull Request
 #
 #####SOLID：单一职责原则、开闭原则、李氏代换原则、接口隔离原则、依赖倒置原则
 #####开发约束：结构化编程、面向对象编程、函数式编程

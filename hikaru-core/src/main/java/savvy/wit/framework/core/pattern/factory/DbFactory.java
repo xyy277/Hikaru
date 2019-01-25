@@ -1,5 +1,8 @@
 package savvy.wit.framework.core.pattern.factory;
 
+import savvy.wit.framework.core.pattern.adapter.FileAdapter;
+
+import java.io.*;
 import java.util.Properties;
 
 /*******************************
@@ -34,6 +37,40 @@ public class DbFactory {
     }
 
     public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
+
+    public void setProperties(String... paths) {
+        InputStream inputStream = null;
+        Properties properties = new Properties();
+        for (String path : paths) {
+            try {
+                inputStream =new BufferedInputStream(new FileInputStream(path));
+            }catch (FileNotFoundException e) {
+
+            }
+            if (inputStream == null) {
+                inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+                if (inputStream == null) {
+                    continue;
+                } else {
+                    try {
+                        properties.load(inputStream);
+                    }catch (IOException e) {
+
+                    }
+                    break;
+                }
+            }else {
+                try {
+                    properties.load(inputStream);
+                }catch (IOException e) {
+
+                }
+                break;
+            }
+
+        }
         this.properties = properties;
     }
 }

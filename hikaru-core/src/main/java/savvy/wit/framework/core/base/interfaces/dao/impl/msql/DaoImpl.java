@@ -1,6 +1,5 @@
 package savvy.wit.framework.core.base.interfaces.dao.impl.msql;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import savvy.wit.framework.core.base.callback.DaoCallBack;
 import savvy.wit.framework.core.base.interfaces.Cdt;
@@ -11,19 +10,20 @@ import savvy.wit.framework.core.base.util.ClassUtil;
 import savvy.wit.framework.core.base.util.DbUtil;
 import savvy.wit.framework.core.base.util.ObjectUtil;
 import savvy.wit.framework.core.base.util.Strings;
-import savvy.wit.framework.core.pattern.factory.Config;
-import savvy.wit.framework.core.pattern.factory.DbFactory;
-import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
+import savvy.wit.framework.core.pattern.factory.Config;
+import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /*******************************
@@ -40,21 +40,22 @@ public class DaoImpl<T> implements Dao<T> {
 
     private Log log = LogFactory.getLog();
     private DbUtil db = DbUtil.me();
-    private DbFactory dbFactory = DbFactory.me();
     private Config config = Config.init("/json/config.json");
 
     private DaoImpl() {
     }
 
-    public DaoImpl(String dbSource) {
-        Properties properties = new Properties();
-        try {
-            properties.load(DaoImpl.class.getResourceAsStream(dbSource));
+    public static DaoImpl init() {
+        return LazyInit.INITIALIZATION;
+    }
 
-        }catch (IOException e) {
+    public static DaoImpl NEW() {
+        return new DaoImpl();
+    }
 
-        }
-        dbFactory.setProperties(properties);
+
+    private static class LazyInit {
+        private static DaoImpl INITIALIZATION = new DaoImpl();
     }
 
     @Override

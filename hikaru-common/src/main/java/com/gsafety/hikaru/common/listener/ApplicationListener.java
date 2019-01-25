@@ -2,6 +2,7 @@ package com.gsafety.hikaru.common.listener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import savvy.wit.framework.core.pattern.factory.DbFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -24,6 +25,8 @@ public class ApplicationListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         log.info("ApplicationListener init");
+        DbFactory.me().setProperties("./db.properties", "db.properties");
+
     }
 
     @Override

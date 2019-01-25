@@ -1,5 +1,6 @@
 package com.gsafety.hikaru.common.helper;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -74,5 +76,19 @@ public class ApplicationBeanFactory implements ApplicationContextAware {
             list.add(getApplicationContext().getBean(name).getClass());
         }
         return list;
+    }
+
+    public static List<Object> getBeansByAnnotations(Class<? extends Annotation>... annotationTypes) {
+        List<Object> list = new ArrayList<>();
+        for (Class<? extends Annotation> annotationType : annotationTypes) {
+            for (String name: getApplicationContext().getBeanNamesForAnnotation(annotationType)) {
+                list.add(getApplicationContext().getBean(name));
+            }
+        }
+        return list;
+    }
+
+    public static Map<String, Object> getBeansByAnnotation(Class<? extends Annotation> annotationType) {
+        return getApplicationContext().getBeansWithAnnotation(annotationType);
     }
 }

@@ -12,15 +12,15 @@ import savvy.wit.framework.core.base.interfaces.dao.impl.msql.DaoImpl;
  * Date : 2018/10/16 11:11
  * Version : 1.0
  * Description :
- * TODO：可扩展配置
  ******************************/
 public class Daos {
 
     public static Dao get() {
-        String source = "/properties/db.properties";
-        return new DaoImpl(source);
+        return DaoImpl.init();
     }
-    public static Dao get(String source) {
-        return new DaoImpl(source);
+
+    public static Dao acquire() {
+        return DaoImpl.NEW();
     }
+
 }

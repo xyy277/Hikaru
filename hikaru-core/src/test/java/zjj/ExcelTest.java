@@ -42,17 +42,19 @@ public class ExcelTest {
 //            log.log(a);
 
 
-            list = (List<Map<String,String>>) ScExcelAdapter.NEW().readExcel("/excel/test.xlsx", (mapList, adapter) -> {
-                List<Map> maps = new ArrayList<>();
-                mapList.forEach(map -> {
-                    if ( !map.get("CELL3").equals(map.get("CELL5"))) {
-                        map.remove("CELL2");
-                        map.remove("CELL4");
-                        maps.add(map);
-                    }
-                });
-                return maps;
-            }).getResult();
+            list = (List<Map<String,String>>) ScExcelAdapter.NEW().readExcel(
+                    "/excel/test.xlsx",
+                    (mapList, adapter) -> {
+                        List<Map> maps = new ArrayList<>();
+                        mapList.forEach(map -> {
+                            if ( !map.get("CELL3").equals(map.get("CELL5"))) {
+                                map.remove("CELL2");
+                                map.remove("CELL4");
+                                maps.add(map);
+                            }
+                        });
+                        return maps;
+                    }).getResult();
 //            log.log(list);
             log.log(list.size());
 

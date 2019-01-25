@@ -40,11 +40,17 @@ public class AgilityTest {
             graphics.fillRect(0,0,600,600);
             graphics.setColor(Color.green);
             if (arc < 360) {
-                graphics.drawLine(curve.getPoints()[0].getX(), curve.getPoints()[0].getY(), curve.getPoints()[1].getX(), curve.getPoints()[1].getY());
-                graphics.drawLine(curve.getPoints()[curve.getPoints().length-1].getX(), curve.getPoints()[curve.getPoints().length-1].getY(), curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
+                graphics.drawLine(
+                        curve.getPoints()[0].getX(), curve.getPoints()[0].getY(),
+                        curve.getPoints()[1].getX(), curve.getPoints()[1].getY());
+                graphics.drawLine(
+                        curve.getPoints()[curve.getPoints().length-1].getX(),
+                        curve.getPoints()[curve.getPoints().length-1].getY(),
+                        curve.getPoints()[0].getX(),
+                        curve.getPoints()[0].getY());
             }
             graphics.setColor(Color.black);
             log.log(Arrays.asList(curve.getPoints()));
-        }, 600, 400, curve, true, "jpg", "awe"));
+            }, 600, 400, curve, true, "jpg", "awe"));
     }
 }

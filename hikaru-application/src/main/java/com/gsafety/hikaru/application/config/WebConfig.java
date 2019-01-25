@@ -45,7 +45,7 @@ import java.util.List;
 @ServletComponentScan("com.gsafety.hikaru.common") // 扫描自定义 监听器 过滤器
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootConfiguration
-public class WebConfig  implements WebMvcConfigurer  {
+public class WebConfig  implements WebMvcConfigurer {
 
     @Autowired
     private LegalVerifyInterceptor legalVerifyInterceptor;
@@ -75,7 +75,8 @@ public class WebConfig  implements WebMvcConfigurer  {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(legalVerifyInterceptor).addPathPatterns("/**").excludePathPatterns("/**.*");
+        registry.addInterceptor(legalVerifyInterceptor).addPathPatterns("/**")
+                .excludePathPatterns("/**.*");
     }
 
     @Override
