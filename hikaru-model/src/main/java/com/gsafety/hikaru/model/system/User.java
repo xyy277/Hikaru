@@ -35,10 +35,16 @@ public class User extends BaseModel {
     private String name;
 
     @Column()
-    @Type(type = CType.INT)
+    @Type(type = CType.INT, width = 3)
     @Comment("年龄")
     @ApiModelProperty(value = "年龄", required = true)
     private Integer age;
+
+    @Column()
+    @Type(type = CType.INT, width = 1)
+    @Comment("是否在线，默认0：离线")
+    @ApiModelProperty(value = "是否在线，默认0不在线", required = true)
+    private int online;
 
     public User() {
     }
@@ -67,13 +73,23 @@ public class User extends BaseModel {
         this.age = age;
     }
 
+    public int getOnline() {
+        return online;
+    }
+
+    public void setOnline(int online) {
+        this.online = online;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", age=" + age + '\'' +
-                super.toString() +
+                ", online=" + online + '\'' +
+                ", optTime='" + super.getOptTime() + '\'' +
+                ", optUser='" + super.getOptUser() + '\'' +
                 '}';
     }
 }

@@ -6,6 +6,7 @@ import savvy.wit.framework.core.base.interfaces.Cdt;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -15,7 +16,7 @@ import java.util.List;
  * Date : 2018/6/29 21:45
  * Version : 1.0
  * Description :
- * TODO: 支持动态表单，复杂关联查询
+ * TODO: 1、添加索引 2、支持动态表单，复杂关联查询，动态修改表结构
  ******************************/
 public interface Dao<T> {
 
@@ -30,6 +31,8 @@ public interface Dao<T> {
      * @param clazz
      */
     void drop(List<Class<?>> clazz);
+
+    void dropAndCreate(Class... clazz);
 
     /**
      * 实体类建表
@@ -87,6 +90,10 @@ public interface Dao<T> {
      */
     List<T> execute(String sql, DaoCallBack<T> callBack) throws SQLException;
 
+    Map<String, Object> fetch(String sql) throws SQLException;
+
+    List<Map<String, Object>> query(String sql) throws SQLException;
+
     /**
      * 根据实体类名清空数据表
      * @param clazz 类型
@@ -116,11 +123,13 @@ public interface Dao<T> {
 
     boolean update(T t, Cdt cdt) throws SQLException;
 
-    T select(Cdt cdt, Class clazz) throws SQLException;
+    T fetch(Cdt cdt, Class clazz) throws SQLException;
 
     List<T> query(Cdt cdt, Class clazz) throws SQLException;
 
     List<T> query(Cdt cdt, Class clazz, DaoCallBack<T> callBack) throws SQLException;
 
     long count(Class clazz) throws SQLException;
+
+    long count(Class clazz, Cdt cdt) throws SQLException;
 }

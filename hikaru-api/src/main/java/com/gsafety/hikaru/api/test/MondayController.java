@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import savvy.wit.framework.core.base.interfaces.dao.Pagination;
+import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.service.BaseService;
 import savvy.wit.framework.core.service.impl.BaseServiceImpl;
@@ -34,15 +36,18 @@ public class MondayController {
 
     private BaseService<Monday> baseService = new BaseServiceImpl<>(Daos.get());
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Monday> test(@RequestBody @Validated Monday monday) {
-        log.info(monday.toString());
-        return new ResponseEntity<>(monday, HttpStatus.OK);
+    @RequestMapping(value = "/{page}/{pageSize}", method = RequestMethod.GET)
+    public ResponseEntity<List<Monday>> index(Monday monday, Pagination pagination) {
+        return new ResponseEntity<>(baseService.query(Monday.class, CDT.page(pagination, "name", "like", monday.getName())), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<List<Monday>> test(@RequestBody @Validated ValidList<Monday> mondays) {
-        log.info(mondays.toString());
+    public ResponseEntity<Monday> add(@RequestBody @Validated Monday monday) {
+        return new ResponseEntity<>(baseService.insert(monday), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/addBatch", method = RequestMethod.POST)
+    public ResponseEntity<List<Monday>> addBatch(@RequestBody @Validated ValidList<Monday> mondays) {
         baseService.insertBath(mondays);
         return new ResponseEntity<>(baseService.query(Monday.class), HttpStatus.OK);
     }

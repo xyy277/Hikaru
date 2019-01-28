@@ -6,24 +6,15 @@ import savvy.wit.framework.core.base.interfaces.Cdt;
 import savvy.wit.framework.core.base.interfaces.Log;
 import savvy.wit.framework.core.base.interfaces.dao.Dao;
 import savvy.wit.framework.core.base.interfaces.dao.annotation.*;
-import savvy.wit.framework.core.base.util.ClassUtil;
-import savvy.wit.framework.core.base.util.DbUtil;
-import savvy.wit.framework.core.base.util.ObjectUtil;
-import savvy.wit.framework.core.base.util.Strings;
+import savvy.wit.framework.core.base.util.*;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.factory.Config;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.sql.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*******************************
@@ -139,10 +130,72 @@ public class DaoImpl<T> implements Dao<T> {
             resultSet.close();
             db.close(connection,preparedStatement);
             if(callbacks.size() == 0){
-                log.log(":: List is empty, please check the database.");
+                log.warn(":: List is empty, please check the database.");
             }
         }
         return callbacks;
+    }
+
+    @Override
+    public Map<String, Object> fetch(String sql) throws SQLException {
+        Map<String, Object> map = new HashMap<>();
+        Connection connection = db.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        try {
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            while (resultSet.next()) {
+                for (int i = 1 ; i <= resultSetMetaData.getColumnCount(); i++) {
+                    map.put(resultSetMetaData.getColumnName(i),
+                            getValueAdapter(
+                                    resultSet,
+                                    column2FieldByName(resultSetMetaData.getColumnTypeName(i)),
+                                    resultSetMetaData.getColumnName(i)));
+                }
+                if (map.size() > 0) {
+                    break;
+                }
+            }
+        }catch (Exception e){
+            connection.rollback();
+        }finally {
+            log.sql(sql);
+            resultSet.close();
+            db.close(connection,preparedStatement);
+        }
+        return map;
+    }
+
+    @Override
+    public List<Map<String, Object>> query(String sql) throws SQLException {
+        List<Map<String, Object>> lists = new ArrayList<>();
+        Connection connection = db.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        try {
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            while (resultSet.next()) {
+                Map<String, Object> map = new HashMap<>();
+                for (int i = 1 ; i <= resultSetMetaData.getColumnCount(); i++) {
+                    map.put(resultSetMetaData.getColumnName(i),
+                            getValueAdapter(
+                            resultSet,
+                            column2FieldByName(resultSetMetaData.getColumnTypeName(i)),
+                            resultSetMetaData.getColumnName(i)));
+                }
+                lists.add(map);
+            }
+        }catch (Exception e){
+            connection.rollback();
+        }finally {
+            log.sql(sql);
+            resultSet.close();
+            db.close(connection,preparedStatement);
+            if(lists.size() == 0){
+                log.warn(":: List is empty, please check the database.");
+            }
+        }
+        return lists;
     }
 
     @Override
@@ -161,6 +214,18 @@ public class DaoImpl<T> implements Dao<T> {
         for (Class aClass :clazz) {
             try {
                 drop(aClass);
+            }catch (SQLException e) {
+                log.error(e);
+            }
+        }
+    }
+
+    @Override
+    public void dropAndCreate(Class[] clazz) {
+        for (Class c: clazz) {
+            try {
+                drop(c);
+                create(c);
             }catch (SQLException e) {
                 log.error(e);
             }
@@ -302,6 +367,9 @@ public class DaoImpl<T> implements Dao<T> {
                 } else {
                     sql.append(" NOT NULL ");
                 }
+                if (type.type() == CType.INT) {
+                    sql.append(" DEFAULT " + type.acquiescence() + " ");
+                }
             }
             if (field.isAnnotationPresent(Comment.class)) {
                 Comment comment = field.getAnnotation(Comment.class);
@@ -312,7 +380,9 @@ public class DaoImpl<T> implements Dao<T> {
                 boolean auto = id.auto();
                 if (auto) sql.append(" AUTO_INCREMENT ");
             }
-            sql.append(",\n");
+            if (field.isAnnotationPresent(Column.class)) {
+                sql.append(",\n");
+            }
         }
         return sql;
     }
@@ -491,7 +561,7 @@ public class DaoImpl<T> implements Dao<T> {
     }
 
     @Override
-    public T select(Cdt cdt, Class clazz) throws SQLException {
+    public T fetch(Cdt cdt, Class clazz) throws SQLException {
         T t = null;
         String sql = new String("select * from " + clazz.getSimpleName().toLowerCase() + (cdt != null ? cdt.getCondition() : "") );
         Connection connection = db.getConnection();
@@ -529,6 +599,9 @@ public class DaoImpl<T> implements Dao<T> {
     public List<T> query(Cdt cdt, Class clazz) throws SQLException {
         List<T> list = new ArrayList<>();
         String sql = new String("select * from " + clazz.getSimpleName().toLowerCase() + (cdt != null ? cdt.getCondition() : "") );
+        if(cdt.page() != null) {
+            sql = sql + cdt.page().limit();
+        }
         Connection connection = db.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         try {
@@ -565,6 +638,9 @@ public class DaoImpl<T> implements Dao<T> {
     public List<T> query(Cdt cdt, Class clazz, DaoCallBack<T> callBack) throws SQLException {
         List<T> callbacks = new ArrayList<>();
         String sql = new String("select * from " + clazz.getSimpleName().toLowerCase() + cdt != null ? cdt.getCondition() : "");
+        if(cdt.page() != null) {
+            sql = sql + cdt.page().limit();
+        }
         Connection connection = db.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -648,6 +724,13 @@ public class DaoImpl<T> implements Dao<T> {
         return count;
     }
 
+    @Override
+    public long count(Class clazz, Cdt cdt) throws SQLException {
+        long count = 0;
+
+        return count;
+    }
+
     /**
      * 装载数据
      * @param preparedStatement
@@ -720,5 +803,30 @@ public class DaoImpl<T> implements Dao<T> {
 
     private String decorateField (String cType, int width) {
         return " " + cType + "(" + width + ") ";
+    }
+
+    private String column2FieldByName(String value) {
+        String target = null;
+        if (StringUtil.isBlank(value)) {
+            return target;
+        }
+        if(value.equals(CType.VARCHAR.name())) {
+            target = "String";
+        } else if (value.equals(CType.INT.name())) {
+            target = "Int";
+        } else if (value.equals(CType.FLOAT.name())) {
+            target = "Double";
+        } else if (value.equals(CType.DATE.name())) {
+            target = "Date";
+        } else if (value.equals(CType.BOOLEAN.name())) {
+            target = "Boolean";
+        } else if (value.equals(CType.CHAR.name())) {
+            target = "Char";
+        } else if (value.equals(CType.TEXT.name())) {
+            target = "String";
+        } else if (value.equals(CType.DATETIME.name())) {
+            target = "Long";
+        }
+        return target;
     }
 }

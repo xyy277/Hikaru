@@ -8,7 +8,9 @@ import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /*******************************
@@ -57,7 +59,11 @@ public class Test {
     public static void main(String[] args) {
         String s = "consul agent -SERVER -bootstrap-expect 2 -DATA-dir C:\\Users\\Administrator\\Desktop\\consul -node=n4 -bind=192.168.67.241 -ui-dir C:\\Users\\Administrator\\Desktop\\consul\\dist -dc=dc1 -CLIENT=0.0.0.0 &";
         s = "%E4%B8%BB%E7%AE%A1";
-        log.log(Strings.transformEncoding(s, "ISO-8859-1", "utf-8"));
+        String[] strings = new String[1];
+        List<String> list = new ArrayList<>();
+        System.out.println(list.getClass().getSimpleName());
+        System.out.println(strings.getClass().getSimpleName());
+//        log.log(Strings.transformEncoding(s, "ISO-8859-1", "utf-8"));
 //        StringBuilder sql = new StringBuilder("create table if not exists `user` ( \n" +
 //                " `id`  varchar(255)  NOT NULL COMMENT 'id' ,\n" +
 //                " `name`  varchar(255)  NOT NULL COMMENT '姓名' ,\n" +
@@ -84,8 +90,8 @@ public class Test {
 //            }
 //        }, "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java");
 
-        FileAdapter.me().readLine(
-                "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-application\\src\\main\\resources\\datasource\\db.properties",
-                "utf-8", string -> System.out.println(string));
+//        FileAdapter.me().readLine(
+//                "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-application\\src\\main\\resources\\datasource\\db.properties",
+//                "utf-8", string -> System.out.println(string));
     }
 }

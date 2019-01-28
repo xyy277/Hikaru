@@ -33,7 +33,7 @@
 #
 ###
 ###一些约定
-#####bootstrap.properties ，用于数据库相关配置
+#####bootstrap.properties ，用于辅助应用相关配置
 #####application.properties，用于应用级别相关配置
 ##快速上手
 ####hikaru-application，boot模块
@@ -99,7 +99,6 @@ https://blog.csdn.net/songhaifengshuaige/article/details/79111676
 #
 #####SOLID：单一职责原则、开闭原则、李氏代换原则、接口隔离原则、依赖倒置原则
 #####开发约束：结构化编程、面向对象编程、函数式编程
-#
-####采坑记录：spring boot1.x —> spring boot2.x
-#####对于WebMvcConfigurerAdapter不推荐使用可以实现WebMvcConfigurer
+#####
+####采坑记录：spring boot1.x —> spring boot2.x + cloud Finchley.x
 ###by the way 既然你都来了点个star再走吧。

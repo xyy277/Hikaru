@@ -14,4 +14,6 @@ public @interface Type {
 
     boolean vacancy() default false;
 
+    int acquiescence() default 0;
+
 }

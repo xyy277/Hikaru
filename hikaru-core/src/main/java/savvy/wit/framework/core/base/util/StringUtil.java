@@ -53,7 +53,7 @@ public class StringUtil extends DateUtil {
 
     public static String createCode() {
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i< DateUtil.random(~(1<<31) / 1000) / 1000 / 1000; i++) {
+        for(int i = 0; i< DateUtil.random(~(1<<31) / 1000) / 100 / 100; i++) {
             sb.append( POOL.charAt(random(POOL.length())) );
         }
         return sb.toString();

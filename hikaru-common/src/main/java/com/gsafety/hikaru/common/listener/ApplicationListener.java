@@ -10,7 +10,7 @@ import javax.servlet.annotation.WebListener;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : ApplicationListener
  * File name : ApplicationListener
  * Author : zhoujiajun
  * Date : 2019/1/7 17:34
@@ -25,7 +25,7 @@ public class ApplicationListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         log.info("ApplicationListener init");
-        DbFactory.me().setProperties("./db.properties", "db.properties");
+        DbFactory.me().setSource("./db.properties", "db.properties");
 
     }
 
