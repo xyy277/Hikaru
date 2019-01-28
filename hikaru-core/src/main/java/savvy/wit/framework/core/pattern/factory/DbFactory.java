@@ -1,15 +1,16 @@
 package savvy.wit.framework.core.pattern.factory;
 
+import java.io.*;
 import java.util.Properties;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : 数据源配置工厂
  * File name : DbFactory
  * Author : zhoujiajun
  * Date : 2019/1/10 9:20
  * Version : 1.0
- * Description : 
+ * Description : 动态可扩展配置数据源
  ******************************/
 public class DbFactory {
 
@@ -33,7 +34,47 @@ public class DbFactory {
         return properties;
     }
 
-    public void setProperties(Properties properties) {
+    public void setSource(Properties properties) {
+        this.properties = properties;
+    }
+
+    /**
+     * 先入先加载的方式
+     * 按顺序加载，加载成功则停止加载
+     * 不会覆盖
+     * @param paths
+     */
+    public void setSource(String... paths) {
+        InputStream inputStream = null;
+        Properties properties = new Properties();
+        for (String path : paths) {
+            try {
+                inputStream =new BufferedInputStream(new FileInputStream(path));
+            }catch (FileNotFoundException e) {
+
+            }
+            if (inputStream == null) {
+                inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+                if (inputStream == null) {
+                    continue;
+                } else {
+                    try {
+                        properties.load(inputStream);
+                    }catch (IOException e) {
+
+                    }
+                    break;
+                }
+            }else {
+                try {
+                    properties.load(inputStream);
+                }catch (IOException e) {
+
+                }
+                break;
+            }
+
+        }
         this.properties = properties;
     }
 }

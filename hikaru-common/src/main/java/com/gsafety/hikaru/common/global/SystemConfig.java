@@ -9,9 +9,9 @@ package com.gsafety.hikaru.common.global;
  * Version : 1.0
  * Description : hikaru-server 系统配置
  ******************************/
-public class SystemConfig {
+public interface SystemConfig {
 
-    public static final String SYSTEM_BASE = "/";
+    String SYSTEM_BASE = "/";
 
-    public static final String  SWAGGER_URI = "swagger-ui.html";
+    String  SWAGGER_URI = "/swagger-ui.html";
 }

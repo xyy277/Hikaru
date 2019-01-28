@@ -27,12 +27,12 @@ public class RouterFilter implements Filter {
 
     private Logger logger = LoggerFactory.getLogger(RouterFilter.class);
 
-    @Value("${server.context-path}")
+    @Value("${server.servlet.context-path}")
     private String path;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        logger.info("filter init ");
+        logger.info("RouterFilter init ");
     }
 
     @Override
@@ -42,14 +42,15 @@ public class RouterFilter implements Filter {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         String uri = request.getRequestURI();
-        logger.info(uri);
+//        logger.info(uri);
         if ((path + "/").equals(uri) ){
-            response.sendRedirect(uri + SystemConfig.SWAGGER_URI);
+//            request.getRequestDispatcher(SystemConfig.SWAGGER_URI).forward(request, response);
+            response.sendRedirect(path + SystemConfig.SWAGGER_URI);
         }else filterChain.doFilter(request, response);
     }
 
     @Override
     public void destroy() {
-        logger.info("filter destroy ");
+        logger.info("RouterFilter destroy ");
     }
 }

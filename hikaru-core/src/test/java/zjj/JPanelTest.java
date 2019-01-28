@@ -35,7 +35,7 @@ public class JPanelTest {
     }
 
 
-    @Test
+//    @Test
     public void test() {
         Curve curve = loop.calculateCurve();
         log.log(() -> Arrays.asList(curve.getPoints()));
@@ -45,7 +45,9 @@ public class JPanelTest {
             graphics.setColor(Color.WHITE);
             graphics.drawString(".",curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
             for (int var = 1; var+1 < curve.getPoints().length; var++) {
-                graphics.drawLine(curve.getPoints()[var].getX(), curve.getPoints()[var].getY(), curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
+                graphics.drawLine(
+                        curve.getPoints()[var].getX(), curve.getPoints()[var].getY(),
+                        curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
             }
         },400,400, true, "jpg", "test/a");
     }

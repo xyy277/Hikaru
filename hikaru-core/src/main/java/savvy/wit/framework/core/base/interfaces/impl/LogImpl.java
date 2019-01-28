@@ -139,26 +139,33 @@ public class LogImpl implements Log {
             this.error(new NullPointerException("log is null"),3);
             return;
         }
-        switch (log.getClass().getName()) {
-            case "java.lang.String":
+        switch (log.getClass().getSimpleName()) {
+            case "String":
                 logs = "[" + LOG_DEFAULT + "] " + getLog(strack) + "\t" + String.valueOf(log);
                 System.out.println(logs);
                         break;
-            case "java.util.Arrays$ArrayList":
+            case "ArrayList":
                 for (Object o : (List) log) {
                     log(o,strack+1);
                 }
                 break;
-            case "java.util.ArrayList":
-                for (Object o : (List) log) {
-                    log(o,strack+1);
+            case "String[]":
+                logs = "[" + LOG_DEFAULT + "] " + getLog(strack) + "\t";
+                if (log instanceof String[]) {
+                    StringBuilder builder = new StringBuilder("| ");
+                    for (int i = 0; i < ((String[]) log).length; i++) {
+                        builder.append(((String[])log)[i] + " | ");
+                    }
+                    System.out.println(logs + builder.toString());
+                } else {
+                    System.out.println(logs + String.valueOf(log));
                 }
                 break;
-            case "java.lang.StackTraceElement":
+            case "StackTraceElement":
                 logs = "\t" + String.valueOf(log);
                 System.out.println(logs);
                         break;
-            case "java.lang.Class":
+            case "Class":
                 logs = "[" + LOG_DEFAULT + "] " + getLog(strack) + "\t" + String.valueOf(log);
                 System.out.println(logs);
                         break;

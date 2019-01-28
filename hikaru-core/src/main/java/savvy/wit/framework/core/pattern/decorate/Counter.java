@@ -75,6 +75,18 @@ public class Counter {
         this.value.put(key, value);
     }
 
+    public void remove(String key) {
+        if (this.value.remove(key) != null) {
+            counter.setCount(-1);
+        }
+    }
+
+    public void remove(String key, Object o) {
+        if (this.value.remove(key, o)) {
+            counter.setCount(-1);
+        }
+    }
+
     public Counter getCounter() {
         return counter;
     }

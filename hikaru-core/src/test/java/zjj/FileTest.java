@@ -23,7 +23,7 @@ public class FileTest {
     protected Log log = LogFactory.getLog();
 
 
-    @Test
+//    @Test
     public void write() {
         new Excel2PropertiesAdapter() {
             @Override

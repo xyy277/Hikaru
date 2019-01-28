@@ -6,23 +6,64 @@ import savvy.wit.framework.core.base.interfaces.Cdt;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : Dao
  * File name : Dao
  * Author : zhoujiajun
  * Date : 2018/6/29 21:45
  * Version : 1.0
- * Description : 
+ * Description :
+ * TODO: 1、添加索引 2、支持动态表单，复杂关联查询，动态修改表结构
  ******************************/
 public interface Dao<T> {
+
+    /**
+     * 删除表结构
+     * @param clazz
+     */
+    void drop(Class... clazz);
+
+    /**
+     * 删除表结构
+     * @param clazz
+     */
+    void drop(List<Class<?>> clazz);
+
+    void dropAndCreate(Class... clazz);
 
     /**
      * 实体类建表
      * @param clazz 类型
      */
     void create(Class... clazz);
+
+    /**
+     * 实体类建表
+     * @param clazz 类型
+     */
+    void create(List<Class<?>> clazz);
+
+    /**
+     * 实体类建表
+     * @param clazz 类型
+     */
+    void create(boolean refactor, Class... clazz);
+
+    /**
+     * 实体类建表
+     * @param clazz 类型
+     */
+    void create(boolean refactor, List<Class<?>> clazz);
+
+    /**
+     * 在pack 包下自动建表
+     * @param refactor
+     * @param pack
+     */
+    void createAtPackage(boolean refactor, String... pack);
 
     /**
      * 执行sql 文件
@@ -42,13 +83,16 @@ public interface Dao<T> {
 
     /**
      * 执行普通sql,回调返回结果集
-     * TODO：增加条件语句
      * @param sql sql
      * @param callBack 回调
      * @return 结果集
      * @throws SQLException 异常
      */
     List<T> execute(String sql, DaoCallBack<T> callBack) throws SQLException;
+
+    Map<String, Object> fetch(String sql) throws SQLException;
+
+    List<Map<String, Object>> query(String sql) throws SQLException;
 
     /**
      * 根据实体类名清空数据表
@@ -79,11 +123,13 @@ public interface Dao<T> {
 
     boolean update(T t, Cdt cdt) throws SQLException;
 
-    T select(Cdt cdt, Class clazz) throws SQLException;
+    T fetch(Cdt cdt, Class clazz) throws SQLException;
 
     List<T> query(Cdt cdt, Class clazz) throws SQLException;
 
     List<T> query(Cdt cdt, Class clazz, DaoCallBack<T> callBack) throws SQLException;
 
     long count(Class clazz) throws SQLException;
+
+    long count(Class clazz, Cdt cdt) throws SQLException;
 }

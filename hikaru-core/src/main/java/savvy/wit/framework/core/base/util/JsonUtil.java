@@ -49,6 +49,10 @@ public class JsonUtil {
         mapper.setDateFormat(format);
     }
 
+    public static ObjectMapper getMapper() {
+        return mapper;
+    }
+
     /**
      * 将对象转换成JSON字符串
      *
@@ -74,6 +78,15 @@ public class JsonUtil {
     public static String toJson(Object key, Object value) {
         Map<Object, Object> map = new HashMap<>();
         map.put(key, value);
+        try {
+            return mapper.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            (new JsonUtil()).logger.error(e.getMessage(), e);
+            return null;
+        }
+    }
+
+    public static <K, V> String map2Json(Map<K, V> map) {
         try {
             return mapper.writeValueAsString(map);
         } catch (JsonProcessingException e) {

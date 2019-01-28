@@ -2,6 +2,7 @@ package com.gsafety.hikaru.common.interceptor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,6 +24,8 @@ public class LegalVerifyInterceptor implements HandlerInterceptor {
 
     private Logger logger = LoggerFactory.getLogger(LegalVerifyInterceptor.class);
 
+    @Value("${spring.cloud.consul.discovery.health-check-path}")
+    private String healthCheckPath;
     /**
      * 请求处理之前拦截
      * @param httpServletRequest
@@ -33,6 +36,9 @@ public class LegalVerifyInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        if (httpServletRequest.getRequestURI().indexOf("/error") == -1
+                && httpServletRequest.getRequestURI().indexOf(healthCheckPath) == -1)
+            logger.info(httpServletRequest.getRequestURI());
         return true;
     }
 

@@ -24,6 +24,6 @@ public class ExtendExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity modelNotFoundExceptionHandler(Exception exception) {
         log.error("exception happened",exception);
-        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

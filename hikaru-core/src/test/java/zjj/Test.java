@@ -2,10 +2,15 @@ package zjj;
 
 import savvy.wit.framework.core.base.interfaces.Log;
 import savvy.wit.framework.core.base.util.MapUtil;
+import savvy.wit.framework.core.base.util.Strings;
+import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.decorate.Counter;
+import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /*******************************
@@ -24,12 +29,10 @@ public class Test {
 
 
     public static void test(String s) {
-        s.indexOf("");
-        s.lastIndexOf("");
         initPool();
         Counter counter = Counter.create();
-        for (char t : chars) {
-            for (char c : s.toCharArray()) {
+        for (char t : s.toCharArray()) {
+            for (char c : chars) {
                 if (c == t) {
                     int count = counter.getValue(String.valueOf(t)) == null ? 0 : (int) counter.getValue(String.valueOf(t));
                     counter.setValue(String.valueOf(t), count + 1);
@@ -54,8 +57,41 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        Map<String, Object> map = new HashMap<>();
-        MapUtil.sortByKey(map, (o1, o2) -> o1.compareTo(o2));
-        MapUtil.sortByValue(map, (o1, o2) -> o1.getValue().toString().compareTo(o2.getValue().toString()));
+        String s = "consul agent -SERVER -bootstrap-expect 2 -DATA-dir C:\\Users\\Administrator\\Desktop\\consul -node=n4 -bind=192.168.67.241 -ui-dir C:\\Users\\Administrator\\Desktop\\consul\\dist -dc=dc1 -CLIENT=0.0.0.0 &";
+        s = "%E4%B8%BB%E7%AE%A1";
+        String[] strings = new String[1];
+        List<String> list = new ArrayList<>();
+        System.out.println(list.getClass().getSimpleName());
+        System.out.println(strings.getClass().getSimpleName());
+//        log.log(Strings.transformEncoding(s, "ISO-8859-1", "utf-8"));
+//        StringBuilder sql = new StringBuilder("create table if not exists `user` ( \n" +
+//                " `id`  varchar(255)  NOT NULL COMMENT 'id' ,\n" +
+//                " `name`  varchar(255)  NOT NULL COMMENT '姓名' ,\n" +
+//                " `age`  int(255)  NOT NULL COMMENT '年龄' ,\n" +
+//                " `opt_time`  varchar(255)  NOT NULL COMMENT '操作时间' ,\n" +
+//                " `opt_user`  varchar(255)  NOT NULL COMMENT '操作人',\n");
+//        sql.replace(sql.lastIndexOf(","), sql.lastIndexOf(",") + 1, " ");
+//        log.log(        sql.charAt(sql.lastIndexOf(",")));
+////        sql.delete(sql.lastIndexOf(","), sql.lastIndexOf(",") + 1);
+//        log.log(sql.lastIndexOf(","));
+//        log.log(sql);
+
+//        Map<String, Object> map = new HashMap<>();
+//        MapUtil.sortByKey(map, (o1, o2) -> o1.compareTo(o2));
+//        MapUtil.sortByValue(map, (o1, o2) -> o1.getValue().toString().compareTo(o2.getValue().toString()));
+//        log.log(        Files.getEncoding("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java"));
+//        FileAdapter.me().readLine("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java",
+//                string -> log.log(string));
+
+//        FileAdapter.me().readFile(null, false, "utf8", "", (bufferedReader, bufferedWriter) -> {
+//            String line;
+//            while ((line = bufferedReader.readLine()) != null) {
+//                log.log(line + "\n");
+//            }
+//        }, "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-common\\src\\main\\java\\com\\gsafety\\hikaru\\common\\application\\ApplicationBeanFactory.java");
+
+//        FileAdapter.me().readLine(
+//                "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-application\\src\\main\\resources\\datasource\\db.properties",
+//                "utf-8", string -> System.out.println(string));
     }
 }

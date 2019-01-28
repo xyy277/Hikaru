@@ -10,6 +10,7 @@ import savvy.wit.framework.core.pattern.adapter.TimerAdapter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.TimerTask;
 
 /*******************************
@@ -48,19 +49,16 @@ public class DbUtil {
 
     private void init() {
         try {
-            ConfigUtil config = ConfigUtil.me("/properties/db.properties");
-            if (null == config) {
-                config = ConfigUtil.me(DbFactory.me().getProperties());
-            }
-            driver = config.getValue("driver");
-            url = config.getValue("url");
-            user = config.getValue("user");
-            password = config.getValue("password");
-            initialSize = Integer.parseInt(config.getValue("initialSize"));
-            maxIdle = Integer.parseInt(config.getValue("maxIdle"));
-            minIdle = Integer.parseInt(config.getValue("minIdle"));
-            maxTotal = Integer.parseInt(config.getValue("maxTotal"));
-            maxWaitMillis = Integer.parseInt(config.getValue("maxWaitMillis"));
+            Properties config = DbFactory.me().getProperties();
+            driver = config.getProperty("driver");
+            url = config.getProperty("url");
+            user = config.getProperty("user");
+            password = config.getProperty("password");
+            initialSize = Integer.parseInt(config.getProperty("initialSize"));
+            maxIdle = Integer.parseInt(config.getProperty("maxIdle"));
+            minIdle = Integer.parseInt(config.getProperty("minIdle"));
+            maxTotal = Integer.parseInt(config.getProperty("maxTotal"));
+            maxWaitMillis = Integer.parseInt(config.getProperty("maxWaitMillis"));
             dataSource = new DruidDataSource();
             dataSource.setUrl(url);
             dataSource.setUsername(user);

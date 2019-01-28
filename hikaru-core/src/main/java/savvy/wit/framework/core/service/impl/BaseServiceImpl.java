@@ -102,7 +102,7 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
     public T select(Class clazz, Cdt cdt) {
         T t = null;
         try {
-            t = (T) dao().select(cdt, clazz);
+            t = (T) dao().fetch(cdt, clazz);
         }catch (Exception e) {
 
         }

@@ -41,9 +41,10 @@ public class ListTest {
 
     }
 
-    @Test
+//    @Test
     public void test() {
-        Map<String, Integer> keys = (Map<String, Integer>) ScExcelAdapter.NEW().readExcel("/excel/test.xlsx", ListTest::use).getResult();
+        Map<String, Integer> keys = (Map<String, Integer>)
+                ScExcelAdapter.NEW().readExcel("/excel/test.xlsx", ListTest::use).getResult();
         List<String> list = new ArrayList<>();
         Counter counter = Counter.create();
         keys.forEach((s, integer) -> {
@@ -56,6 +57,8 @@ public class ListTest {
         log.log(keys.size());
         log.log(list.size());
         log.log(counter.getCount());
-        log.log(list.stream().sorted((o1, o2) -> Integer.parseInt(o1.split(":::")[1].trim()) - Integer.parseInt(o2.split(":::")[1].trim())).collect(Collectors.toList()));
+        log.log(list.stream()
+                .sorted((o1, o2) -> Integer.parseInt(o1.split(":::")[1].trim()) - Integer.parseInt(o2.split(":::")[1].trim()))
+                .collect(Collectors.toList()));
     }
 }

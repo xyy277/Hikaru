@@ -50,7 +50,7 @@ public class LoopTest {
         loop.setCircle(circle);
     }
 
-    @Test
+//    @Test
     public void test() {
 
         curve = loop.calculateCurve();
@@ -60,12 +60,20 @@ public class LoopTest {
          * 自定义画法
          */
         ImageUtil.me().draw(800,800,1,(graphics) -> {
-            graphics.setColor(Color.white);graphics.drawString(".",curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
+            graphics.setColor(Color.white);
+            graphics.drawString(".",curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
             for (int var = 1; var+1 < curve.getPoints().length; var++) {
-                graphics.drawLine(curve.getPoints()[var].getX(), curve.getPoints()[var].getY(), curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
+                graphics.drawLine(
+                        curve.getPoints()[var].getX(), curve.getPoints()[var].getY(),
+                        curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
             }
-            graphics.drawLine(curve.getPoints()[0].getX(), curve.getPoints()[0].getY(), curve.getPoints()[1].getX(), curve.getPoints()[1].getY());
-            graphics.drawLine(curve.getPoints()[curve.getPoints().length-1].getX(), curve.getPoints()[curve.getPoints().length-1].getY(), curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
+            graphics.drawLine(
+                    curve.getPoints()[0].getX(), curve.getPoints()[0].getY(),
+                    curve.getPoints()[1].getX(), curve.getPoints()[1].getY());
+            graphics.drawLine(
+                    curve.getPoints()[curve.getPoints().length-1].getX(),
+                    curve.getPoints()[curve.getPoints().length-1].getY(),
+                    curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
         }).save("jpg","www");
 
 
