@@ -102,3 +102,22 @@ https://blog.csdn.net/songhaifengshuaige/article/details/79111676
 #####
 ####采坑记录：spring boot1.x —> spring boot2.x + cloud Finchley.x
 ###by the way 既然你都来了点个star再走吧。
+
+#####先行版请chek out branch to develop
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
