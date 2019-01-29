@@ -1,8 +1,8 @@
 package savvy.wit.framework.core.pattern.factory;
 
 
-import savvy.wit.framework.core.base.interfaces.dao.Dao;
-import savvy.wit.framework.core.base.interfaces.dao.impl.msql.DaoImpl;
+import savvy.wit.framework.core.base.service.dao.Dao;
+import savvy.wit.framework.core.base.service.dao.impl.msql.DaoImpl;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

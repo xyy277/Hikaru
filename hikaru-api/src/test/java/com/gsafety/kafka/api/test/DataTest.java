@@ -3,22 +3,13 @@ package com.gsafety.kafka.api.test;
 import com.gsafety.hikaru.model.system.User;
 import org.junit.Before;
 import org.junit.Test;
-import savvy.wit.framework.core.base.interfaces.Log;
-import savvy.wit.framework.core.base.pool.ThreadPool;
-import savvy.wit.framework.core.base.util.DateUtil;
-import savvy.wit.framework.core.base.util.StringUtil;
-import savvy.wit.framework.core.pattern.adapter.TimerAdapter;
-import savvy.wit.framework.core.pattern.decorate.Counter;
+import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.DbFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.service.BaseService;
 import savvy.wit.framework.core.service.impl.BaseServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

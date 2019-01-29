@@ -1,0 +1,5 @@
+执行npm install -g yapi-cli --registry https://registry.npm.taobao.org
+执行yapi server，访问http://ip:9090配置YApi信息
+部署
+nohup node vendors/server/app.js $
+访问http://ip:3000页面进行登录，账户和密码部署成功后有提供，默认密码是ymfe.org

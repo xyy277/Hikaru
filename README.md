@@ -1,7 +1,7 @@
 #拿来就用主义
 ##framework for anyone
 ###spring boot project
-#####可插拔式升级cloud，分布式framework
+#####分布式framework
 **代码结构**
 ```
  hikaru-server/

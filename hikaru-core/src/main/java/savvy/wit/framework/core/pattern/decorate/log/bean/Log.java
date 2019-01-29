@@ -1,6 +1,6 @@
 package savvy.wit.framework.core.pattern.decorate.log.bean;
 
-import savvy.wit.framework.core.base.interfaces.dao.annotation.*;
+import savvy.wit.framework.core.base.service.dao.annotation.*;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

@@ -2,9 +2,8 @@ package com.gsafety.hikaru.model.system;
 
 import com.gsafety.hikaru.model.BaseModel;
 import io.swagger.annotations.ApiModelProperty;
-import savvy.wit.framework.core.base.interfaces.dao.annotation.*;
+import savvy.wit.framework.core.base.service.dao.annotation.*;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /*******************************

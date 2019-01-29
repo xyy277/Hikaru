@@ -1,6 +1,6 @@
 package savvy.wit.framework.core.base.util;
 
-import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.io.UnsupportedEncodingException;
@@ -130,5 +130,9 @@ public class Strings {
             status = true;
         }
         return status;
+    }
+
+    public static String path2Backslash (String value) {
+        return value.replaceAll("/", "\\\\");
     }
 }

@@ -2,7 +2,7 @@ package savvy.wit.framework.core.base.util;/**
  * Created by zhoujiajun on 2018/6/27.
  */
 
-import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.io.*;
@@ -23,7 +23,7 @@ public class FileUtil {
         return new FileUtil();
     }
 
-    public File create(String path) throws Exception {
+    public File create(String path) {
         File file = null;
         file = new File(path);
         if (file.exists()) {
@@ -47,5 +47,14 @@ public class FileUtil {
     public String getPackage(String path) {
         return null;
     }
+
+    public boolean delete(File file) {
+       return file.delete();
+    }
+
+    public boolean delete(String path) {
+        return delete(new File(path));
+    }
+
 
 }

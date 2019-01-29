@@ -1,7 +1,7 @@
 package com.gsafety.hikaru.model.system;
 
 import com.gsafety.hikaru.model.BaseModel;
-import savvy.wit.framework.core.base.interfaces.dao.annotation.Table;
+import savvy.wit.framework.core.base.service.dao.annotation.Table;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

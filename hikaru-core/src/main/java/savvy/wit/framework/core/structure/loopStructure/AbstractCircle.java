@@ -1,6 +1,6 @@
 package savvy.wit.framework.core.structure.loopStructure;
 
-import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.base.callback.DrawImageCallBack;
 import savvy.wit.framework.core.base.util.ImageUtil;
@@ -101,6 +101,7 @@ public abstract class AbstractCircle implements Acreage, LoopFactory{
         try {
             double R = 36 + precision * 31;
             START = START + radian;
+            arc = arc > 360 ? 360 : arc;
             Point start = calculatePoint(center, r, radian);
             Point end = calculatePoint(center, r, radian + arc);
             // 等分

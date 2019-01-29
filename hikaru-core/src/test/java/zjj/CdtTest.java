@@ -1,9 +1,9 @@
 package zjj;
 
 import org.junit.Before;
-import savvy.wit.framework.core.base.interfaces.Cdt;
-import savvy.wit.framework.core.base.interfaces.Log;
-import savvy.wit.framework.core.base.interfaces.Order;
+import savvy.wit.framework.core.base.service.Cdt;
+import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.Order;
 import savvy.wit.framework.core.base.util.JsonUtil;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.CDT;

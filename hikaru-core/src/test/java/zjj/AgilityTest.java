@@ -1,6 +1,6 @@
 package zjj;
 
-import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.structure.loopStructure.circle.Circle;
 import savvy.wit.framework.core.structure.shape.Curve;
@@ -24,9 +24,9 @@ public class AgilityTest {
     public static void main(String[] args) {
 
         Circle circle = new Circle();
-        circle.setCenter(new Point(200,277));
+        circle.setCenter(new Point(300,300));
         double arc = 555;
-        double r = 100;
+        double r = 300;
         double precision = 1;
         double radian = 60;
         // -------------------------------------------------------------
@@ -39,6 +39,9 @@ public class AgilityTest {
             graphics.setColor(Color.gray);
             graphics.fillRect(0,0,600,600);
             graphics.setColor(Color.green);
+            Arrays.asList(curve.getPoints()).forEach(point -> {
+                graphics.drawLine(point.getX(), point.getY(), circle.getCenter().getX(), circle.getCenter().getY());
+            });
             if (arc < 360) {
                 graphics.drawLine(
                         curve.getPoints()[0].getX(), curve.getPoints()[0].getY(),
@@ -51,6 +54,6 @@ public class AgilityTest {
             }
             graphics.setColor(Color.black);
             log.log(Arrays.asList(curve.getPoints()));
-            }, 600, 400, curve, true, "jpg", "awe"));
+            }, 600, 600, curve, true, "jpg", "awe"));
     }
 }

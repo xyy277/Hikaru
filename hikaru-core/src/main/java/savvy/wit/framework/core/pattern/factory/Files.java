@@ -1,6 +1,6 @@
 package savvy.wit.framework.core.pattern.factory;
 
-import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 
 import java.io.File;
@@ -50,6 +50,10 @@ public class Files {
 
     public static File[] getFiles(String name) {
         return new File(name).listFiles();
+    }
+
+    public static List<File> listFiles(String name) {
+        return Arrays.asList(getFiles(name));
     }
 
     public static File[] getFiles(String... name) {

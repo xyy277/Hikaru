@@ -3,7 +3,7 @@ package savvy.wit.framework.core.pattern.adapter;
 import savvy.wit.framework.core.base.callback.FileCacheCallBack;
 import savvy.wit.framework.core.base.callback.FileCallBack;
 import savvy.wit.framework.core.base.callback.StringCallBack;
-import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
@@ -54,7 +54,7 @@ public class FileAdapter {
         return out;
     }
 
-    public void readFile(File target, boolean add,
+    public void readFile(File target, boolean append,
                          String inEnCoding, String outEnCoding, FileCallBack callBack, File... files) {
         for(File file1 : files) {
             BufferedReader br = null;
@@ -62,7 +62,7 @@ public class FileAdapter {
             try {
                 br = getBuffReader(file1, inEnCoding);
                 if (null != target)
-                    bw = getBuffWriter(target, add, outEnCoding);
+                    bw = getBuffWriter(target, append, outEnCoding);
                 callBack.fileReaderHelper(br,bw);
                 if (br != null) br.close();
                 if (bw != null) bw.close();
@@ -71,12 +71,12 @@ public class FileAdapter {
             }
         }
     }
-    public void readFile(File target, boolean add, String outEnCoding, FileCallBack callBack, File... files) {
+    public void readFile(File target, boolean append, String outEnCoding, FileCallBack callBack, File... files) {
         for(File file1 : files) {
             try {
                 String inEnCoding =  new InputStreamReader(new FileInputStream(file1)).getEncoding();
                 BufferedReader br = getBuffReader(file1, inEnCoding);
-                BufferedWriter bw = getBuffWriter(target, add, outEnCoding);
+                BufferedWriter bw = getBuffWriter(target, append, outEnCoding);
                 callBack.fileReaderHelper(br,bw);
                 if (br != null) br.close();
                 if (bw != null) bw.close();
@@ -167,7 +167,7 @@ public class FileAdapter {
         }
     }
 
-    public void readFile(String target, boolean add,
+    public void readFile(String target, boolean append,
                          String inEncoding, String outEnCoding, FileCallBack callBack, String... path) {
         if(path.length > 1) {
             File[] files = new File[path.length];
@@ -176,17 +176,17 @@ public class FileAdapter {
             }
             readFile(StringUtil.isNotBlank(target) ?
                     new File(target) :
-                    null, add,inEncoding,outEnCoding, callBack, files);
+                    null, append,inEncoding,outEnCoding, callBack, files);
         } else {
             if(new File(path[0]).isDirectory()) {
                 File[] files = new File(path[0]).listFiles();
                 readFile(StringUtil.isNotBlank(target) ?
                         new File(target) :
-                        null, add,inEncoding,outEnCoding, callBack, files);
+                        null, append,inEncoding,outEnCoding, callBack, files);
             } else {
                 readFile(StringUtil.isNotBlank(target) ?
                         new File(target) :
-                        null, add,inEncoding,outEnCoding, callBack, new File(path[0]));
+                        null, append,inEncoding,outEnCoding, callBack, new File(path[0]));
             }
         }
     }
@@ -317,11 +317,11 @@ public class FileAdapter {
         }
     }
 
-    private BufferedWriter getBuffWriter(File target, boolean add, String outEnCoding) {
+    private BufferedWriter getBuffWriter(File target, boolean append, String outEnCoding) {
         try {
             return target != null ? StringUtil.isNotBlank(outEnCoding) ?
-                    new BufferedWriter(new OutputStreamWriter(new FileOutputStream(target, add),outEnCoding)) :
-                    new BufferedWriter(new OutputStreamWriter(new FileOutputStream(target, add))) : null;
+                    new BufferedWriter(new OutputStreamWriter(new FileOutputStream(target, append),outEnCoding)) :
+                    new BufferedWriter(new OutputStreamWriter(new FileOutputStream(target, append))) : null;
         }catch (Exception e) {
             return null;
         }
