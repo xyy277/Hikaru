@@ -1,7 +1,7 @@
 package savvy.wit.framework.core.service;
 
-import savvy.wit.framework.core.base.interfaces.Log;
-import savvy.wit.framework.core.base.interfaces.dao.Dao;
+import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.dao.Dao;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 /*******************************

@@ -1,7 +1,6 @@
 package zjj;
 
-import org.junit.Test;
-import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.pattern.adapter.Excel2PropertiesAdapter;
 import savvy.wit.framework.core.pattern.adapter.ScExcelAdapter;
 import savvy.wit.framework.core.pattern.factory.LogFactory;

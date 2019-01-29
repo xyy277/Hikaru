@@ -1,17 +1,14 @@
 package zjj;
 
-import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.util.FileUtil;
 import savvy.wit.framework.core.base.util.MapUtil;
-import savvy.wit.framework.core.base.util.Strings;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -57,12 +54,12 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        String s = "consul agent -SERVER -bootstrap-expect 2 -DATA-dir C:\\Users\\Administrator\\Desktop\\consul -node=n4 -bind=192.168.67.241 -ui-dir C:\\Users\\Administrator\\Desktop\\consul\\dist -dc=dc1 -CLIENT=0.0.0.0 &";
-        s = "%E4%B8%BB%E7%AE%A1";
-        String[] strings = new String[1];
-        List<String> list = new ArrayList<>();
-        System.out.println(list.getClass().getSimpleName());
-        System.out.println(strings.getClass().getSimpleName());
+//        String s = "consul agent -SERVER -bootstrap-expect 2 -DATA-dir C:\\Users\\Administrator\\Desktop\\consul -node=n4 -bind=192.168.67.241 -ui-dir C:\\Users\\Administrator\\Desktop\\consul\\dist -dc=dc1 -CLIENT=0.0.0.0 &";
+//        s = "%E4%B8%BB%E7%AE%A1";
+//        String[] strings = new String[1];
+//        List<String> list = new ArrayList<>();
+//        System.out.println(list.getClass().getSimpleName());
+//        System.out.println(strings.getClass().getSimpleName());
 //        log.log(Strings.transformEncoding(s, "ISO-8859-1", "utf-8"));
 //        StringBuilder sql = new StringBuilder("create table if not exists `user` ( \n" +
 //                " `id`  varchar(255)  NOT NULL COMMENT 'id' ,\n" +
@@ -93,5 +90,22 @@ public class Test {
 //        FileAdapter.me().readLine(
 //                "G:\\GitHub\\hikaru\\hikaru-server\\hikaru-application\\src\\main\\resources\\datasource\\db.properties",
 //                "utf-8", string -> System.out.println(string));
+        for (File file: Files.getFiles("G:\\GitHub\\hikaru\\hikaru-server\\install\\shell")) {
+            FileAdapter.me().readFile(
+                    FileUtil.me().create(file.getParent() + "/" + "1_" + file.getName()),
+                    true,
+                    "GBk",
+                    "utf-8",
+                    (bufferedReader, bufferedWriter) -> {
+                        log.log(file.getName());
+                        String line;
+                        while ((line = bufferedReader.readLine()) != null) {
+                            bufferedWriter.write(line + "\n");
+                        }
+                        bufferedWriter.flush();
+                    },
+                    file);
+            FileUtil.me().delete(file);
+        }
     }
 }

@@ -1,6 +1,6 @@
 package savvy.wit.framework.core.structure.loopStructure;
 
-import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.base.callback.DrawImageCallBack;
 import savvy.wit.framework.core.base.util.ImageUtil;

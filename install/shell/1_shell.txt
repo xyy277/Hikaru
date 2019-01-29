@@ -1,0 +1,28 @@
+windows shell命令
+
+cmd控制台 中文utf8显示
+CHCP 65001
+
+Windows 查看端口占用
+netstat -aon | findstr “port”
+
+命令查看{pid}所对应的服务名称
+tasklist /fi "PID eq {pid}"
+
+杀进程， taskkill -F 强制执行
+taskkill /pid {pid}
+
+启动consul
+consul agent -dev -ui -node=zhoujj
+
+
+
+Linux
+
+lsof -i:端口号 用于查看某一端口的占用情况，比如查看8000端口使用情况，lsof -i:8000
+netstat -tunlp |grep 端口号，用于查看指定的端口号的进程情况，如查看8000端口的情况，netstat -tunlp |grep 8000
+netstat -nap | grep 1111
+ps -aux | grep <进程号> 
+ps -aux | grep tomcat
+ps -ef | grep java
+ps 1111

@@ -1,0 +1,3 @@
+npm config set prefix “XXX\nodejs\node_global” 
+npm config set cache “XXX\nodejs\node_cache”
+npm config set registry "server ip address"

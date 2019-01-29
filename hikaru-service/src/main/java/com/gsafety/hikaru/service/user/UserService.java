@@ -2,7 +2,7 @@ package com.gsafety.hikaru.service.user;
 
 import com.gsafety.hikaru.model.system.User;
 import org.springframework.http.ResponseEntity;
-import savvy.wit.framework.core.base.interfaces.Cdt;
+import savvy.wit.framework.core.base.service.Cdt;
 import savvy.wit.framework.core.service.BaseService;
 
 import java.util.List;

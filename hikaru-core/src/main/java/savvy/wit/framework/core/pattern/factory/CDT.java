@@ -1,8 +1,8 @@
 package savvy.wit.framework.core.pattern.factory;
 
-import savvy.wit.framework.core.base.interfaces.Cdt;
-import savvy.wit.framework.core.base.interfaces.dao.Pagination;
-import savvy.wit.framework.core.base.interfaces.impl.CdtImpl;
+import savvy.wit.framework.core.base.service.Cdt;
+import savvy.wit.framework.core.base.service.dao.Pagination;
+import savvy.wit.framework.core.base.service.impl.CdtImpl;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

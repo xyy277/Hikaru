@@ -1,7 +1,7 @@
 package zjj;
 
 import org.junit.Test;
-import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.io.IOException;

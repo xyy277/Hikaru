@@ -1,8 +1,8 @@
 package savvy.wit.framework.core.pattern.factory;
 
 import org.springframework.stereotype.Component;
-import savvy.wit.framework.core.base.interfaces.Log;
-import savvy.wit.framework.core.base.interfaces.impl.LogImpl;
+import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.impl.LogImpl;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

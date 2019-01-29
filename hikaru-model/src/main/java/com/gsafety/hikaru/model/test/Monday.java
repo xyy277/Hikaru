@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import savvy.wit.framework.core.base.interfaces.dao.annotation.*;
+import savvy.wit.framework.core.base.service.dao.annotation.*;
 
 import javax.validation.constraints.NotNull;
 

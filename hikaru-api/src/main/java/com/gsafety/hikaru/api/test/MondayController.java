@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import savvy.wit.framework.core.base.interfaces.dao.Pagination;
+import savvy.wit.framework.core.base.service.dao.Pagination;
 import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.service.BaseService;

@@ -1,10 +1,10 @@
 package com.gsafety.hikaru.model;
 
 import io.swagger.annotations.ApiModelProperty;
-import savvy.wit.framework.core.base.interfaces.dao.annotation.CType;
-import savvy.wit.framework.core.base.interfaces.dao.annotation.Column;
-import savvy.wit.framework.core.base.interfaces.dao.annotation.Comment;
-import savvy.wit.framework.core.base.interfaces.dao.annotation.Type;
+import savvy.wit.framework.core.base.service.dao.annotation.CType;
+import savvy.wit.framework.core.base.service.dao.annotation.Column;
+import savvy.wit.framework.core.base.service.dao.annotation.Comment;
+import savvy.wit.framework.core.base.service.dao.annotation.Type;
 
 import java.io.Serializable;
 

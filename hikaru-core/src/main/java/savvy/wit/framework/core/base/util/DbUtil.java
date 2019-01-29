@@ -2,16 +2,12 @@ package savvy.wit.framework.core.base.util;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.GetConnectionTimeoutException;
-import savvy.wit.framework.core.base.interfaces.Log;
 import savvy.wit.framework.core.pattern.factory.DbFactory;
-import savvy.wit.framework.core.pattern.factory.LogFactory;
-import savvy.wit.framework.core.pattern.adapter.TimerAdapter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.TimerTask;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

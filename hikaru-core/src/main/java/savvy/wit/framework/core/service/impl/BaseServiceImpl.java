@@ -1,13 +1,11 @@
 package savvy.wit.framework.core.service.impl;
 
 import savvy.wit.framework.core.base.callback.DaoCallBack;
-import savvy.wit.framework.core.base.interfaces.Cdt;
-import savvy.wit.framework.core.base.interfaces.dao.Dao;
+import savvy.wit.framework.core.base.service.Cdt;
+import savvy.wit.framework.core.base.service.dao.Dao;
 import savvy.wit.framework.core.service.BaseService;
 import savvy.wit.framework.core.service.Service;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 

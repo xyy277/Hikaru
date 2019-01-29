@@ -2,7 +2,7 @@ package zjj;
 
 import org.junit.Test;
 import savvy.wit.framework.core.algorithm.model.StringRetrieve;
-import savvy.wit.framework.core.base.interfaces.Log;
+import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.factory.LogFactory;

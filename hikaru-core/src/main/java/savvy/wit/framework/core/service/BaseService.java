@@ -3,8 +3,8 @@ package savvy.wit.framework.core.service;/**
  */
 
 import savvy.wit.framework.core.base.callback.DaoCallBack;
-import savvy.wit.framework.core.base.interfaces.Cdt;
-import savvy.wit.framework.core.base.interfaces.dao.Dao;
+import savvy.wit.framework.core.base.service.Cdt;
+import savvy.wit.framework.core.base.service.dao.Dao;
 
 import java.util.List;
 

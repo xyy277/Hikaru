@@ -1,0 +1,143 @@
+consul agent -server -bootstrap-expect 1 -data-dir C:\consul -node=n1 -bind=192.168.145.153 -ui-dir C:\consul\dist -dc=dc1 -client=0.0.0.0 &
+consul agent -SERVER -bootstrap-expect 1 -DATA-dir "C:\Users\Administrator\Desktop\consul" -node=node_1 -bind="192.168.145.1" -ui-dir "C:\Users\Administrator\Desktop\consul\dist" -dc=dc1 -CLIENT=0.0.0.0 
+consul agent -server -bootstrap-expect 1 -data-dir "C:\Users\Administrator\Desktop\consul" -node=node_1 -bind="192.168.145.1" -config-dir="C:\Users\Administrator\Desktop\consul\dist" -client 0.0.0.0 -ui 
+
+nohup ./consul agent -server -bootstrap-expect 2 -data-dir /tmp/consul-node=node_2 -bind=192.168.145.153 -config-dir=/etc/consul.d -client 0.0.0.0 -join 192.168.145.1 -ui &
+
+./consul join ip
+
+window
+启动consul
+consul agent -dev -ui -node=zhoujj
+
+删除无效服务
+http://ip:8500/v1/agent/service/deregister/serviceid
+
+linux 单机
+nohup ./consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul-node=node_1 -bind=ip1 -config-dir=/etc/consul.d -client 0.0.0.0 -ui &
+
+
+linux 集群
+新建数据目录，创建配置目录
+mkdir /tmp/consul
+mkdir /etc/consul.d
+
+分别在三台机器上运行consul ip1、ip2、ip3
+节点1：
+nohup ./consul agent -server -bootstrap-expect 2 -data-dir /tmp/consul-node=node_2 -bind=192.168.145.153  -config-dir=/etc/consul.d -client 0.0.0.0 -ui &
+节点2：
+nohup ./consul agent -server -bootstrap-expect 3 -data-dir /tmp/consul-node=node_2 -bind=ip2 -config-dir=/etc/consul.d -client 0.0.0.0 -join ip1 -ui &
+节点3：
+nohup ./consul agent -server -bootstrap-expect 3 -data-dir /tmp/consul-node=node_3 -bind=ip3 -config-dir=/etc/consul.d -client 0.0.0.0 -join ip1 -ui &
+启动成功,查看集群状态
+./consul members
+查看集群完整状态
+./consul operator raft list-peers 
+可在任意节点导入配置文件xxxx.json
+./consul kv import -http-addr=http://ip1 @xxxx.json
+
+网关gateway服务，部署之后可以通过consul上的服务名去寻找服务，例如： ip:port/serviceName
+网关服务就是一个springcloud服务，修改配置文件后 java -jar 启动注册到consul上即可
+port:9998
+server.address ip1
+consul.address ip2
+consul.port 8500
+
+
+
+安装Nginx
+关闭防火墙
+systemctl stop firewalld.service
+systemctl disable firewalld.service
+配置yum源
+加载Kylin官方镜像
+vim /etc/yum.repos.d/Kylin-Base.repo
+修改filebase后
+yum update
+
+安装 gcc
+yum -y install gcc
+
+安装Nginx
+yum install pcre-devel
+yum -y install poenssl-devel
+tar -zxvf nginx-xx.tar.gz
+cd nginx-xx
+./configure --prefix=/usr/local/Nginx --with-http_stub_status_module --with-http_ssl_module
+make
+make install
+
+修改Nginx配置文件
+conf目录下nginx.config-conf
+upstream gatewayServer {
+	server ip1:9998 max_fails=3 fail_timeout=30s;
+	server ip2:9998 max_fails=3 fail_timeout=30s;
+}
+upstream consulServer {
+	server ip1:8500 max_fails=3 fail_timeout=30s;
+	server ip2:8500 max_fails=3 fail_timeout=30s;
+	server ip3:8500 max_fails=3 fail_timeout=30s;
+}
+server {
+	listen 80;
+	server_name gateway;
+	location/ {
+		proxy_pass http://gatewayServer;
+		client_max_body_size 100m;
+	}
+	error_page 500 502 503 504 /50x.html;
+	location =/50x.html {
+		root html;
+	}
+}
+server {
+	listen 8900;
+	server_name consul;
+	location/ {
+		proxy_pass http://consulServer;
+		client_max_body_size 100m;
+	}
+	error_page 500 502 503 504 /50x.html;
+	location =/50x.html {
+		root html;
+	}
+}
+
+安装并配置consul-template
+在Nginx的conf目录下新建conf.d目录并新建consul.conf配置文件
+修改Nginx配置文件，在http节点处添加如下内容：
+http {
+	include conf.d/*.conf;
+
+然后拷贝consul-template.zip
+解压到/opt/consul 目录下，在该目录新建consul.ctmpl模板文件，输入内容如下：
+upstream consultemplate {
+	{{range service "consul"}}
+		server {{.Address}}:8500 max_fails=3 fail_timeout=60 weight=1;
+	{{else}}
+		server 127.0.0.1:65535;#force a 502 {{end}}
+}
+
+server {
+	listen 90;
+	server_name localhost;
+	location/ {
+		client_max_body_size 100m;
+		proxy_connect_timeout 300s;
+		proxy_read_timeout 900;
+		proxy_send_timeout 900;
+		proxy_buffer_size 32k;
+		proxy_buffers 4 32k;
+		proxy_busy_buffers_size 64k;
+		proxy_redirect off;
+		proxy_set_header Vary;
+		proxy_set_header Host $http_host;
+		proxy_set_header Cookie $http_cookie;
+		proxy_set_header Referer $http_referer;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_headers_hash_max_bucket_size 5400;
+		proxy_pass http://consultemplate;
+	}
+}
+
