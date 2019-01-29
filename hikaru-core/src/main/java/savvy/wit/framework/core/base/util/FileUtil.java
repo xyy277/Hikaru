@@ -52,4 +52,9 @@ public class FileUtil {
        return file.delete();
     }
 
+    public boolean delete(String path) {
+        return delete(new File(path));
+    }
+
+
 }

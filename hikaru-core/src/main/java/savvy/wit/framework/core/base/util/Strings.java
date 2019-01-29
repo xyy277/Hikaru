@@ -131,4 +131,8 @@ public class Strings {
         }
         return status;
     }
+
+    public static String path2Backslash (String value) {
+        return value.replaceAll("/", "\\\\");
+    }
 }

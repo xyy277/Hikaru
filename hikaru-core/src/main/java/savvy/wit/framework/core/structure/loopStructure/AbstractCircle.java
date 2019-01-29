@@ -101,6 +101,7 @@ public abstract class AbstractCircle implements Acreage, LoopFactory{
         try {
             double R = 36 + precision * 31;
             START = START + radian;
+            arc = arc > 360 ? 360 : arc;
             Point start = calculatePoint(center, r, radian);
             Point end = calculatePoint(center, r, radian + arc);
             // 等分

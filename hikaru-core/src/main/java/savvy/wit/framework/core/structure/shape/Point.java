@@ -1,5 +1,7 @@
 package savvy.wit.framework.core.structure.shape;
 
+import java.io.Serializable;
+
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 点
@@ -9,7 +11,7 @@ package savvy.wit.framework.core.structure.shape;
  * Version : 1.0
  * Description : 
  ******************************/
-public class Point {
+public class Point implements Serializable {
 
     private int x;
 

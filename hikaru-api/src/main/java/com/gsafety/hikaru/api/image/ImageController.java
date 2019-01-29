@@ -3,22 +3,24 @@ package com.gsafety.hikaru.api.image;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import savvy.wit.framework.core.base.service.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.ImageUtil;
+import savvy.wit.framework.core.base.util.JsonUtil;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
+import savvy.wit.framework.core.structure.loopStructure.circle.Circle;
+import savvy.wit.framework.core.structure.shape.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -67,6 +69,50 @@ public class ImageController {
         response.setDateHeader("Expire", 0);
         try {
             ImageIO.write(image, "JPEG",  response.getOutputStream());
+        }catch (IOException e) {
+
+        }
+    }
+
+    @RequestMapping(value = "/{width}/{height}/{arc}/{r}",method = RequestMethod.GET)
+    public void test(@PathVariable int width, @PathVariable int height, @PathVariable int arc, @PathVariable int r,
+                     @RequestParam String point, HttpServletResponse response) {
+        Circle circle = new Circle();
+        circle.setCenter(JsonUtil.fromJson(point, savvy.wit.framework.core.structure.shape.Point.class));
+        double precision = 1;
+        double radian = 60;
+        // -------------------------------------------------------------
+        circle.setArc(arc);
+        circle.setR(r);
+        circle.setPrecision(precision);
+        circle.setRadian(radian);
+        Curve curve = circle.calculateCurve();
+        Image image = circle.draw( graphics -> {
+            graphics.setColor(Color.gray);
+            graphics.fillRect(0,0,width,height);
+            graphics.setColor(Color.green);
+            Arrays.asList(curve.getPoints()).forEach(p -> {
+                graphics.drawLine(p.getX(), p.getY(), circle.getCenter().getX(), circle.getCenter().getY());
+            });
+            if (arc < 360) {
+                graphics.drawLine(
+                        curve.getPoints()[0].getX(), curve.getPoints()[0].getY(),
+                        curve.getPoints()[1].getX(), curve.getPoints()[1].getY());
+                graphics.drawLine(
+                        curve.getPoints()[curve.getPoints().length-1].getX(),
+                        curve.getPoints()[curve.getPoints().length-1].getY(),
+                        curve.getPoints()[0].getX(),
+                        curve.getPoints()[0].getY());
+            }
+            graphics.setColor(Color.black);
+        }, width, height, curve, false);
+
+        response.setContentType("image/jpeg");
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expire", 0);
+        try {
+            ImageIO.write((BufferedImage)image, "JPEG",  response.getOutputStream());
         }catch (IOException e) {
 
         }

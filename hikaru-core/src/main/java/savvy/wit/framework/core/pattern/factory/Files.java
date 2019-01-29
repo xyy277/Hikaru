@@ -52,6 +52,10 @@ public class Files {
         return new File(name).listFiles();
     }
 
+    public static List<File> listFiles(String name) {
+        return Arrays.asList(getFiles(name));
+    }
+
     public static File[] getFiles(String... name) {
         List<File> files = new ArrayList<>();
         for (String f : name) {
