@@ -23,15 +23,7 @@ import java.util.Properties;
  ******************************/
 public class DbUtil {
 
-    private static final String PRIVATE_KEY = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBANgcE4lZjwXJd_Ab1_zJKGnhQap" +
-            "JhLHWZyrpTHDOyVC70x2XacTERVgr41iFzT5NEfBdEVUFuOCrEvKSnZgxc3_bgI05ihDVQGNmhjHbjN0CnbWjRIj61WPWX3h4mIZUbV" +
-            "Z5c_URG71ZCAYB7QvyefUiC5g4SJrtHKawbfDd7pzRAgMBAAECgYB-1SOGJcCx1ccFbWH64xhL478FMPam5L1RyvBo-IPgVQuXP2j86" +
-            "XAFSmS4bHbDjLnthsGIU75oZR7OrMu_Ka6tk5L_PrkKcBFPnhvZ9I0h-C7X460T2105i6KI_iqh5EA177Vn0ZOzpxBJfhiAkCAS-z9N" +
-            "GukCtT1fOQJ9NXSXTQJBAP0KvoFj1tZbIaI6UskPS9PFXAlADPiXIOfhO1KbxZ79Oc-cK1zcOmlGIBwzDNCI63hG3CD5u7OAv_uDXFj" +
-            "cv2sCQQDaos7moZORaQC7DhlVfkoEhAw-vaaAtWFE-jRif0juxRWrNjPsW_aYU_KzUpaqnPLFm4vvcHxs6uiTDcY3-I-zAkEAzOj5cn" +
-            "A2Fmm_585RIc5IOlq0-CytFFXV6NDEqFXKh8BKI2w01ULl7kBCWnOgqfJmtIS1V-LD9E2LqhIrIy7HtwJAGcZDufCmYugMDAE3f1qqA" +
-            "ypF_0eAT4ASfX05m7sBsBRP36U-LckRoxeSbw13cZmbDSyvLIUIRhbTYDKpgYOt_QJARF0HIdfroIKi3veQyB9yoZwEiGYPUP_38Y4E" +
-            "K_uNo8Vl4-InbbqZlWkkZvbgklvdRbrjht3Gw3cJbyr2K-6dMg";
+    private static final String PRIVATE_KEY = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKfp2t7kKSunGZTOH9Rw8QrElrDCHWENpHmlBLRblWyRJgL4CrpIxjPsoiYt63i4iSpVRV9f_TckxRnpgM28Qdzpkveywp7PTwscrNBs820C9xwMLP_Rymqnp0ulJgJ3QS-v4PajDkfGwObvSRf6qzMbwT8vczXE7bn7W68mz7CjAgMBAAECgYAWpDTsGy3mAfk0FHs8RSJrhkifev1FKfbEpFi3DSZf5k6O1e10Yv2-4KiYp1Z6B8APIkJhcusM9XtSXCcPFtR2gbJk7DPkUZvzJDW3uLMwJct9IGFGc20lwD-wQg8xGZEcapFmmiTBusfa1qfDP19pxV5RI9aiz3yRxhCLrdmvuQJBAPNamSsTOCTNjZHuVg33W5uauD5x54Ga92kRiUsdY28KEs8Mj6qxWIT6z7TJbJigvW_e5xc8IVk0h8kzbDwtv6cCQQCwo6cjZkSVd2qXb8VcJfYzxwcE9po4JxKt0EqDiItPpaFkaaVpa0cpoCb5Ea00QCKfkdpsDujn2FSQWwXPKMalAkEA1Q-2WOtb1YUOdP0J5PJ0BzmgJDQP7_5grWIIJXbWjupv601hH55kFRGO9wb_iGX7Vc3_3-zqebKvS-40zj9zswJAcS3rAfudJkgFvFKZmpmYT0TPcpav6hrfFQ_JLs5mtPnjl3s5yXo7dqhvUFfLKxeNF8FUurgy85rhVD1-U2ZFIQJAG4RRuIE9mx4NscEiDOmrm8-U_dGwbJq1KUr-IexPT-icr4YqUAu0sCr_f42ao47mHK_bQjHC7PMzw99EhzD9eA";
 
     public DbUtil() {
         init();
@@ -70,7 +62,7 @@ public class DbUtil {
         url = config.getProperty("url");
         user = config.getProperty("user");
         password = config.getProperty("password");
-        password = RSAUtil.privateEncrypt(password, privateKey);
+        password = RSAUtil.privateDecrypt(password, privateKey);
         initialSize = Integer.parseInt(config.getProperty("initialSize"));
         maxIdle = Integer.parseInt(config.getProperty("maxIdle"));
         minIdle = Integer.parseInt(config.getProperty("minIdle"));

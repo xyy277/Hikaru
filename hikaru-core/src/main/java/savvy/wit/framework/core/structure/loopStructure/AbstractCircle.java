@@ -220,16 +220,20 @@ public abstract class AbstractCircle implements Acreage, LoopFactory{
         return  save ?
                 ImageUtil.me().draw(width, height,1,(graphics) -> {
                     graphics.setColor(Color.WHITE);
-                    graphics.drawString(".",curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
+                    graphics.drawString(".", curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
                     for (int var = 1; var+1 < curve.getPoints().length; var++) {
-                        graphics.drawLine(curve.getPoints()[var].getX(), curve.getPoints()[var].getY(), curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
+                        graphics.drawLine(
+                                curve.getPoints()[var].getX(), curve.getPoints()[var].getY(),
+                                curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
                     }
                 }).save(param).getImage() :
                 ImageUtil.me().draw(width, height,1,(graphics) -> {
                     graphics.setColor(Color.WHITE);
-                    graphics.drawString(".",curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
+                    graphics.drawString(".", curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
                     for (int var = 1; var+1 < curve.getPoints().length; var++) {
-                        graphics.drawLine(curve.getPoints()[var].getX(), curve.getPoints()[var].getY(), curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
+                        graphics.drawLine(
+                                curve.getPoints()[var].getX(), curve.getPoints()[var].getY(),
+                                curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
                     }
                 }).getImage();
     }
@@ -238,9 +242,11 @@ public abstract class AbstractCircle implements Acreage, LoopFactory{
     public void draw(DrawImageCallBack callBack, int width, int height, Curve curve, String... param) {
         ImageUtil.me().draw(width, height,1,(graphics) -> {
             callBack.draw(graphics);
-            graphics.drawString(".",curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
+            graphics.drawString(".", curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
             for (int var = 1; var+1 < curve.getPoints().length; var++) {
-                graphics.drawLine(curve.getPoints()[var].getX(), curve.getPoints()[var].getY(), curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
+                graphics.drawLine(
+                        curve.getPoints()[var].getX(), curve.getPoints()[var].getY(),
+                        curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
             }
         }).save(param);
     }
@@ -260,16 +266,20 @@ public abstract class AbstractCircle implements Acreage, LoopFactory{
         return  save ?
                 ImageUtil.me().draw(width, height,1,(graphics) -> {
                     callBack.draw(graphics);
-                    graphics.drawString(".",curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
+                    graphics.drawString(".", curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
                     for (int var = 1; var+1 < curve.getPoints().length; var++) {
-                        graphics.drawLine(curve.getPoints()[var].getX(), curve.getPoints()[var].getY(), curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
+                        graphics.drawLine(
+                                curve.getPoints()[var].getX(), curve.getPoints()[var].getY(),
+                                curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
                     }
                 }).save(param).getImage() :
                 ImageUtil.me().draw(width, height,1,(graphics) -> {
                     callBack.draw(graphics);
-                    graphics.drawString(".",curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
+                    graphics.drawString(".", curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
                     for (int var = 1; var+1 < curve.getPoints().length; var++) {
-                        graphics.drawLine(curve.getPoints()[var].getX(), curve.getPoints()[var].getY(), curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
+                        graphics.drawLine(
+                                curve.getPoints()[var].getX(), curve.getPoints()[var].getY(),
+                                curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
                     }
                 }).getImage();
     }
