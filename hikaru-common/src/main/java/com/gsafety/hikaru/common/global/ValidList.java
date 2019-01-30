@@ -5,7 +5,7 @@ import java.util.*;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title : 集合合法性校验
  * File name : ValidList
  * Author : zhoujiajun
  * Date : 2019/1/23 11:07

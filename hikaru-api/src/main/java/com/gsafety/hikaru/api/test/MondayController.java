@@ -7,11 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import savvy.wit.framework.core.base.service.dao.Pagination;
+import savvy.wit.framework.core.base.util.JsonUtil;
 import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.service.BaseService;
@@ -36,9 +34,11 @@ public class MondayController {
 
     private BaseService<Monday> baseService = new BaseServiceImpl<>(Daos.get());
 
-    @RequestMapping(value = "/{page}/{pageSize}", method = RequestMethod.GET)
-    public ResponseEntity<List<Monday>> index(Monday monday, Pagination pagination) {
-        return new ResponseEntity<>(baseService.query(Monday.class, CDT.page(pagination, "name", "like", monday.getName())), HttpStatus.OK);
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity<List<Monday>> index(@RequestParam String monday, @RequestParam String pagination) {
+        Pagination pagination1 = JsonUtil.fromJson(pagination, Pagination.class);
+        Monday monday1 = JsonUtil.fromJson(monday, Monday.class);
+        return new ResponseEntity<>(baseService.query(Monday.class, CDT.page(pagination1, "name", "like", monday1.getName())), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)

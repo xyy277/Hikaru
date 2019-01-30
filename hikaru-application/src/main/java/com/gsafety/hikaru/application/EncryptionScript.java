@@ -8,10 +8,11 @@ import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
-import java.io.File;
+import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Map;
 import java.util.Scanner;
 
 /*******************************
@@ -29,9 +30,7 @@ public class EncryptionScript {
 
     private static Log log = LogFactory.getLog();
 
-    private final static String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDYHBOJWY8FyXfwG9f8yShp4UGqSYSx1mc" +
-            "q6UxwzslQu9Mdl2nExEVYK-NYhc0-TRHwXRFVBbjgqxLykp2YMXN_24CNOYoQ1UBjZoYx24zdAp21o0SI-tVj1l94eJiGVG1WeXP1ERu" +
-            "9WQgGAe0L8nn1IguYOEia7RymsG3w3e6c0QIDAQAB";
+    private final static String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCn6dre5CkrpxmUzh_UcPEKxJawwh1hDaR5pQS0W5VskSYC-Aq6SMYz7KImLet4uIkqVUVfX_03JMUZ6YDNvEHc6ZL3ssKez08LHKzQbPNtAvccDCz_0cpqp6dLpSYCd0Evr-D2ow5HxsDm70kX-qszG8E_L3M1xO25-1uvJs-wowIDAQAB";
 
     public static void main(String[] args) {
         encipherment();
@@ -41,7 +40,7 @@ public class EncryptionScript {
     public static void encryption() {
         String path = "";
         if (new File("./db.properties").exists())
-            path = "./db.properties";
+            path ="./db.properties";
         else
             path = Thread.currentThread().getContextClassLoader().getResource("db.properties").getFile();
         path = path.substring(0, 1).equals("/") ? path.substring(1, path.length()) : path;
@@ -69,7 +68,7 @@ public class EncryptionScript {
             }
             String cryptograph = RSAUtil.publicEncrypt(password, publicKey);
             FileAdapter.me().lazyWriter(new File(path),
-                    "password=" + cryptograph);
+                    "\npassword=" + cryptograph);
             log.warn("请查看db.properties中密码是否添加成功，如未添加请手动添加↓");
             System.out.println("请将下方↓↓↓生成的字符串复制到db.properties");
             System.out.println("password=" + cryptograph);

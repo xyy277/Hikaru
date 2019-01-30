@@ -52,8 +52,9 @@ public class CdtImpl implements Cdt {
         append("where");
         for (String param : var) {
             if (like) {
-                param = like(param);
-            }else if ("like".equals(param)) {
+                param = "'" + like(param) + "'";
+                like = !like;
+            } else if ("like".equals(param)) {
                 like = true;
             }
             append(param);
