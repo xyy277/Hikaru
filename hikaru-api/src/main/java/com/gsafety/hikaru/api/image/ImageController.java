@@ -74,13 +74,12 @@ public class ImageController {
         }
     }
 
-    @RequestMapping(value = "/{width}/{height}/{arc}/{r}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{width}/{height}/{radian}/{arc}/{r}",method = RequestMethod.GET)
     public void test(@PathVariable int width, @PathVariable int height, @PathVariable int arc, @PathVariable int r,
-                     @RequestParam String point, HttpServletResponse response) {
+                    @PathVariable int radian, @RequestParam String point, HttpServletResponse response) {
         Circle circle = new Circle();
         circle.setCenter(JsonUtil.fromJson(point, savvy.wit.framework.core.structure.shape.Point.class));
         double precision = 1;
-        double radian = 60;
         // -------------------------------------------------------------
         circle.setArc(arc);
         circle.setR(r);

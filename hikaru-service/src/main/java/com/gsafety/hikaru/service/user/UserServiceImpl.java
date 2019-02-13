@@ -80,17 +80,19 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Override
     public User findOne(User user) {
-        User user1 = (User) RedisUtil.me().get(user.getId());
-        log.log("获取缓存：" + user1);
-        try {
-            user = user1 != null ? user1 : select(user.getClass(), CDT.where("id", "=", user.getId()));
-            return user;
-        }finally {
-            if (user1 == null && user != null && user.getId() != null) {
-                RedisUtil.me().set(user.getId(), user);
-                log.log("写入缓存：" + user);
-            }
-        }
+        return  select(user.getClass(), CDT.where("id", "=", user.getId()));
+
+//        User user1 = (User) RedisUtil.me().get(user.getId());
+//        log.log("获取缓存：" + user1);
+//        try {
+//            user = user1 != null ? user1 : select(user.getClass(), CDT.where("id", "=", user.getId()));
+//            return user;
+//        }finally {
+//            if (user1 == null && user != null && user.getId() != null) {
+//                RedisUtil.me().set(user.getId(), user);
+//                log.log("写入缓存：" + user);
+//            }
+//        }
     }
 
     @Override
