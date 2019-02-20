@@ -80,7 +80,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Override
     public User findOne(User user) {
-        return  select(user.getClass(), CDT.where("id", "=", user.getId()));
+        return  fetch(user.getClass(), CDT.where("id", "=", user.getId()));
 
 //        User user1 = (User) RedisUtil.me().get(user.getId());
 //        log.log("获取缓存：" + user1);
@@ -98,16 +98,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Override
     public List<User> query(Cdt cdt) {
         List<User> users = null;
-        users = (List<User>)(Object) RedisUtil.me().lGet("users", 0 , -1);
-        if (users == null || users.size() <= 0) {
-            users = query(User.class, cdt);
-            try {
-                return users;
-            }finally {
-                RedisUtil.me().lSet("users", (List<Object>)(Object)users);
-                log.log("写入缓存：" + users.size());
-            }
-        }
+        users = query(User.class, cdt);
         return users;
     }
 }

@@ -32,17 +32,12 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
     }
 
     @Override
-    public T fetch(Cdt cdt) {
-        return null;
-    }
-
-    @Override
     public boolean delete(Class clazz, Cdt cdt) {
         boolean status = false;
         try {
             status = dao().delete(cdt, clazz);
         }catch (Exception e){
-            log.error(e);
+            throw new RuntimeException(e);
         } finally {
             return status;
         }
@@ -54,7 +49,7 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
         try {
             status = dao().update(t);
         }catch (Exception e){
-            log.error(e);
+            throw new RuntimeException(e);
         }finally {
             return status;
         }
@@ -66,7 +61,7 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
         try {
             status = dao().update(t, cdt);
         }catch (Exception e){
-            log.error(e);
+            throw new RuntimeException(e);
         }finally {
             return status;
         }
@@ -78,7 +73,7 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
         try {
             o =  (T) dao().insert(t);
         }catch (Exception e) {
-            log.error(e);
+            throw new RuntimeException(e);
         }
         return o;
     }
@@ -90,19 +85,19 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
             try {
                 num = dao().insertBath(list, list.get(0).getClass());
             } catch (Exception e) {
-                log.error(e);
+                throw new RuntimeException(e);
             }
         }
         return num;
     }
 
     @Override
-    public T select(Class clazz, Cdt cdt) {
+    public T fetch(Class clazz, Cdt cdt) {
         T t = null;
         try {
             t = (T) dao().fetch(cdt, clazz);
         }catch (Exception e) {
-
+            throw new RuntimeException(e);
         }
         return t;
     }
@@ -113,7 +108,7 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
         try {
             list = dao().query(cdt, clazz);
         }catch (Exception e) {
-            log.error(e);
+            throw new RuntimeException(e);
         }
         return list;
     }
@@ -124,7 +119,7 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
         try {
             list = dao().query(cdt, clazz, callBack);
         }catch (Exception e) {
-            log.error(e);
+            throw new RuntimeException(e);
         }
         return list;
     }
@@ -135,7 +130,7 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
         try {
             list = dao().query(null, clazz);
         }catch (Exception e) {
-            log.error(e);
+            throw new RuntimeException(e);
         }
         return list;
     }

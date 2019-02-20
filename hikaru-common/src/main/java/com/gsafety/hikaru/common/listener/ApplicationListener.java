@@ -3,6 +3,7 @@ package com.gsafety.hikaru.common.listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import savvy.wit.framework.core.pattern.factory.DbFactory;
+import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -26,6 +27,7 @@ public class ApplicationListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         log.info("ApplicationListener init");
         DbFactory.me().setSource("./db.properties", "db.properties");
+        LogFactory.front("❤").behind("--:>>");
 
     }
 

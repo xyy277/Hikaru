@@ -13,8 +13,8 @@ import org.springframework.data.jpa.repository.Query;
  * Version : 1.0
  * Description : 
  ******************************/
-public interface SundayRepository extends JpaRepository<Sunday, String>  {
-
-    @Query("select s from Sunday s where s.temperature = :temperture")
-    Sunday findByTemperature(double temperature);
-}
+//public interface SundayRepository extends JpaRepository<Sunday, String>  {
+//
+//    @Query("select s from Sunday s where s.temperature = :temperture")
+//    Sunday findByTemperature(double temperature);
+//}

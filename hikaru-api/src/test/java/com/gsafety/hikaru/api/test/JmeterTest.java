@@ -1,4 +1,4 @@
-package com.gsafety.kafka.api.test;
+package com.gsafety.hikaru.api.test;
 
 import savvy.wit.framework.core.pattern.proxy.RuntimeProxy;
 

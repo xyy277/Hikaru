@@ -1,4 +1,4 @@
-package com.gsafety.kafka.api.test;
+package com.gsafety.hikaru.api.test;
 
 import com.gsafety.hikaru.model.system.User;
 import org.junit.Before;

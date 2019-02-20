@@ -7,6 +7,7 @@ import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.service.dao.Dao;
 import savvy.wit.framework.core.base.service.dao.annotation.*;
 import savvy.wit.framework.core.base.util.*;
+import savvy.wit.framework.core.base.util.Scanner;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.factory.Config;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
@@ -280,7 +281,7 @@ public class DaoImpl<T> implements Dao<T> {
                 packList.add(name);
             }
         }
-        List<Class<?>> classList = ClassUtil.getClasses(packList);
+        List<Class<?>> classList = Scanner.scanning(packList);
         create(refactor,
                 classList.parallelStream()
                 .filter(aClass -> aClass.isAnnotationPresent(Table.class)).collect(Collectors.toList()));
@@ -599,7 +600,7 @@ public class DaoImpl<T> implements Dao<T> {
     public List<T> query(Cdt cdt, Class clazz) throws SQLException {
         List<T> list = new ArrayList<>();
         String sql = new String("select * from " + clazz.getSimpleName().toLowerCase() + (cdt != null ? cdt.getCondition() : "") );
-        if(cdt.page() != null) {
+        if(cdt != null && cdt.page() != null) {
             sql = sql + cdt.page().limit();
         }
         Connection connection = db.getConnection();

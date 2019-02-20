@@ -21,22 +21,22 @@ import java.util.jar.JarFile;
  * Version : 1.0
  * Description : 
  ******************************/
-public class ClassUtil {
+public class Scanner {
 
     private static final Log log = LogFactory.getLog();
 
-    public static List<Class<?>> getClasses(String... packs) {
+    public static List<Class<?>> scanning(String... packs) {
         List<Class<?>> list = new ArrayList<>();
         for (String pack : packs) {
-            list.addAll(getClasses(pack));
+            list.addAll(scanning(pack));
         }
         return list;
     }
 
-    public static List<Class<?>> getClasses(List<String> packs) {
+    public static List<Class<?>> scanning(List<String> packs) {
         List<Class<?>> list = new ArrayList<>();
         for (String pack : packs) {
-            list.addAll(getClasses(pack));
+            list.addAll(scanning(pack));
         }
         return list;
     }
@@ -46,7 +46,7 @@ public class ClassUtil {
      * @param pack
      * @return
      */
-    public static Set<Class<?>> getClasses(String pack) {
+    public static Set<Class<?>> scanning(String pack) {
 
         // 第一个class类的集合
         Set<Class<?>> classes = new LinkedHashSet<>();

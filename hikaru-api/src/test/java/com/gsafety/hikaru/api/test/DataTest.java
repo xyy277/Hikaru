@@ -1,4 +1,4 @@
-package com.gsafety.kafka.api.test;
+package com.gsafety.hikaru.api.test;
 
 import com.gsafety.hikaru.model.test.Monday;
 import org.junit.Before;
@@ -7,6 +7,7 @@ import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.decorate.Counter;
+import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.DbFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
@@ -41,23 +42,23 @@ public class DataTest {
     @Test
     public void test() {
 //        log.log(baseService.query(Monday.class, CDT.NEW().where("name", "like", "zz", CDT.NEW().page(1, 10))));
-
-        final Counter counter = Counter.create();
-        for (int var = 1; var <= 10; var++) {
-            List<Monday> mondays = new ArrayList<>();
-            for (int i = 1; i <= 100; i++) {
-                Monday monday = new Monday();
-                monday.setId(counter.getIndex(1) + "");
-                monday.setOptUser(StringUtil.createCode());
-                monday.setOptTime(DateUtil.getNow());
-                monday.setName(StringUtil.createCode());
-                mondays.add(monday);
-            }
-            try {
-                log.log(Daos.get().insertBath(mondays, Monday.class));
-            }catch (Exception e) {
-                log.error(e);
-            }
-        }
+        log.log(        baseService.query(Monday.class));
+//        final Counter counter = Counter.create();
+//        for (int var = 1; var <= 10; var++) {
+//            List<Monday> mondays = new ArrayList<>();
+//            for (int i = 1; i <= 100; i++) {
+//                Monday monday = new Monday();
+//                monday.setId(counter.getIndex(1) + "");
+//                monday.setOptUser(StringUtil.createCode());
+//                monday.setOptTime(DateUtil.getNow());
+//                monday.setName(StringUtil.createCode());
+//                mondays.add(monday);
+//            }
+//            try {
+//                log.log(Daos.get().insertBath(mondays, Monday.class));
+//            }catch (Exception e) {
+//                log.error(e);
+//            }
+//        }
     }
 }

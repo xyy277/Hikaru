@@ -21,9 +21,7 @@ public interface BaseService<T> {
 
     Dao dao();
 
-    T select(Class clazz, Cdt cdt);
-
-    T fetch(Cdt cdt);
+    T fetch(Class clazz, Cdt cdt);
 
     boolean delete(Class clazz, Cdt cdt);
 

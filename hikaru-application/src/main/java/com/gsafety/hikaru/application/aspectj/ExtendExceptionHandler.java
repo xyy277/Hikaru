@@ -1,5 +1,7 @@
 package com.gsafety.hikaru.application.aspectj;
 
+import com.gsafety.hikaru.common.global.Error;
+import com.gsafety.hikaru.common.global.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,8 +24,8 @@ public class ExtendExceptionHandler {
     private Logger log = LoggerFactory.getLogger(ExtendExceptionHandler.class);
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity modelNotFoundExceptionHandler(Exception exception) {
+    public Result modelNotFoundExceptionHandler(Exception exception) {
         log.error("exception happened",exception);
-        return new ResponseEntity(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return Result.error(new Error(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage()));
     }
 }

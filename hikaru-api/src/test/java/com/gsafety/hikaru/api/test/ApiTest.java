@@ -1,4 +1,4 @@
-package com.gsafety.kafka.api.test;
+package com.gsafety.hikaru.api.test;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -10,7 +10,6 @@ package com.gsafety.kafka.api.test;
  * Description : 
  ******************************/
 
-import com.gsafety.hikaru.api.test.TestController;
 import com.gsafety.hikaru.common.helper.ApplicationBeanFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
