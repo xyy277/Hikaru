@@ -1,7 +1,7 @@
 package com.gsafety.hikaru.service;
 
 import org.springframework.stereotype.Service;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 

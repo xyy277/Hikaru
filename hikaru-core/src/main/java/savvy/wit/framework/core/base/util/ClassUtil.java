@@ -1,6 +1,6 @@
 package savvy.wit.framework.core.base.util;
 
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.io.File;

@@ -39,7 +39,7 @@ public class Application {
         // |以上本地开发环境下可以这么做，测试及生产环境务必删除                                                           |
         // -------------------------------------------------------------------------------------------------------------
         // 启动jmeter，shell 根据实际安装目录修改
-        RuntimeProxy.execute("cmd /k G:\\server\\apache-jmeter-5.0\\bin\\jmeter.bat");
+//        RuntimeProxy.execute("cmd /k G:\\server\\apache-jmeter-5.0\\bin\\jmeter.bat");
 
         // 启动服务
         SpringApplication.run(Application.class, args);

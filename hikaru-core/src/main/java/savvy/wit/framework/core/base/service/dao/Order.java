@@ -1,4 +1,4 @@
-package savvy.wit.framework.core.base.service;
+package savvy.wit.framework.core.base.service.dao;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

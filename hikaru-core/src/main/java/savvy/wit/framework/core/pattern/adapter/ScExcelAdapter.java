@@ -1,6 +1,6 @@
 package savvy.wit.framework.core.pattern.adapter;
 
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.base.callback.ExcelCallback;
 import savvy.wit.framework.core.base.util.ScExcelUtils;

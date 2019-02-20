@@ -1,14 +1,12 @@
 package com.gsafety.kafka.api.test;
 
-import com.gsafety.hikaru.model.system.User;
 import com.gsafety.hikaru.model.test.Monday;
 import org.junit.Before;
 import org.junit.Test;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.decorate.Counter;
-import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.DbFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;

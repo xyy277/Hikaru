@@ -1,4 +1,4 @@
-package savvy.wit.framework.core.structure.shape;
+package savvy.wit.framework.core.structure.physical.shape;
 
 import java.io.Serializable;
 

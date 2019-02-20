@@ -1,13 +1,13 @@
-package savvy.wit.framework.core.structure.loopStructure;
+package savvy.wit.framework.core.structure.physical.loopStructure;
 
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.base.callback.DrawImageCallBack;
 import savvy.wit.framework.core.base.util.ImageUtil;
-import savvy.wit.framework.core.structure.function.Acreage;
-import savvy.wit.framework.core.structure.function.LoopFactory;
-import savvy.wit.framework.core.structure.shape.Curve;
-import savvy.wit.framework.core.structure.shape.Point;
+import savvy.wit.framework.core.structure.physical.function.Acreage;
+import savvy.wit.framework.core.structure.physical.function.LoopFactory;
+import savvy.wit.framework.core.structure.physical.shape.Curve;
+import savvy.wit.framework.core.structure.physical.shape.Point;
 
 import java.awt.*;
 

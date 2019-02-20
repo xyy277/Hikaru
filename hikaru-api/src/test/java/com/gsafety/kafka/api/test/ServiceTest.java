@@ -3,7 +3,7 @@ package com.gsafety.kafka.api.test;
 import com.gsafety.hikaru.model.system.User;
 import org.junit.Before;
 import org.junit.Test;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.factory.CDT;

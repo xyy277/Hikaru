@@ -1,7 +1,6 @@
 #拿来就用主义
-##framework for anyone
-###spring boot project
-#####分布式framework
+##Frameworks are friends of developers, and we did it.
+####hikaru as a web develop distributed full-stack framework, we still have a lot to do .At the same time, more people need to get involved
 **代码结构**
 ```
  hikaru-server/
@@ -77,9 +76,10 @@
 https://blog.csdn.net/delongcpp/article/details/80119307
 https://blog.csdn.net/songhaifengshuaige/article/details/79111676
 
-
-
-
+##
+####可以采用多数据源
+#####DataSource-1 ：JAP
+#####DataSource-2 ：Dao
 
 
 

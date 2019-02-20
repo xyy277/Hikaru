@@ -3,7 +3,7 @@ package savvy.wit.framework.core.pattern.adapter;
 import savvy.wit.framework.core.base.callback.FileCacheCallBack;
 import savvy.wit.framework.core.base.callback.FileCallBack;
 import savvy.wit.framework.core.base.callback.StringCallBack;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;

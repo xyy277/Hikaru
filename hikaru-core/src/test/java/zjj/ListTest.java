@@ -1,7 +1,7 @@
 package zjj;
 
 import org.junit.Before;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.adapter.ScExcelAdapter;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.LogFactory;

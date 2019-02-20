@@ -1,6 +1,6 @@
 package zjj;
 
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.adapter.Excel2PropertiesAdapter;
 import savvy.wit.framework.core.pattern.adapter.ScExcelAdapter;
 import savvy.wit.framework.core.pattern.factory.LogFactory;

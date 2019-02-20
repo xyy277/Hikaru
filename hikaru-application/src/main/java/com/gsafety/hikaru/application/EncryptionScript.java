@@ -1,7 +1,6 @@
 package com.gsafety.hikaru.application;
 
-import savvy.wit.framework.core.base.service.Log;
-import savvy.wit.framework.core.base.util.FileUtil;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.RSAUtil;
 import savvy.wit.framework.core.base.util.Strings;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
@@ -12,7 +11,6 @@ import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Map;
 import java.util.Scanner;
 
 /*******************************

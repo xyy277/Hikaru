@@ -1,7 +1,7 @@
-package savvy.wit.framework.core.base.service.impl;
+package savvy.wit.framework.core.base.service.log.impl;
 
 import savvy.wit.framework.core.base.callback.LogCallBack;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.factory.Config;
@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -23,6 +25,10 @@ import java.util.UUID;
  * Description : 
  ******************************/
 public class LogImpl implements Log {
+
+    private String front = "";
+
+    private String behind = "";
 
     private static final String FILENAME = "logs\\"+ DateUtil.getNow("yyyy") + "\\" + DateUtil.getNow("MM") + "\\" + DateUtil.getNow("yyyy-MM-dd") + ".log";
 
@@ -208,20 +214,80 @@ public class LogImpl implements Log {
         write(logs);
     }
 
+    String regex1 = "[0-9]+(\\*){1}[^0-9]+";
+    String regex2 = "[0-9]+(\\*){1}[0-9]+";
+    String regex3 = "[^0-9]+(\\*){1}[0-9]+";
+    String regex4 = "[0-9]+";
+    String regex5 = "(?!(\\*))+[^0-9]+";
+    String regex6 = "[^0-9]+(?!(\\*))+";
+    Pattern pattern1 = Pattern.compile(regex1);
+    Pattern pattern2 = Pattern.compile(regex2);
+    Pattern pattern3 = Pattern.compile(regex3);
+    Pattern pattern4 = Pattern.compile(regex4);
+    Pattern pattern5 = Pattern.compile(regex5);
+    Pattern pattern6 = Pattern.compile(regex6);
+    @Override
+    public void print(String string) {
+        if (pattern1.matcher(string).matches()) {
+            String str = find(pattern4.matcher(string));
+            int num = Integer.parseInt(str);
+            str = "";
+            String symbol = find(pattern5.matcher(string));
+            for (int var = 0; var < num; var++) {
+                str += symbol;
+            }
+            System.out.println(str);
+        } else if (pattern2.matcher(string).matches()) {
+            System.out.println(Integer.parseInt(string.split("\\*")[0]) * Integer.parseInt(string.split("\\*")[1]));
+        } else if (pattern3.matcher(string).matches()) {
+            int num = Integer.parseInt(find(pattern4.matcher(string)));
+            String str = "";
+            String symbol = find(pattern6.matcher(string));
+            for (int var = 0; var < num; var++) {
+                str += symbol;
+            }
+            System.out.println(str);
+        } else {
+            System.out.println(string);
+        }
+    }
 
+    private String find(Matcher matcher) {
+        String result = "";
+        while (matcher.find()) {
+            result = matcher.group();
+        }
+        return result;
+    }
 
-    private static String className(int i) {
+    private String className(int i) {
         return Thread.currentThread().getStackTrace()[++i].getClassName();
     }
 
-    private static String methodName(int i) {
+    private String methodName(int i) {
         return Thread.currentThread().getStackTrace()[++i].getMethodName();
     }
 
-    private static int lineNumber(int i) { return Thread.currentThread().getStackTrace()[++i].getLineNumber();}
+    private int lineNumber(int i) { return Thread.currentThread().getStackTrace()[++i].getLineNumber();}
 
-    private static String getLog(int i) {
-        return DateUtil.getNow()+"\t|-\t"+className((i+1))+":("+methodName((i+1))+"."+lineNumber((i+1))+") -|";
+    private String getLog(int i) {
+        return getFront()+ " " + DateUtil.getNow()+"\t|-\t"+className((i+1))+":("+methodName((i+1))+"."+lineNumber((i+1))+") -| " + getBehind();
+    }
+
+    public String getFront() {
+        return front;
+    }
+
+    public void front(String front) {
+        this.front = front;
+    }
+
+    public String getBehind() {
+        return behind;
+    }
+
+    public void behind(String behind) {
+        this.behind = behind;
     }
 
     private void save(String logs) {

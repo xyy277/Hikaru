@@ -1,11 +1,14 @@
 package zjj;
 
+import org.junit.Before;
 import org.junit.Test;
 import savvy.wit.framework.core.algorithm.model.StringRetrieve;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.StringUtil;
+import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
+import savvy.wit.framework.core.structure.physical.loopStructure.circle.Loop;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -18,16 +21,26 @@ import savvy.wit.framework.core.pattern.factory.LogFactory;
  ******************************/
 public class AlgorithmTest {
 
-    private static final Log log = LogFactory.getLog();
+    private static final Log log = LogFactory.behind("--:>>").front("❤").getLog();
 
+    public static void main(String[] args) {
+        log.log(Files.getEncoding("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-core\\src\\test\\java\\zjj\\AlgorithmTest.java"));
+        log.log(  "第一次出现的字符 :" +   StringRetrieve.getBoOnlyOnceCode("a1b2c3a1b2c3xxxxyz"));
+    }
+
+    @Before
+    public void before() {
+        Loop loop = new Loop();
+    }
 
     @Test
     public void testAlgorithm() {
         while (true) {
             String paramString = initParamString();
-            log.log(  "首个仅出现一次的字符是：" +      StringRetrieve.getBoOnlyOnceCode(paramString));
+            log.log(  "首个仅出现一次的字符是：" +   StringRetrieve.getBoOnlyOnceCode(paramString));
             zjj.Test.test(paramString);
             log.log(() -> Thread.sleep(1000 * 5));
+            break;
         }
     }
 

@@ -1,8 +1,8 @@
-package savvy.wit.framework.core.structure.function;
+package savvy.wit.framework.core.structure.physical.function;
 
 import savvy.wit.framework.core.base.callback.DrawImageCallBack;
-import savvy.wit.framework.core.structure.shape.Curve;
-import savvy.wit.framework.core.structure.shape.Point;
+import savvy.wit.framework.core.structure.physical.shape.Curve;
+import savvy.wit.framework.core.structure.physical.shape.Point;
 
 import java.awt.*;
 

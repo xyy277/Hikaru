@@ -1,4 +1,4 @@
-package savvy.wit.framework.core.structure.function;
+package savvy.wit.framework.core.structure.physical.function;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

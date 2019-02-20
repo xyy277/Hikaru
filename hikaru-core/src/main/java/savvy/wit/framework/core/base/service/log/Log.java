@@ -1,4 +1,4 @@
-package savvy.wit.framework.core.base.service;
+package savvy.wit.framework.core.base.service.log;
 
 import savvy.wit.framework.core.base.callback.LogCallBack;
 
@@ -22,4 +22,10 @@ public interface Log {
     void warn(Object o);
 
     void error(Exception e);
+
+    void print(String string);
+
+    void front(String front);
+
+    void behind(String behind);
 }

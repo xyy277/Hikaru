@@ -1,7 +1,7 @@
-package savvy.wit.framework.core.structure.loopStructure.circle;
+package savvy.wit.framework.core.structure.physical.loopStructure.circle;
 
-import savvy.wit.framework.core.structure.loopStructure.AbstractCircle;
-import savvy.wit.framework.core.structure.shape.Curve;
+import savvy.wit.framework.core.structure.physical.loopStructure.AbstractCircle;
+import savvy.wit.framework.core.structure.physical.shape.Curve;
 
 import java.util.Arrays;
 

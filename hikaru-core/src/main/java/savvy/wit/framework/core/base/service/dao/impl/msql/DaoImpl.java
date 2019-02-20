@@ -2,8 +2,8 @@ package savvy.wit.framework.core.base.service.dao.impl.msql;
 
 import org.springframework.stereotype.Repository;
 import savvy.wit.framework.core.base.callback.DaoCallBack;
-import savvy.wit.framework.core.base.service.Cdt;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.cdt.Cdt;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.service.dao.Dao;
 import savvy.wit.framework.core.base.service.dao.annotation.*;
 import savvy.wit.framework.core.base.util.*;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Repository("dao")
 public class DaoImpl<T> implements Dao<T> {
 
-    private Log log = LogFactory.getLog();
+    private static Log log = LogFactory.getLog();
     private DbUtil db = DbUtil.me();
     private Config config = Config.init("/json/config.json");
 

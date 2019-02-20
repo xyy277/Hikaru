@@ -1,4 +1,4 @@
-package savvy.wit.framework.core.structure.shape;
+package savvy.wit.framework.core.structure.physical.shape;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

@@ -1,5 +1,6 @@
-package savvy.wit.framework.core.base.service;
+package savvy.wit.framework.core.base.service.cdt;
 
+import savvy.wit.framework.core.base.service.dao.Order;
 import savvy.wit.framework.core.base.service.dao.Pagination;
 
 /*******************************
