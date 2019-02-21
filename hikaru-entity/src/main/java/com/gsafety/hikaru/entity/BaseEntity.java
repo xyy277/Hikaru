@@ -1,33 +1,26 @@
-package com.gsafety.hikaru.model;
+package com.gsafety.hikaru.entity;
 
 import io.swagger.annotations.ApiModelProperty;
-import savvy.wit.framework.core.base.service.dao.annotation.CType;
-import savvy.wit.framework.core.base.service.dao.annotation.Column;
-import savvy.wit.framework.core.base.service.dao.annotation.Comment;
-import savvy.wit.framework.core.base.service.dao.annotation.Type;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 
- * File name : BaseModel
+ * File name : BaseEntity
  * Author : zhoujiajun
- * Date : 2019/1/3 15:16
+ * Date : 2019/2/21 12:43
  * Version : 1.0
  * Description : 
  ******************************/
-public class BaseModel implements Serializable {
+public class BaseEntity implements Serializable {
 
-    @Column
-    @Type(type = CType.VARCHAR, width = 32, vacancy = true)
-    @Comment("操作时间")
+    @Column(name = "opt_time")
     @ApiModelProperty(value = "操作时间")
     private String optTime;
 
-    @Column
-    @Type(type = CType.VARCHAR, width = 128,  vacancy = true)
-    @Comment("操作人")
+    @Column(name = "opt_user")
     @ApiModelProperty(value = "操作人")
     private String optUser;
 

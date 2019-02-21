@@ -21,6 +21,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.gsafety.hikaru</groupId>
             <artifactId>hikaru-common</artifactId>

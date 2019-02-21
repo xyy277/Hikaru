@@ -7,8 +7,8 @@
 target
 test/*
 src/main/resources/excel/
-kafka-*/target/
-kafka-*/*/.class
+hikaru-*/target/
+hikaru-*/*/.class
 #Maven
 target/
 

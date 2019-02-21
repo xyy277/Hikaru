@@ -236,6 +236,32 @@ public class LogImpl implements Log {
             for (int var = 0; var < num; var++) {
                 str += symbol;
             }
+            System.out.print(str);
+        } else if (pattern2.matcher(string).matches()) {
+            System.out.print(Integer.parseInt(string.split("\\*")[0]) * Integer.parseInt(string.split("\\*")[1]));
+        } else if (pattern3.matcher(string).matches()) {
+            int num = Integer.parseInt(find(pattern4.matcher(string)));
+            String str = "";
+            String symbol = find(pattern6.matcher(string));
+            for (int var = 0; var < num; var++) {
+                str += symbol;
+            }
+            System.out.print(str);
+        } else {
+            System.out.print(string);
+        }
+    }
+
+    @Override
+    public void println(String string) {
+        if (pattern1.matcher(string).matches()) {
+            String str = find(pattern4.matcher(string));
+            int num = Integer.parseInt(str);
+            str = "";
+            String symbol = find(pattern5.matcher(string));
+            for (int var = 0; var < num; var++) {
+                str += symbol;
+            }
             System.out.println(str);
         } else if (pattern2.matcher(string).matches()) {
             System.out.println(Integer.parseInt(string.split("\\*")[0]) * Integer.parseInt(string.split("\\*")[1]));

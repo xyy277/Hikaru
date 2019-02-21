@@ -67,7 +67,7 @@ public class Scanner {
                 String protocol = url.getProtocol();
                 // 如果是以文件的形式保存在服务器上
                 if ("file".equals(protocol)) {
-                    log.warn("file类型的扫描");
+                    log.warn("scanning file : " + pack);
                     // 获取包的物理路径
                     String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
                     // 以文件的方式扫描整个包下的文件 并添加到集合中
@@ -75,7 +75,7 @@ public class Scanner {
                 } else if ("jar".equals(protocol)) {
                     // 如果是jar包文件
                     // 定义一个JarFile
-                    log.warn("jar类型的扫描");
+                    log.warn("scanning jar : " + pack);
                     JarFile jar;
                     try {
                         // 获取jar

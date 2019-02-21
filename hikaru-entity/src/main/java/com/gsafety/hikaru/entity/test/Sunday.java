@@ -20,7 +20,7 @@ import javax.persistence.Table;
  * Description : 
  ******************************/
 @Entity
-@Table(name = "sunday")
+@Table(name = "sys_sunday")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

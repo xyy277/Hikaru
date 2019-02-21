@@ -25,6 +25,8 @@ public interface Log {
 
     void print(String string);
 
+    void println(String string);
+
     void front(String front);
 
     void behind(String behind);

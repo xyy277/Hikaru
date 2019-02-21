@@ -2,6 +2,7 @@ package com.gsafety.hikaru.application.config;
 
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /*******************************

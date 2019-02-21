@@ -273,6 +273,9 @@ public class DaoImpl<T> implements Dao<T> {
 
     @Override
     public void createAtPackage(boolean refactor, String... pack) {
+        log.print("100*-");
+        log.print("<< scanning >>");
+        log.println("100*-");
         List<String> packList = new ArrayList<>();
         for (String name: pack) {
             if (name.indexOf(",") != -1) {
@@ -282,9 +285,15 @@ public class DaoImpl<T> implements Dao<T> {
             }
         }
         List<Class<?>> classList = Scanner.scanning(packList);
+        log.print("100*-");
+        log.print("<< starting >>");
+        log.println("100*-");
         create(refactor,
                 classList.parallelStream()
                 .filter(aClass -> aClass.isAnnotationPresent(Table.class)).collect(Collectors.toList()));
+        log.print("100*-");
+        log.print("<<  ending  >>");
+        log.println("100*-");
     }
 
     private void drop(Class clazz) throws SQLException {
