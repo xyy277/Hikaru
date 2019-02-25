@@ -1,5 +1,6 @@
 package com.gsafety.hikaru.api.test;
 
+import com.gsafety.hikaru.model.system.User;
 import com.gsafety.hikaru.model.test.Monday;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,35 +31,29 @@ public class DataTest {
 
     private Log log = LogFactory.getLog();
 
-    private BaseService<Monday> baseService = null;
-
     @Before
     public void before() {
         DbFactory.me().setSource("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-application\\src\\main\\resources\\db.properties");
-        baseService = new BaseServiceImpl<>(Daos.get());
-//        Daos.get().dropAndCreate(User.class);
     }
 
     @Test
     public void test() {
-//        log.log(baseService.query(Monday.class, CDT.NEW().where("name", "like", "zz", CDT.NEW().page(1, 10))));
-        log.log(        baseService.query(Monday.class));
-//        final Counter counter = Counter.create();
-//        for (int var = 1; var <= 10; var++) {
-//            List<Monday> mondays = new ArrayList<>();
-//            for (int i = 1; i <= 100; i++) {
-//                Monday monday = new Monday();
-//                monday.setId(counter.getIndex(1) + "");
-//                monday.setOptUser(StringUtil.createCode());
-//                monday.setOptTime(DateUtil.getNow());
-//                monday.setName(StringUtil.createCode());
-//                mondays.add(monday);
-//            }
-//            try {
-//                log.log(Daos.get().insertBath(mondays, Monday.class));
-//            }catch (Exception e) {
-//                log.error(e);
-//            }
-//        }
+        final Counter counter = Counter.create();
+        for (int var = 1; var <= 10; var++) {
+            List<Monday> mondays = new ArrayList<>();
+            for (int i = 1; i <= 100; i++) {
+                Monday monday = new Monday();
+                monday.setId(counter.getIndex(1) + "");
+                monday.setOptUser(StringUtil.createCode());
+                monday.setOptTime(DateUtil.getNow());
+                monday.setName(StringUtil.createCode());
+                mondays.add(monday);
+            }
+            try {
+                log.log(Daos.get().insertBath(mondays, Monday.class));
+            }catch (Exception e) {
+                log.error(e);
+            }
+        }
     }
 }

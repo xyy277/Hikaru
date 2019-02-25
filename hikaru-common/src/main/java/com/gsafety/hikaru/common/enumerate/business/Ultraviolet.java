@@ -30,7 +30,7 @@ public enum Ultraviolet implements EnumValueContract<Ultraviolet> {
 
     @Override
     public int getParamType() {
-        return 0;
+        return this.paramType;
     }
 
 }

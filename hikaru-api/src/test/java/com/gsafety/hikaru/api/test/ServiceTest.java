@@ -51,7 +51,7 @@ public class ServiceTest {
         }
 //        baseService.insertBath(userList);
 
-        List<User> users = baseService.query(User.class, CDT.where("name", "=", "zhoujiajun"));
+        List<User> users = baseService.query(CDT.where("name", "=", "zhoujiajun"));
         log.log(users);
     }
 }

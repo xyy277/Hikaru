@@ -21,9 +21,9 @@ public interface BaseService<T> {
 
     Dao dao();
 
-    T fetch(Class clazz, Cdt cdt);
+    T fetch(Cdt cdt);
 
-    boolean delete(Class clazz, Cdt cdt);
+    boolean delete(Cdt cdt);
 
     boolean update(T t);
 
@@ -33,9 +33,9 @@ public interface BaseService<T> {
 
     int insertBath(List<T> list);
 
-    List<T> query(Class clazz, Cdt cdt);
+    List<T> query(Cdt cdt);
 
-    List<T> query(Class clazz, Cdt cdt, DaoCallBack<T> callBack);
+    List<T> query(Cdt cdt, DaoCallBack<T> callBack);
 
-    List<T> query(Class clazz);
+    List<T> query();
 }

@@ -27,7 +27,7 @@ public class ApplicationListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         log.info("ApplicationListener init");
         DbFactory.me().setSource("./db.properties", "db.properties");
-        LogFactory.front("❤").behind("--:>>");
+        LogFactory.front("❤").behind("-->:>");
 
     }
 

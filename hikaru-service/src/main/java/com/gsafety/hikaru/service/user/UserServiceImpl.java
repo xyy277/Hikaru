@@ -75,12 +75,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     public void remove(String id) {
         RedisUtil.me().del(id);
         log.log("清除缓存：" + id);
-        delete(User.class, CDT.where("id", "=", id));
+        delete(CDT.where("id", "=", id));
     }
 
     @Override
     public User findOne(User user) {
-        return  fetch(user.getClass(), CDT.where("id", "=", user.getId()));
+        return  fetch(CDT.where("id", "=", user.getId()));
 
 //        User user1 = (User) RedisUtil.me().get(user.getId());
 //        log.log("获取缓存：" + user1);
@@ -98,7 +98,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Override
     public List<User> query(Cdt cdt) {
         List<User> users = null;
-        users = query(User.class, cdt);
+        users = super.query(cdt);
         return users;
     }
 }
