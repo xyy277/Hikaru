@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.service;
+package com.gsafety.hikaru.common.middleware.kafka;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

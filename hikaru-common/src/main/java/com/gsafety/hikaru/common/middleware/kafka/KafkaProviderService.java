@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.service;
+package com.gsafety.hikaru.common.middleware.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;

@@ -1,8 +1,9 @@
-package com.gsafety.hikaru.service.user;
+package com.gsafety.hikaru.service.impl;
 
 import com.gsafety.hikaru.common.helper.RedisUtil;
 import com.gsafety.hikaru.feign.TestFeign;
 import com.gsafety.hikaru.model.system.User;
+import com.gsafety.hikaru.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ import java.util.List;
  * Description : 
  ******************************/
 @Service
-public class UserServiceImpl extends BaseServiceImpl<User> implements UserService{
+public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
 
     private Log log = LogFactory.getLog();
 

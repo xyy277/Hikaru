@@ -8,12 +8,28 @@ import java.lang.annotation.*;
 @Documented
 public @interface Type {
 
+    /**
+     * column 类型
+     * @return
+     */
     CType type() default CType.AUTO ;
 
+    /**
+     * 宽度
+     * @return
+     */
     int width() default 255;
 
+    /**
+     * 默认非空
+     * @return
+     */
     boolean vacancy() default false;
 
+    /**
+     * 整型默认值
+     * @return
+     */
     int acquiescence() default 0;
 
 }

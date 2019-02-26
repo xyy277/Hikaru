@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.service;
+package com.gsafety.hikaru.common.middleware.kafka;
 
 import org.springframework.stereotype.Service;
 import savvy.wit.framework.core.base.service.log.Log;

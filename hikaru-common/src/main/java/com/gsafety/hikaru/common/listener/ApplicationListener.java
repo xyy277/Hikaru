@@ -26,9 +26,12 @@ public class ApplicationListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         log.info("ApplicationListener init");
-        DbFactory.me().setSource("./db.properties", "db.properties");
+        // 设置log打印格式
         LogFactory.front("❤").behind("-->:>");
-
+        // 设置dao数据源
+        DbFactory.me().setSource("./db.properties", "db.properties");
+        // 设置泛型package
+        DbFactory.me().setEnumClassList("com.gsafety.hikaru.common.enumerate");
     }
 
     @Override

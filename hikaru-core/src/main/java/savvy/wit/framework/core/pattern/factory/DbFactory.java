@@ -1,6 +1,10 @@
 package savvy.wit.framework.core.pattern.factory;
 
+import savvy.wit.framework.core.base.util.Scanner;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /*******************************
@@ -15,6 +19,16 @@ import java.util.Properties;
 public class DbFactory {
 
     private Properties properties;
+
+    private List<Class<?>> enumClassList;
+
+    public List<Class<?>> getEnumClassList() {
+        return enumClassList;
+    }
+
+    public void setEnumClassList(String... pack) {
+        this.enumClassList = Scanner.scanning(pack);
+    }
 
     public static DbFactory me() {
         return LazyInit.INITIALIZATION;

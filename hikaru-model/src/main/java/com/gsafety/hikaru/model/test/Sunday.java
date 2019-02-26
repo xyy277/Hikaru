@@ -1,6 +1,7 @@
 package com.gsafety.hikaru.model.test;
 
-import com.gsafety.hikaru.common.enumerate.business.Ultraviolet;
+import com.gsafety.hikaru.common.enumerate.Test;
+import com.gsafety.hikaru.common.enumerate.Ultraviolet;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,9 +9,7 @@ import lombok.NoArgsConstructor;
 import savvy.wit.framework.application.model.BaseModel;
 import savvy.wit.framework.core.base.service.dao.annotation.*;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -47,5 +46,9 @@ public class Sunday extends BaseModel {
     @ApiModelProperty(value = "紫外线强度")
     private Ultraviolet ultraviolet;
 
-
+    @Column
+    @Comment("测试属性")
+    @Type(type = CType.INT, width = 2, vacancy = true)
+    @ApiModelProperty(value = "测试属性")
+    private Test test;
 }

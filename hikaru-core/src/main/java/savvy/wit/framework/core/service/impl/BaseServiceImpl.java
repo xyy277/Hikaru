@@ -1,7 +1,6 @@
 package savvy.wit.framework.core.service.impl;
 
 import savvy.wit.framework.core.base.callback.DaoCallBack;
-import savvy.wit.framework.core.base.service.GoalConvertExcutor;
 import savvy.wit.framework.core.base.service.cdt.Cdt;
 import savvy.wit.framework.core.base.service.dao.Dao;
 import savvy.wit.framework.core.service.BaseService;

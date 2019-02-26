@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.common.enumerate.business;
+package com.gsafety.hikaru.common.enumerate;
 
 import savvy.wit.framework.core.base.service.enumerate.EnumValueContract;
 

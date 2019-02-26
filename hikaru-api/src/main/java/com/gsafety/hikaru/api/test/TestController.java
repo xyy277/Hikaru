@@ -3,7 +3,7 @@ package com.gsafety.hikaru.api.test;
 
 import com.gsafety.hikaru.common.global.Result;
 import com.gsafety.hikaru.model.system.User;
-import com.gsafety.hikaru.service.user.UserService;
+import com.gsafety.hikaru.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

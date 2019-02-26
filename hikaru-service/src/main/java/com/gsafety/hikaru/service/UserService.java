@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.service.user;
+package com.gsafety.hikaru.service;
 
 import com.gsafety.hikaru.model.system.User;
 import org.springframework.http.ResponseEntity;

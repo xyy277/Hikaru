@@ -1,6 +1,7 @@
 package com.gsafety.hikaru.entity.test;
 
-import com.gsafety.hikaru.common.enumerate.business.Ultraviolet;
+import com.gsafety.hikaru.common.enumerate.Test;
+import com.gsafety.hikaru.common.enumerate.Ultraviolet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,9 @@ public class Sunday {
 
     @Column(name = "ultraviolet")
     private Ultraviolet  ultraviolet;
+
+    @Column(name = "test")
+    private Test test;
 
 
     
