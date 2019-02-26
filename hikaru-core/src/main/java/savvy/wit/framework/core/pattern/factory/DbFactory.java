@@ -22,14 +22,6 @@ public class DbFactory {
 
     private List<Class<?>> enumClassList;
 
-    public List<Class<?>> getEnumClassList() {
-        return enumClassList;
-    }
-
-    public void setEnumClassList(String... pack) {
-        this.enumClassList = Scanner.scanning(pack);
-    }
-
     public static DbFactory me() {
         return LazyInit.INITIALIZATION;
     }
@@ -48,6 +40,23 @@ public class DbFactory {
         return properties;
     }
 
+    public List<Class<?>> getEnumClassList() {
+        return enumClassList;
+    }
+
+    public DbFactory setProperties(String key, String value) {
+        if (this.properties == null) {
+            this.properties = new Properties();
+        }
+        this.properties.setProperty(key, value);
+        return LazyInit.INITIALIZATION;
+    }
+
+    public DbFactory setEnumClassList(String... pack) {
+        this.enumClassList = Scanner.scanning(pack);
+        return LazyInit.INITIALIZATION;
+    }
+
     public void setSource(Properties properties) {
         this.properties = properties;
     }
@@ -58,7 +67,7 @@ public class DbFactory {
      * 不会覆盖
      * @param paths
      */
-    public void setSource(String... paths) {
+    public DbFactory setSource(String... paths) {
         InputStream inputStream = null;
         Properties properties = new Properties();
         for (String path : paths) {
@@ -90,5 +99,6 @@ public class DbFactory {
 
         }
         this.properties = properties;
+        return LazyInit.INITIALIZATION;
     }
 }

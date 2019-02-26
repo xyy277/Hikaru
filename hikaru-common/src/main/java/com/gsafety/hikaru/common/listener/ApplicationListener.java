@@ -32,6 +32,8 @@ public class ApplicationListener implements ServletContextListener {
         DbFactory.me().setSource("./db.properties", "db.properties");
         // 设置泛型package
         DbFactory.me().setEnumClassList("com.gsafety.hikaru.common.enumerate");
+        // 设置参数vacancy - 插入数据为null时，补“”
+        DbFactory.me().setProperties("vacancy", "true");
     }
 
     @Override
