@@ -10,6 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.factory.DbFactory;
+import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

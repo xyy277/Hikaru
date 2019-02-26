@@ -3,7 +3,7 @@ package savvy.wit.framework.core.service;/**
  */
 
 import savvy.wit.framework.core.base.callback.DaoCallBack;
-import savvy.wit.framework.core.base.service.Cdt;
+import savvy.wit.framework.core.base.service.cdt.Cdt;
 import savvy.wit.framework.core.base.service.dao.Dao;
 
 import java.util.List;
@@ -21,11 +21,9 @@ public interface BaseService<T> {
 
     Dao dao();
 
-    T select(Class clazz, Cdt cdt);
-
     T fetch(Cdt cdt);
 
-    boolean delete(Class clazz, Cdt cdt);
+    boolean delete(Cdt cdt);
 
     boolean update(T t);
 
@@ -35,9 +33,9 @@ public interface BaseService<T> {
 
     int insertBath(List<T> list);
 
-    List<T> query(Class clazz, Cdt cdt);
+    List<T> query(Cdt cdt);
 
-    List<T> query(Class clazz, Cdt cdt, DaoCallBack<T> callBack);
+    List<T> query(Cdt cdt, DaoCallBack<T> callBack);
 
-    List<T> query(Class clazz);
+    List<T> query();
 }

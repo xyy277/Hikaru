@@ -1,8 +1,7 @@
 package savvy.wit.framework.core.pattern.factory;
 
-import org.springframework.stereotype.Component;
-import savvy.wit.framework.core.base.service.Log;
-import savvy.wit.framework.core.base.service.impl.LogImpl;
+import savvy.wit.framework.core.base.service.log.Log;
+import savvy.wit.framework.core.base.service.log.impl.LogImpl;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -13,13 +12,24 @@ import savvy.wit.framework.core.base.service.impl.LogImpl;
  * Version : 1.0
  * Description : 
  ******************************/
-@Component
-public abstract class LogFactory {
+public class LogFactory {
+
+    private static LogFactory factory = new LogFactory();
 
     // private
     private static Log log = LogImpl.me();
 
     public static Log getLog() {
         return log;
+    }
+
+    public static LogFactory front(String front) {
+        log.front(front);
+        return factory;
+    }
+
+    public static LogFactory behind(String behind) {
+        log.behind(behind);
+        return factory;
     }
 }

@@ -4,14 +4,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.ImageUtil;
 import savvy.wit.framework.core.base.util.JsonUtil;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
-import savvy.wit.framework.core.structure.loopStructure.circle.Circle;
-import savvy.wit.framework.core.structure.shape.*;
+import savvy.wit.framework.core.structure.physical.loopStructure.circle.Circle;
+import savvy.wit.framework.core.structure.physical.shape.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -74,13 +74,12 @@ public class ImageController {
         }
     }
 
-    @RequestMapping(value = "/{width}/{height}/{arc}/{r}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{width}/{height}/{radian}/{arc}/{r}",method = RequestMethod.GET)
     public void test(@PathVariable int width, @PathVariable int height, @PathVariable int arc, @PathVariable int r,
-                     @RequestParam String point, HttpServletResponse response) {
+                    @PathVariable int radian, @RequestParam String point, HttpServletResponse response) {
         Circle circle = new Circle();
-        circle.setCenter(JsonUtil.fromJson(point, savvy.wit.framework.core.structure.shape.Point.class));
+        circle.setCenter(JsonUtil.fromJson(point, savvy.wit.framework.core.structure.physical.shape.Point.class));
         double precision = 1;
-        double radian = 60;
         // -------------------------------------------------------------
         circle.setArc(arc);
         circle.setR(r);

@@ -2,13 +2,13 @@ package zjj;
 
 import org.junit.Before;
 import org.junit.Test;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.construction.string.NewString;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
-import savvy.wit.framework.core.structure.loopStructure.circle.Circle;
-import savvy.wit.framework.core.structure.loopStructure.circle.Loop;
-import savvy.wit.framework.core.structure.shape.Curve;
+import savvy.wit.framework.core.structure.physical.loopStructure.circle.Circle;
+import savvy.wit.framework.core.structure.physical.loopStructure.circle.Loop;
+import savvy.wit.framework.core.structure.physical.shape.Curve;
 
 import java.util.Optional;
 import java.util.regex.Pattern;

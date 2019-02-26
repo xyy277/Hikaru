@@ -1,7 +1,6 @@
 package zjj;
 
-import org.junit.*;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.RSAUtil;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 

@@ -1,21 +1,27 @@
 package com.gsafety.hikaru.api.test;
 
 
+import com.gsafety.hikaru.common.global.Result;
 import com.gsafety.hikaru.model.system.User;
-import com.gsafety.hikaru.service.user.UserService;
+import com.gsafety.hikaru.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.StringUtil;
+import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -28,6 +34,7 @@ import java.util.List;
  ******************************/
 @RestController
 @RequestMapping("/test")
+@Api(value = "测试控制器", description = "api开发标准")
 public class TestController {
 
     private Log log = LogFactory.getLog();
@@ -47,25 +54,59 @@ public class TestController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> test() {
+    public Result<List<User>> test() {
         List<User> users = null;
 //        users = userService.query(User.class, CDT.where("name", "like", "%zhou%"));
         users = userService.query(CDT.NEW());
-        return new ResponseEntity(users, HttpStatus.OK);
+        return Result.success(users);
     }
 
+    @ApiOperation(value = "获取用户列表", notes = "测试集合转数组")
+    @RequestMapping(value = "/array", method = RequestMethod.GET)
+    public Result<User[]> testArray() {
+        List<User> users = null;
+        users = userService.query(CDT.NEW());
+        return Result.success(users.toArray());
+    }
+
+    @ApiOperation(value = "获取用户列表", notes = "测试数组")
+    @RequestMapping(value = "/array1", method = RequestMethod.GET)
+    public Result<User[]> array() {
+        List<User> users = null;
+        users = userService.query(CDT.NEW());
+        User[] users1 = new User[users.size()];
+        Counter counter = Counter.create();
+        users.forEach(user -> {
+            users1[counter.getIndex()] = user;
+        });
+        return Result.success(users1);
+    }
+
+    @ApiOperation(value = "获取用户列表", notes = "测试map集合")
+    @RequestMapping(value = "/array2", method = RequestMethod.GET)
+    public Result<Map<String, User>> map() {
+        return Result.success(userService.query(CDT.NEW()).parallelStream().collect(Collectors.toMap(User::getId, Function.identity())));
+    }
+
+    @ApiOperation(value = "获取用户列表", notes = "测试set集合")
+    @RequestMapping(value = "/array3", method = RequestMethod.GET)
+    public Result<Set<User>> set() {
+        return Result.success(userService.query(CDT.NEW()).parallelStream().collect(Collectors.toSet()));
+    }
+
+    @ApiOperation(value = "添加用户", notes = "保存用户对象")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<User> add(@RequestBody @Validated User user) {
+    public Result<User> add(@ApiParam(value = "用户对象") @RequestBody @Validated User user) {
         user.setOptTime(DateUtil.getNow());
         user.setOptUser(StringUtil.createCode());
         User user1 = userService.save(user);
-        return new ResponseEntity(user1, HttpStatus.OK);
+        return Result.success(user1);
     }
 
     @RequestMapping(value = "/addBatch", method = RequestMethod.POST)
-    public ResponseEntity<Integer> add(@RequestBody @Validated(value = User.class) User[] users) {
+    public Result<Integer> add(@RequestBody @Validated(value = User.class) User[] users) {
         int count = userService.insertBath(Arrays.asList(users));
-        return new ResponseEntity(count, HttpStatus.OK);
+        return Result.success(count);
     }
 
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)

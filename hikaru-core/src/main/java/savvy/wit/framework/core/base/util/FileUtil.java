@@ -2,7 +2,7 @@ package savvy.wit.framework.core.base.util;/**
  * Created by zhoujiajun on 2018/6/27.
  */
 
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.io.*;

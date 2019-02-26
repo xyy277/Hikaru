@@ -1,10 +1,10 @@
 package zjj;
 
 import org.junit.Before;
-import savvy.wit.framework.core.base.service.Log;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
-import savvy.wit.framework.core.structure.loopStructure.circle.Loop;
-import savvy.wit.framework.core.structure.shape.Curve;
+import savvy.wit.framework.core.structure.physical.loopStructure.circle.Loop;
+import savvy.wit.framework.core.structure.physical.shape.Curve;
 
 import javax.swing.*;
 import java.awt.*;

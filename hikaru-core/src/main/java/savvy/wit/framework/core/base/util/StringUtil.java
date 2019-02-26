@@ -35,6 +35,48 @@ public class StringUtil extends DateUtil {
         return -1;
     }
 
+    /**
+     * 对一个字符串做前置去0操作
+     * 遇到非0则停止
+     * @param result
+     * @return
+     */
+    private static String trimFrontZero(String result) {
+        StringBuffer res = new StringBuffer();
+        boolean flag = false;
+        for(int i = 0; i < result.length(); i++){
+            if(result.charAt(i) == '0' && flag == false){
+                continue;
+            }
+            if(result.charAt(i) != '0'){
+                flag = true;
+            }
+            res.append(result.charAt(i)); // 将result追加到res中
+        }
+        return res.toString();
+    }
+
+    /**
+     *
+     * @param result
+     * @param c
+     * @return
+     */
+    private static String trimFront(String result, char c) {
+        StringBuffer res = new StringBuffer();
+        boolean flag = false;
+        for(int i = 0; i < result.length(); i++){
+            if(result.charAt(i) == c && flag == false){
+                continue;
+            }
+            if(result.charAt(i) != c){
+                flag = true;
+            }
+            res.append(result.charAt(i)); // 将result追加到res中
+        }
+        return res.toString();
+    }
+
     public static boolean isBlank(String string) {
         return string == null ? true : "".equals(string) ? true : false;
     }

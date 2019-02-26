@@ -61,7 +61,7 @@ public class DateUtil {
         return new SimpleDateFormat(format).format(new Date());
     }
     public static String getNow(){
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,S").format(new Date());
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(new Date());
     }
     /**
      * 毫秒值转为 format类型的时间字符

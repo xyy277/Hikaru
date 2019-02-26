@@ -1,7 +1,7 @@
 package savvy.wit.framework.core.base.service.dao;
 
 import savvy.wit.framework.core.base.callback.DaoCallBack;
-import savvy.wit.framework.core.base.service.Cdt;
+import savvy.wit.framework.core.base.service.cdt.Cdt;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -60,6 +60,7 @@ public interface Dao<T> {
 
     /**
      * 在pack 包下自动建表
+     * 需要扫描到的Class 带有 @Table注解
      * @param refactor
      * @param pack
      */

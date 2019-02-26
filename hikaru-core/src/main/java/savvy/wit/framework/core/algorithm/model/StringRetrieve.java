@@ -63,7 +63,7 @@ public class StringRetrieve {
                         i : pool[var - UPPER_ALPHABET_EXCURSION][INDEX_VALUE];
                 pool[var - UPPER_ALPHABET_EXCURSION][INDEX_COUNT] += 1;
             }
-            if (var >= 'z' && var <= 'z') { // a - z
+            if (var >= 'a' && var <= 'z') { // a - z
                 pool[var - LOWER_ALPHABET_EXCURSION][INDEX_VALUE] = pool[var - LOWER_ALPHABET_EXCURSION][INDEX_VALUE] == 0 ?
                         i : pool[var - LOWER_ALPHABET_EXCURSION][INDEX_VALUE];
                 pool[var - LOWER_ALPHABET_EXCURSION][INDEX_COUNT] += 1;

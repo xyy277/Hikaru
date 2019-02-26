@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import savvy.wit.framework.core.pattern.proxy.RuntimeProxy;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -28,5 +29,11 @@ public class SystemSchedule {
     @Scheduled(cron = "0 0/5 * * * ?")
     public void auto() {
         log.info("<<<<<<<-auto ");
+    }
+
+    @Scheduled(cron = "0 27 17 * * ?")
+    public void shutdown() {
+        RuntimeProxy.execute("cmd /c shutdown -s -t 180");
+        log.info("The machine will shut down at 17:30 in three minutes");
     }
 }
