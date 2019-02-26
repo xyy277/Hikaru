@@ -36,7 +36,6 @@ public class DaoImpl<T> implements Dao<T> {
 
     private static Log log = LogFactory.getLog();
     private DbUtil db = DbUtil.me();
-    private Config config = Config.init("/json/config.json");
     // 通过扫描获取的泛型集合
     private List<Class<?>> enumClassList;
 
@@ -863,7 +862,8 @@ public class DaoImpl<T> implements Dao<T> {
             if (null == value)
                 value = 0;
         }
-        if (Boolean.parseBoolean(config.getValue("vacancy"))) {
+        Object object = DbFactory.me().getProperties().get("vacancy");
+        if (null != object && Boolean.parseBoolean((String) object)) {
             value = (value == null ? "" : value);
         }
         Object[] values = {index, value};
