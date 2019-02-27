@@ -23,9 +23,9 @@ public interface Log {
 
     void error(Exception e);
 
-    void print(String string);
+    Log print(String string);
 
-    void println(String string);
+    Log println(String string);
 
     void front(String front);
 

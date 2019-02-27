@@ -292,9 +292,8 @@ public class DaoImpl<T> implements Dao<T> {
             }
         }
         List<Class<?>> classList = Scanner.scanning(packList);
-        log.print("100*-");
+        log.print("100*-").print("<< starting >>").println("100*-");
         log.print("<< starting >>");
-        log.println("100*-");
         create(refactor,
                 classList.parallelStream()
                 .filter(aClass -> aClass.isAnnotationPresent(Table.class)).collect(Collectors.toList()));

@@ -227,7 +227,7 @@ public class LogImpl implements Log {
     Pattern pattern5 = Pattern.compile(regex5);
     Pattern pattern6 = Pattern.compile(regex6);
     @Override
-    public void print(String string) {
+    public Log print(String string) {
         if (pattern1.matcher(string).matches()) {
             String str = find(pattern4.matcher(string));
             int num = Integer.parseInt(str);
@@ -250,10 +250,11 @@ public class LogImpl implements Log {
         } else {
             System.out.print(string);
         }
+        return me();
     }
 
     @Override
-    public void println(String string) {
+    public Log println(String string) {
         if (pattern1.matcher(string).matches()) {
             String str = find(pattern4.matcher(string));
             int num = Integer.parseInt(str);
@@ -276,6 +277,7 @@ public class LogImpl implements Log {
         } else {
             System.out.println(string);
         }
+        return me();
     }
 
     private String find(Matcher matcher) {

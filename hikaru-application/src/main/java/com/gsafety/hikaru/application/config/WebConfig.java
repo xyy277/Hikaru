@@ -39,16 +39,16 @@ import java.util.List;
  * Version : 1.0
  * Description : 
  ******************************/
-@EnableWebMvc
+@EnableWebMvc // SpringWebMvc
 @ComponentScan({"com.gsafety.hikaru", "savvy.wit.framework.core.base.service.dao",
-"com.gsafety.hikaru.common"})
+"com.gsafety.hikaru.common"}) // 扫描注册bean
 @ServletComponentScan("com.gsafety.hikaru.common") // 扫描自定义 监听器 过滤器
-@EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableAspectJAutoProxy(proxyTargetClass = true) // 启用AOP自动配置
 @SpringBootConfiguration
 public class WebConfig  implements WebMvcConfigurer {
 
     @Autowired
-    private LegalVerifyInterceptor legalVerifyInterceptor;
+    private LegalVerifyInterceptor legalVerifyInterceptor; // 自定义拦截器
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -65,6 +65,10 @@ public class WebConfig  implements WebMvcConfigurer {
         return messageSource;
     }
 
+    /**
+     * Validate配置
+     * @return
+     */
     @Override
     public Validator getValidator() {
         LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
@@ -73,12 +77,21 @@ public class WebConfig  implements WebMvcConfigurer {
         return localValidatorFactoryBean;
     }
 
+    /**
+     * 拦截器配置
+     * @param registry
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(legalVerifyInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/**.*");
     }
 
+
+    /**
+     * Swagger资源配置
+     * @param registry
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
@@ -91,6 +104,10 @@ public class WebConfig  implements WebMvcConfigurer {
 
     }
 
+    /**
+     * JSON格式转换
+     * @param converters
+     */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
