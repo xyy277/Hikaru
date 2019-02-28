@@ -38,4 +38,8 @@ public interface BaseService<T> {
     List<T> query(Cdt cdt, DaoCallBack<T> callBack);
 
     List<T> query();
+
+    long count();
+
+    long count(Cdt cdt);
 }

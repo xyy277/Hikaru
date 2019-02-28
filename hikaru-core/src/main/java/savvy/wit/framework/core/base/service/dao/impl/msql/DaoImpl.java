@@ -837,14 +837,34 @@ public class DaoImpl<T> implements Dao<T> {
     @Override
     public long count(Class clazz) throws SQLException {
         long count = 0;
-
+        String sql = "select count(1) from "+ clazz.getSimpleName();
+        Connection connection = db.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getLong(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return count;
     }
 
     @Override
     public long count(Class clazz, Cdt cdt) throws SQLException {
         long count = 0;
-
+        String sql = "select count(1) from "+ clazz.getSimpleName() + " " + cdt.getCondition();
+        Connection connection = db.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getLong(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return count;
     }
 
