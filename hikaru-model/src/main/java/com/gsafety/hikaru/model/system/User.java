@@ -1,6 +1,6 @@
 package com.gsafety.hikaru.model.system;
 
-import savvy.wit.framework.application.model.BaseModel;
+import com.gsafety.hikaru.model.BaseModel;
 import io.swagger.annotations.ApiModelProperty;
 import savvy.wit.framework.core.base.service.dao.annotation.*;
 
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * Version : 1.0
  * Description : 
  ******************************/
-@Table
+@Table(engine = Table.Engine.MyiSAM)
 public class User extends BaseModel {
 
 
@@ -26,24 +26,30 @@ public class User extends BaseModel {
     @ApiModelProperty(value = "编号", required = true)
     private String id;
 
-    @Column()
+    @Column(index = true, alias = "index_user_name")
     @Type(type = CType.VARCHAR)
     @Comment("姓名")
     @NotNull(message = "${property.null}")
     @ApiModelProperty(value = "姓名", required = true)
     private String name;
 
-    @Column()
+    @Column
     @Type(type = CType.INT, width = 3)
     @Comment("年龄")
     @ApiModelProperty(value = "年龄", required = true)
     private Integer age;
 
-    @Column()
+    @Column
     @Type(type = CType.INT, width = 1)
     @Comment("是否在线，默认0：离线")
     @ApiModelProperty(value = "是否在线，默认0不在线", required = true)
     private int online;
+
+    @Column
+    @Type(type = CType.BOOLEAN)
+    @Comment("是否禁用，默认false:禁用")
+    @ApiModelProperty(value = "是否禁用，默认false:禁用", required = true)
+    private boolean disable;
 
     public User() {
     }
@@ -78,6 +84,14 @@ public class User extends BaseModel {
 
     public void setOnline(int online) {
         this.online = online;
+    }
+
+    public boolean getDisable() {
+        return disable;
+    }
+
+    public void setDisable(boolean disable) {
+        this.disable = disable;
     }
 
     @Override

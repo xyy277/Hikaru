@@ -33,7 +33,7 @@ public class SystemSchedule {
 
     @Scheduled(cron = "0 27 17 * * ?")
     public void shutdown() {
-        RuntimeProxy.execute("cmd /c shutdown -s -t 180");
+        RuntimeProxy.get().execute("shutdown", "cmd /c shutdown -s -t 180");
         log.info("The machine will shut down at 17:30 in three minutes");
     }
 }

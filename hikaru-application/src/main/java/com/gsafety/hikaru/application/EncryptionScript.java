@@ -1,6 +1,7 @@
 package com.gsafety.hikaru.application;
 
 import savvy.wit.framework.core.base.service.log.Log;
+import savvy.wit.framework.core.base.util.ArraysUtil;
 import savvy.wit.framework.core.base.util.RSAUtil;
 import savvy.wit.framework.core.base.util.Strings;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
@@ -11,6 +12,7 @@ import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*******************************
@@ -35,7 +37,10 @@ public class EncryptionScript {
     }
 
 
-    public static void encryption() {
+    /**
+     * 自动修改db
+     */
+    public static void encryption(String... passwords) {
         String path = "";
         if (new File("./db.properties").exists())
             path ="./db.properties";
@@ -43,7 +48,6 @@ public class EncryptionScript {
             path = Thread.currentThread().getContextClassLoader().getResource("db.properties").getFile();
         path = path.substring(0, 1).equals("/") ? path.substring(1, path.length()) : path;
         path = Strings.path2Backslash(path);
-
         Counter counter = Counter.create();
         counter.setValue("append", true);
         FileAdapter.me().readLine(path, string -> {
@@ -53,9 +57,14 @@ public class EncryptionScript {
         });
 
         if ((Boolean) counter.getValue("append")) {
-            System.out.print("请输入要加密的数据库密码：");
-            Scanner scanner = new Scanner(System.in);
-            String password = scanner.nextLine();
+            String password = "";
+            if (passwords.length <= 0) {
+                log.println("100*--");
+                log.print("请输入要加密的数据库密码：");
+                Scanner scanner = new Scanner(System.in);
+                password = scanner.nextLine();
+            } else
+                password = passwords[passwords.length - 1];
             RSAPublicKey publicKey = null;
             try {
                 publicKey = RSAUtil.getPublicKey(PUBLIC_KEY);
@@ -67,14 +76,20 @@ public class EncryptionScript {
             String cryptograph = RSAUtil.publicEncrypt(password, publicKey);
             FileAdapter.me().lazyWriter(new File(path),
                     "\npassword=" + cryptograph);
+            log.println("100*--");
             log.warn("请查看db.properties中密码是否添加成功，如未添加请手动添加↓");
-            System.out.println("请将下方↓↓↓生成的字符串复制到db.properties");
-            System.out.println("password=" + cryptograph);
+            log.println("请将下方↓↓↓生成的字符串复制到db.properties");
+            log.println("password=" + cryptograph);
+            log.println("100*==");
         }
     }
 
+    /**
+     * 手动运行修改db
+     */
     public static void encipherment() {
-            System.out.print("请输入要加密的数据库密码：");
+        log.println("100*--");
+        log.print("请输入要加密的数据库密码：");
             Scanner scanner = new Scanner(System.in);
             String password = scanner.nextLine();
             RSAPublicKey publicKey = null;
@@ -86,7 +101,8 @@ public class EncryptionScript {
                 e.printStackTrace();
             }
             String cryptograph = RSAUtil.publicEncrypt(password, publicKey);
-            System.out.println("请将下方↓↓↓生成的字符串复制到db.properties");
-            System.out.println("password=" + cryptograph);
-        }
+            log.println("请将下方↓↓↓生成的字符串复制到db.properties");
+            log.println("password=" + cryptograph);
+        log.println("100*==");
+    }
 }

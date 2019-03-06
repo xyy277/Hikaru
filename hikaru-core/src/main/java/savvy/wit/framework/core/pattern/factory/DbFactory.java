@@ -20,7 +20,7 @@ public class DbFactory {
 
     private Properties properties;
 
-    private List<Class<?>> enumClassList;
+    private List<Class<?>> enumClassList = new ArrayList<>();
 
     public static DbFactory me() {
         return LazyInit.INITIALIZATION;
@@ -44,7 +44,11 @@ public class DbFactory {
         return enumClassList;
     }
 
-    public DbFactory setProperties(String key, String value) {
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
+
+    public DbFactory setProperty(String key, String value) {
         if (this.properties == null) {
             this.properties = new Properties();
         }

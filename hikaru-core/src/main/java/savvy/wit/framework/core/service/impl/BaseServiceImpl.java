@@ -8,6 +8,7 @@ import savvy.wit.framework.core.service.Service;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,8 +142,30 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
         return list;
     }
 
+    @Override
+    public long count() {
+        long count;
+        try {
+            count = dao().count(getGenericSuperclass());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return count;
+    }
+
+    @Override
+    public long count(Cdt cdt) {
+        long count;
+        try {
+            count = dao().count(getGenericSuperclass(), cdt);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return count;
+    }
+
     /**
-     * 获取泛型
+     * 获取子类泛型
      * @return
      */
     private Class<T> getGenericSuperclass() {

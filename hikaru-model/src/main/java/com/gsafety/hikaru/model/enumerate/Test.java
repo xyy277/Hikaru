@@ -1,30 +1,25 @@
-package com.gsafety.hikaru.common.enumerate;
+package com.gsafety.hikaru.model.enumerate;
 
 import savvy.wit.framework.core.base.service.enumerate.EnumValueContract;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 紫外线等级
- * File name : Ultraviolet
+ * Title : 
+ * File name : Test
  * Author : zhoujiajun
- * Date : 2019/2/19 9:24
+ * Date : 2019/2/26 14:43
  * Version : 1.0
- * Description : 描述紫外线强度
+ * Description : 
  ******************************/
-public enum Ultraviolet implements EnumValueContract<Ultraviolet> {
+public enum Test implements EnumValueContract<Test> {
 
-    // 强
-    Powerful(1),
+    OK(1),
 
-    // 普通
-    Normal(2),
-
-    // 弱
-    Feeble(3);
+    NO(2);
 
     private int paramType;
 
-    Ultraviolet(int paramType) {
+    Test(int paramType) {
         this.paramType = paramType;
     }
 
@@ -32,5 +27,4 @@ public enum Ultraviolet implements EnumValueContract<Ultraviolet> {
     public int getParamType() {
         return this.paramType;
     }
-
 }

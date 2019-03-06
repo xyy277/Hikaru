@@ -13,7 +13,6 @@
     hikaru-feign           | feign client  - 
     hikaru-model           | model         - 业务模型
     hikaru-service         | 业务          - 业务实现
-    logs                   | log           - core测试日志输出
     out                    | build         - 打包
     .gitignore             |
     hs_err_pid24096.log    |

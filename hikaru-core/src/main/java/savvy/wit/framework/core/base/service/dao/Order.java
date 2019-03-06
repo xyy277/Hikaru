@@ -10,6 +10,8 @@ package savvy.wit.framework.core.base.service.dao;
  * Description : 
  ******************************/
 public enum  Order {
+    // 默认无含义
+    DEFAULT,
     ASC,
     DESC;
 

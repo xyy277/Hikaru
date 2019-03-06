@@ -3,6 +3,7 @@ package savvy.wit.framework.core.base.service.dao.impl.msql;
 import org.springframework.stereotype.Repository;
 import savvy.wit.framework.core.base.callback.DaoCallBack;
 import savvy.wit.framework.core.base.service.cdt.Cdt;
+import savvy.wit.framework.core.base.service.dao.Order;
 import savvy.wit.framework.core.base.service.enumerate.EnumValueContract;
 import savvy.wit.framework.core.base.service.enumerate.impl.EnumConvertBase;
 import savvy.wit.framework.core.base.service.log.Log;
@@ -14,6 +15,7 @@ import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.Config;
 import savvy.wit.framework.core.pattern.factory.DbFactory;
+import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.io.File;
@@ -292,9 +294,8 @@ public class DaoImpl<T> implements Dao<T> {
             }
         }
         List<Class<?>> classList = Scanner.scanning(packList);
-        log.print("100*-");
+        log.print("100*-").print("<< starting >>").println("100*-");
         log.print("<< starting >>");
-        log.println("100*-");
         create(refactor,
                 classList.parallelStream()
                 .filter(aClass -> aClass.isAnnotationPresent(Table.class)).collect(Collectors.toList()));
@@ -340,16 +341,43 @@ public class DaoImpl<T> implements Dao<T> {
             connection = db.getConnection();
             sql.append("create table if not exists" + decorateName(clazz.getSimpleName()) + "( \n");
             sql.append(decorateSql(clazz));
-            if (clazz.getSuperclass() != null)
-                sql.append(decorateSql(clazz.getSuperclass()));
+            Class superClass = clazz.getSuperclass();
+            while (superClass != null && superClass != Object.class) {
+                sql.append(decorateSql(superClass));
+                superClass = superClass.getSuperclass();
+            }
             sql.replace(sql.lastIndexOf(","), sql.lastIndexOf(",") + 1, "");
+
+            // 索引 Index/Key
             List<Field> fields = Arrays.asList(clazz.getDeclaredFields())
+                    .parallelStream()
+                    .filter(field -> field.isAnnotationPresent(Column.class))
+                    .filter(field -> field.getAnnotation(Column.class).index())
+                    .collect(Collectors.toList());
+            if (fields.size() > 0) {
+                // 给每个field建立索引
+                fields.forEach(field -> {
+                    sql.append(decorateIndex(field, clazz));
+                });
+            }
+
+            //primary Key
+           fields = Arrays.asList(clazz.getDeclaredFields())
                     .parallelStream()
                     .filter(field -> field.isAnnotationPresent(Id.class))
                     .collect(Collectors.toList());
             if(fields.size() > 0)
                 sql.append(", PRIMARY KEY (`"+fields.get(0).getName()+"`)");
-            sql.append("\n )ENGINE=InnoDB");
+
+
+            sql.append("\n )");
+
+            // Engine
+            if (clazz.isAnnotationPresent(Table.class)) {
+                Table table = (Table) clazz.getAnnotation(Table.class);
+                String engine = table.engine().toString();
+                sql.append("ENGINE=" + engine);
+            }
             sql.append(" DEFAULT CHARSET=utf8;");
             connection = db.getConnection();
             preparedStatement = connection.prepareStatement(sql.toString());
@@ -378,11 +406,15 @@ public class DaoImpl<T> implements Dao<T> {
                     cType = type.type().toString().toLowerCase();
                 }
                 int width = type.width();
-                sql.append(decorateField(cType, width));
+                if (cType.equals(CType.TEXT.toString().toLowerCase()) ||
+                        cType.equals(CType.BOOLEAN.toString().toLowerCase()))
+                    sql.append(cType);
+                else
+                    sql.append(decorateField(cType, width));
                 if (type.vacancy()) {
-                    sql.append(" DEFAULT NULL ");
+                    sql.append(" DEFAULT " + (cType.equals(CType.BOOLEAN.toString().toLowerCase()) ? "true " : "NULL "));
                 } else {
-                    sql.append(" NOT NULL ");
+                    sql.append((cType.equals(CType.BOOLEAN.toString().toLowerCase()) ? " DEFAULT false " :" NOT NULL "));
                 }
                 if (type.type() == CType.INT) {
                     sql.append(" DEFAULT " + type.acquiescence() + " ");
@@ -446,7 +478,8 @@ public class DaoImpl<T> implements Dao<T> {
                     types.add(field.getType().getSimpleName());
                 }
             });
-            if (t.getClass().getSuperclass() != null) {
+            Class superClass = t.getClass().getSuperclass();
+            while (superClass != null && superClass != Object.class) {
                 Arrays.asList(t.getClass().getSuperclass().getDeclaredFields()).forEach(field -> {
                     names.add(field.getName());
                     fields.add(field);
@@ -461,6 +494,7 @@ public class DaoImpl<T> implements Dao<T> {
                         types.add(field.getType().getSimpleName());
                     }
                 });
+                superClass = superClass.getSuperclass();
             }
             for(int var = 0 ; var < names.size(); var++) {
                 Object value = ObjectUtil.getValueByFiledName(t,names.get(var));
@@ -519,12 +553,14 @@ public class DaoImpl<T> implements Dao<T> {
                 names.add(field.getName());
                 fields.add(field);
             });
-            if (t.getClass().getSuperclass() != null) {
+            Class superClass = t.getClass().getSuperclass();
+            while (superClass != null && superClass != Object.class) {
                 Arrays.asList(t.getClass().getSuperclass().getDeclaredFields()).forEach(field -> {
                     types.add(field.getType().getSimpleName());
                     names.add(field.getName());
                     fields.add(field);
                 });
+                superClass = superClass.getSuperclass();
             }
             for(int var = 0 ; var < names.size(); var++) {
                 Object value = ObjectUtil.getValueByFiled(t, fields.get(var));
@@ -568,12 +604,14 @@ public class DaoImpl<T> implements Dao<T> {
                 names.add(field.getName());
                 fields.add(field);
             });
-            if (t.getClass().getSuperclass() != null) {
+            Class superClass = t.getClass().getSuperclass();
+            while (superClass != null && superClass != Object.class) {
                 Arrays.asList(t.getClass().getSuperclass().getDeclaredFields()).forEach(field -> {
                     types.add(field.getType().getSimpleName());
                     names.add(field.getName());
                     fields.add(field);
                 });
+                superClass = superClass.getSuperclass();
             }
             for(int var = 0 ; var < fields.size(); var++) {
                 Object value = ObjectUtil.getValueByFiled(t, fields.get(var));
@@ -625,7 +663,8 @@ public class DaoImpl<T> implements Dao<T> {
                     types.add(field.getType().getSimpleName());
                 }
             });
-            if (clazz.getSuperclass() != null) {
+            Class superClass = clazz.getSuperclass();
+            while (superClass != null && superClass != Object.class) {
                 Arrays.asList(clazz.getSuperclass().getDeclaredFields()).forEach(field -> {
                     names.add(field.getName());
                     // 泛型转换
@@ -639,6 +678,7 @@ public class DaoImpl<T> implements Dao<T> {
                         types.add(field.getType().getSimpleName());
                     }
                 });
+                superClass = superClass.getSuperclass();
             }
             while (resultSet.next()) {
                 t = t == null ? (T) clazz.newInstance() : t;
@@ -688,7 +728,8 @@ public class DaoImpl<T> implements Dao<T> {
                 }
                 names.add(field.getName());
             });
-            if (clazz.getSuperclass() != null) {
+            Class superClass = clazz.getSuperclass();
+            while (superClass != null && superClass != Object.class) {
                 Arrays.asList(clazz.getSuperclass().getDeclaredFields()).forEach(field -> {
                     // 泛型转换
                     List<Class> classList = enumClassList.parallelStream()
@@ -703,6 +744,7 @@ public class DaoImpl<T> implements Dao<T> {
                     }
                     names.add(field.getName());
                 });
+                superClass = superClass.getSuperclass();
             }
             while (resultSet.next()) {
                 T t = (T)clazz.newInstance();
@@ -765,7 +807,7 @@ public class DaoImpl<T> implements Dao<T> {
         try {
             // insert  into `test_x`(`keys_c`,`values_c`) values ('aaa','bbbb')
             int index = 0;
-            int size = 200 > list.size() ? list.size()/2 : 200;
+            int size = 10000 >= list.size() ? 1000 : 100;
             //缓存对象的基本属性
             List<String> types = new ArrayList<>();
             List<String> names = new ArrayList<>();
@@ -784,7 +826,8 @@ public class DaoImpl<T> implements Dao<T> {
                     types.add(field.getType().getSimpleName());
                 }
             });
-            if (clazz.getSuperclass() != null) {
+            Class supperClass = clazz.getSuperclass();
+            while (supperClass != null && supperClass != Object.class) {
                 Arrays.asList(clazz.getSuperclass().getDeclaredFields()).forEach(field -> {
                     names.add(field.getName());
                     fields.add(field);
@@ -799,6 +842,7 @@ public class DaoImpl<T> implements Dao<T> {
                         types.add(field.getType().getSimpleName());
                     }
                 });
+                supperClass = supperClass.getSuperclass();
             }
             for(T t : list) {
                 index ++;
@@ -838,14 +882,34 @@ public class DaoImpl<T> implements Dao<T> {
     @Override
     public long count(Class clazz) throws SQLException {
         long count = 0;
-
+        String sql = "select count(1) from "+ clazz.getSimpleName();
+        Connection connection = db.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getLong(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return count;
     }
 
     @Override
     public long count(Class clazz, Cdt cdt) throws SQLException {
         long count = 0;
-
+        String sql = "select count(1) from "+ clazz.getSimpleName() + " " + cdt.getCondition();
+        Connection connection = db.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getLong(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return count;
     }
 
@@ -887,7 +951,12 @@ public class DaoImpl<T> implements Dao<T> {
         String table = clazz.getSimpleName();
         StringBuilder builder = new StringBuilder("Insert into " + table.toLowerCase()+" (");
         List<Field> fields1 = Arrays.asList(clazz.getDeclaredFields());
-        List<Field> fields2 = Arrays.asList(clazz.getSuperclass().getDeclaredFields());
+        List<Field> fields2 = new ArrayList<>();
+        Class supperClass = clazz.getSuperclass();
+        while (supperClass != null && supperClass != Object.class) {
+            fields2.addAll(Arrays.asList(supperClass.getDeclaredFields()));
+            supperClass = supperClass.getSuperclass();
+        }
         int length = 0;
         for(Field field : fields1.parallelStream()
                 .filter(field -> null != field.getAnnotation(Column.class))
@@ -921,7 +990,39 @@ public class DaoImpl<T> implements Dao<T> {
     }
 
     private String decorateField (String cType, int width) {
-        return " " + cType + "(" + width + ") ";
+        return " " + cType + decorateParam(width);
+    }
+
+    private String decorateParam(Object param) {
+        return "(" + param + ") ";
+    }
+    /**
+     * CREATE TABLE 表名( 属性名 数据类型[完整性约束条件],
+     * 属性名 数据类型[完整性约束条件],
+     *  ......
+     * 属性名 数据类型
+     * [ UNIQUE | FULLTEXT | SPATIAL ] INDEX | KEY
+     * [ 别名] ( 属性名1 [(长度)] [ ASC | DESC] )
+     * );
+     *  索引 KEY `idx_hc_vote_project_sn` (`project_sn`) USING BTREE,
+     */
+    private StringBuilder decorateIndex(Field field, Class clazz) {
+        StringBuilder indexSql = new StringBuilder(" ,INDEX ");
+        Column column = field.getAnnotation(Column.class);
+        if (Column.KeyType.DEFAULT != column.type()) {
+            // 非默认情况添加索引类型
+            indexSql.append(column.type().toString() + " ");
+        }
+        // 别名
+        indexSql.append(decorateName(StringUtil.isNotBlank(column.alias())? column.alias() : "index_" + clazz.getSimpleName() + "_" + field.getName()));
+        // 对应字段名
+        indexSql.append(decorateParam(decorateName(StringUtil.isNotBlank(column.name())? Strings.hump2Line(column.name()) : Strings.hump2Line(field.getName()))));
+        if (Order.DEFAULT != column.order()) {
+            // 非默认情况下添加索引排序
+            indexSql.append(column.order().toString() + " ");
+        }
+        indexSql.append( "USING BTREE ");
+        return indexSql;
     }
 
     private String column2FieldByName(String value) {

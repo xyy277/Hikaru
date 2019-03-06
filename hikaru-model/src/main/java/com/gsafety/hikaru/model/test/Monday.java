@@ -1,6 +1,6 @@
 package com.gsafety.hikaru.model.test;
 
-import savvy.wit.framework.application.model.BaseModel;
+import com.gsafety.hikaru.model.BaseModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

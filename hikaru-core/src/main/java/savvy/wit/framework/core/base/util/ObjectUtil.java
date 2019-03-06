@@ -42,7 +42,7 @@ public class ObjectUtil {
                     .collect(Collectors.toList());
             return list.get(0).invoke(o, value);
         }catch (Exception e){
-            log.error(e);
+//            log.error(e);
         }
         return null;
     }
@@ -54,7 +54,7 @@ public class ObjectUtil {
                     .collect(Collectors.toList()).get(0);
             autoInvoke(method, obj, value, method.getParameterTypes()[0]);
         }catch (Exception e){
-            log.error(e);
+//            log.error(e);
         }
     }
 

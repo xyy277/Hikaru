@@ -26,14 +26,13 @@ public class ApplicationListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         log.info("ApplicationListener init");
+        // 很low的方式去配置参数
         // 设置log打印格式
         LogFactory.front("❤").behind("-->:>");
-        // 设置dao数据源
-        DbFactory.me().setSource("./db.properties", "db.properties");
-        // 设置泛型package
-        DbFactory.me().setEnumClassList("com.gsafety.hikaru.common.enumerate");
-        // 设置参数vacancy - 插入数据为null时，补“”
-        DbFactory.me().setProperties("vacancy", "true");
+        DbFactory dbFactory = DbFactory.me();
+        dbFactory.setSource("./db.properties", "db.properties")                 // 设置dao数据源
+                .setEnumClassList("com.gsafety.hikaru.model.enumerate")        // 设置泛型package
+                .setProperty("vacancy", "true");                                // 设置参数vacancy - 插入数据为null时，补“”
     }
 
     @Override

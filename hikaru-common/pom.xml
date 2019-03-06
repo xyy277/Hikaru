@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>com.gsafety.hikaru</groupId>
-            <artifactId>hikaru-core</artifactId>
+            <artifactId>hikaru-model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

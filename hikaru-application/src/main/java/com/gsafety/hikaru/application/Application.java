@@ -30,16 +30,16 @@ public class Application {
         // |建议在上线部署时，手动给配置文件添加加密后的password，加密方式执行EncryptionScript.main()                      |
         EncryptionScript.encryption();
         // -------------------------------------------------------------------------------------------------------------
-
+        RuntimeProxy runtimeProxy = RuntimeProxy.get();
         // -------------------------------------------------------------------------------------------------------------
         // |启动redis redis安装路径根据实际修改                                                                          |
-        RuntimeProxy.execute("cmd /k  I:\\Work\\service\\redis64\\redis-server.exe");
+        runtimeProxy.execute("redis", "cmd /k  I:\\Work\\service\\redis64\\redis-server.exe");
         // |启动consul,windows开发环境下运行时自动启动本地consul，缺点看不到consul运行日志(需本地安装consul)                |
-        RuntimeProxy.execute("cmd /k consul agent -dev -ui -node=node1");
+        runtimeProxy.execute("consul","cmd /k consul agent -dev -ui -node=node1");
         // |以上本地开发环境下可以这么做，测试及生产环境务必删除                                                           |
         // -------------------------------------------------------------------------------------------------------------
         // 启动jmeter，shell 根据实际安装目录修改
-//        RuntimeProxy.execute("cmd /k G:\\server\\apache-jmeter-5.0\\bin\\jmeter.bat");
+//        RuntimeProxy.execute("jmeter", "cmd /k G:\\server\\apache-jmeter-5.0\\bin\\jmeter.bat");
 
         // 启动服务
         SpringApplication.run(Application.class, args);
