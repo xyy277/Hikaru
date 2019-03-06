@@ -127,38 +127,52 @@ public class CdtImpl implements Cdt {
 
     /**
      * SELECT * FROM USER WHERE NAME LIKE '%zx%' GROUP BY id ORDER BY age ASC, id DESC LIMIT 0, 20
-     * @param var3
+     * @param var1
      * @param order
      * @return
      */
     @Override
-    public Cdt order(Object var3, Order order) {
-        if (!this.order) {
-            append(" order by ");
-            this.order = true;
-        } else {
-            append(" , ");
+    public Cdt order(Object var1, Order order) {
+        if (var1 != null && order != null) {
+            if (!this.order) {
+                append(" order by ");
+                this.order = true;
+            } else {
+                append(" , ");
+            }
+            if (var1 instanceof Field) {
+                append(((Field) var1).getName());
+            } else {
+                append(var1.toString() + " ");
+            }
+            append(order.toString());
         }
-        if (var3 instanceof Field) {
-            append(((Field) var3).getName());
-        } else {
-            append(var3.toString() + " ");
+        return this;
+    }
+
+    @Override
+    public Cdt order(Order order, Object... vars) {
+        if (order != null && vars != null && vars.length > 0){
+            for (Object var : vars) {
+                order(var, order);
+            }
         }
-        append(order.toString());
         return this;
     }
 
     @Override
     public Cdt asc(String... columns) {
-        if (sql.indexOf("order by") == -1) {
-            append(" order by ");
-        } else {
-            append(" , ");
-        }
-        for (int i = 0; i < columns.length; i++) {
-            append(columns[i] + " asc ");
-            if (i < columns.length - 1) {
+        if (columns != null && columns.length > 0) {
+            if (sql.indexOf("order by") == -1) {
+                append(" order by ");
+            } else {
                 append(" , ");
+            }
+            for (int i = 0; i < columns.length; i++) {
+                append(columns[i] + " asc ");
+                if (i < columns.length - 1) {
+                    append(" , ");
+                }
             }
         }
         return this;
@@ -166,15 +180,17 @@ public class CdtImpl implements Cdt {
 
     @Override
     public Cdt desc(String... columns) {
-        if (sql.indexOf("order by") == -1) {
-            append(" order by ");
-        } else {
-            append(" , ");
-        }
-        for (int i = 0; i < columns.length; i++) {
-            append(columns[i] + " desc ");
-            if (i < columns.length - 1) {
+        if (columns != null && columns.length > 0) {
+            if (sql.indexOf("order by") == -1) {
+                append(" order by ");
+            } else {
                 append(" , ");
+            }
+            for (int i = 0; i < columns.length; i++) {
+                append(columns[i] + " desc ");
+                if (i < columns.length - 1) {
+                    append(" , ");
+                }
             }
         }
         return this;

@@ -37,15 +37,15 @@ public class UserController extends BaseController<User> {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public Result<List<User>> index(@RequestBody Pagination pagination) {
-        return Result.success(userService.query(CDT.page(pagination).order("name", Order.DESC)));
-    }
+//    @RequestMapping(value = "", method = RequestMethod.POST)
+//    public Result<List<User>> index(@RequestBody Pagination pagination) {
+//        return Result.success(userService.query(CDT.page(pagination).order("name", Order.DESC)));
+//    }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Result<User> add(@RequestBody @Validated User user) {
-        return Result.success(userService.insert(user));
-    }
+//    @RequestMapping(value = "/add", method = RequestMethod.POST)
+//    public Result<User> add(@RequestBody @Validated User user) {
+//        return Result.success(userService.insert(user));
+//    }
 
     @RequestMapping(value = "/addBatch", method = RequestMethod.POST)
     public Result<List<User>> addBatch(@RequestBody @Validated ValidList<User> users) {

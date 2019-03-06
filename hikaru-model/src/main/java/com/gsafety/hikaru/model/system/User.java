@@ -26,7 +26,7 @@ public class User extends BaseModel {
     @ApiModelProperty(value = "编号", required = true)
     private String id;
 
-    @Column
+    @Column(index = true, alias = "index_user_name")
     @Type(type = CType.VARCHAR)
     @Comment("姓名")
     @NotNull(message = "${property.null}")

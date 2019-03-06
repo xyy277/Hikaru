@@ -36,7 +36,9 @@ public interface Cdt {
 
     Cdt and(String var1, String var2, Object var3, Cdt cdt);
 
-    Cdt order(Object var3, Order order);
+    Cdt order(Object var1, Order order);
+
+    Cdt order(Order order, Object... vars);
 
     Cdt asc(String... columns);
 

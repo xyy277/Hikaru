@@ -3,6 +3,7 @@ package savvy.wit.framework.core.base.service.dao.impl.msql;
 import org.springframework.stereotype.Repository;
 import savvy.wit.framework.core.base.callback.DaoCallBack;
 import savvy.wit.framework.core.base.service.cdt.Cdt;
+import savvy.wit.framework.core.base.service.dao.Order;
 import savvy.wit.framework.core.base.service.enumerate.EnumValueContract;
 import savvy.wit.framework.core.base.service.enumerate.impl.EnumConvertBase;
 import savvy.wit.framework.core.base.service.log.Log;
@@ -346,13 +347,32 @@ public class DaoImpl<T> implements Dao<T> {
                 superClass = superClass.getSuperclass();
             }
             sql.replace(sql.lastIndexOf(","), sql.lastIndexOf(",") + 1, "");
+
+            // 索引 Index/Key
             List<Field> fields = Arrays.asList(clazz.getDeclaredFields())
+                    .parallelStream()
+                    .filter(field -> field.isAnnotationPresent(Column.class))
+                    .filter(field -> field.getAnnotation(Column.class).index())
+                    .collect(Collectors.toList());
+            if (fields.size() > 0) {
+                // 给每个field建立索引
+                fields.forEach(field -> {
+                    sql.append(decorateIndex(field, clazz));
+                });
+            }
+
+            //primary Key
+           fields = Arrays.asList(clazz.getDeclaredFields())
                     .parallelStream()
                     .filter(field -> field.isAnnotationPresent(Id.class))
                     .collect(Collectors.toList());
             if(fields.size() > 0)
                 sql.append(", PRIMARY KEY (`"+fields.get(0).getName()+"`)");
+
+
             sql.append("\n )");
+
+            // Engine
             if (clazz.isAnnotationPresent(Table.class)) {
                 Table table = (Table) clazz.getAnnotation(Table.class);
                 String engine = table.engine().toString();
@@ -970,7 +990,39 @@ public class DaoImpl<T> implements Dao<T> {
     }
 
     private String decorateField (String cType, int width) {
-        return " " + cType + "(" + width + ") ";
+        return " " + cType + decorateParam(width);
+    }
+
+    private String decorateParam(Object param) {
+        return "(" + param + ") ";
+    }
+    /**
+     * CREATE TABLE 表名( 属性名 数据类型[完整性约束条件],
+     * 属性名 数据类型[完整性约束条件],
+     *  ......
+     * 属性名 数据类型
+     * [ UNIQUE | FULLTEXT | SPATIAL ] INDEX | KEY
+     * [ 别名] ( 属性名1 [(长度)] [ ASC | DESC] )
+     * );
+     *  索引 KEY `idx_hc_vote_project_sn` (`project_sn`) USING BTREE,
+     */
+    private StringBuilder decorateIndex(Field field, Class clazz) {
+        StringBuilder indexSql = new StringBuilder(" ,INDEX ");
+        Column column = field.getAnnotation(Column.class);
+        if (Column.KeyType.DEFAULT != column.type()) {
+            // 非默认情况添加索引类型
+            indexSql.append(column.type().toString() + " ");
+        }
+        // 别名
+        indexSql.append(decorateName(StringUtil.isNotBlank(column.alias())? column.alias() : "index_" + clazz.getSimpleName() + "_" + field.getName()));
+        // 对应字段名
+        indexSql.append(decorateParam(decorateName(StringUtil.isNotBlank(column.name())? Strings.hump2Line(column.name()) : Strings.hump2Line(field.getName()))));
+        if (Order.DEFAULT != column.order()) {
+            // 非默认情况下添加索引排序
+            indexSql.append(column.order().toString() + " ");
+        }
+        indexSql.append( "USING BTREE ");
+        return indexSql;
     }
 
     private String column2FieldByName(String value) {

@@ -21,6 +21,8 @@ public class Pagination implements Serializable {
 
     private String[] sorts;
 
+    private Order order;
+
 
     public String limit() {
         return " limit " + (pageIndex - 1) * pageSize + " , " + pageSize;
@@ -66,5 +68,13 @@ public class Pagination implements Serializable {
 
     public void setSorts(String[] sorts) {
         this.sorts = sorts;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }
