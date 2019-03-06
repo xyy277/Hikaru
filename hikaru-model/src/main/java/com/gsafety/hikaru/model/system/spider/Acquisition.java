@@ -1,10 +1,10 @@
-package savvy.wit.framework.application.model.spider;
+package com.gsafety.hikaru.model.system.spider;
 
+import com.gsafety.hikaru.model.BaseModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import savvy.wit.framework.application.model.BaseModel;
 import savvy.wit.framework.core.base.service.dao.annotation.*;
 
 /*******************************

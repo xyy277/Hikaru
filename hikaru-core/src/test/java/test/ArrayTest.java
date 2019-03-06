@@ -1,9 +1,11 @@
 package test;
 
 import savvy.wit.framework.core.base.service.log.Log;
+import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.structure.logical.LogicalLoop;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 /*******************************
@@ -20,6 +22,9 @@ public class ArrayTest {
     private static Log log = LogFactory.getLog();
 
     public static void main(String[] args) {
+        log.log(Files.getEncoding("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-core\\src\\main\\java\\savvy\\wit\\framework\\application\\model\\BaseModel.java"));
+        log.log(Files.getEncoding("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-model\\src\\main\\java\\com\\gsafety\\hikaru\\model\\system\\User.java"));
+        log.log(Files.getEncoding("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-core\\src\\main\\java\\savvy\\wit\\framework\\core\\base\\service\\dao\\annotation\\Comment.java"));
         String regex1 = "[0-9]*(\\*){1}(\\W)*";
         String regex2 = "[0-9]*(\\*){1}[0-9]*";
         String regex3 = "(\\W)*(\\*){1}[0-9]*";

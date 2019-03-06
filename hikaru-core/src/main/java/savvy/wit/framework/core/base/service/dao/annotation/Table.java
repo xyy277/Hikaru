@@ -15,4 +15,14 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Table {
+    enum Engine {
+        ARCHIVE,
+        BLACKHOLE,
+        CSV,
+        InnoDB,
+        MEMORY,
+        MyiSAM,
+        PERFORMAN
+    }
+   Engine engine() default Engine.InnoDB;
 }

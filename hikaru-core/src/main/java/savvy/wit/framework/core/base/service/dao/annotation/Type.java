@@ -21,7 +21,7 @@ public @interface Type {
     int width() default 255;
 
     /**
-     * 默认非空
+     * 默认非空,若为boolean 默认false
      * @return
      */
     boolean vacancy() default false;

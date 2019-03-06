@@ -1,7 +1,7 @@
 package com.gsafety.hikaru.api.test;
 
-import com.gsafety.hikaru.common.enumerate.Test;
-import com.gsafety.hikaru.common.enumerate.Ultraviolet;
+import com.gsafety.hikaru.model.enumerate.Test;
+import com.gsafety.hikaru.model.enumerate.Ultraviolet;
 import com.gsafety.hikaru.model.test.Sunday;
 import savvy.wit.framework.core.base.service.enumerate.EnumValueContract;
 import savvy.wit.framework.core.base.service.enumerate.impl.EnumConvertBase;

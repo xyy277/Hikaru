@@ -1,4 +1,4 @@
-package savvy.wit.framework.application.model;
+package com.gsafety.hikaru.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import savvy.wit.framework.core.base.service.dao.annotation.CType;
@@ -13,7 +13,7 @@ import java.io.Serializable;
  * Title : 
  * File name : BaseModel
  * Author : zhoujiajun
- * Date : 2019/1/3 15:16
+ * Date : 2019/3/5 18:54
  * Version : 1.0
  * Description : 
  ******************************/

@@ -31,7 +31,7 @@ public class ApplicationListener implements ServletContextListener {
         LogFactory.front("❤").behind("-->:>");
         DbFactory dbFactory = DbFactory.me();
         dbFactory.setSource("./db.properties", "db.properties")                 // 设置dao数据源
-                .setEnumClassList("com.gsafety.hikaru.common.enumerate")        // 设置泛型package
+                .setEnumClassList("com.gsafety.hikaru.model.enumerate")        // 设置泛型package
                 .setProperty("vacancy", "true");                                // 设置参数vacancy - 插入数据为null时，补“”
     }
 

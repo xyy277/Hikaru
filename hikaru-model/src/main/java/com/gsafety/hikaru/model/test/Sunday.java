@@ -1,12 +1,12 @@
 package com.gsafety.hikaru.model.test;
 
-import com.gsafety.hikaru.common.enumerate.Test;
-import com.gsafety.hikaru.common.enumerate.Ultraviolet;
+import com.gsafety.hikaru.model.enumerate.Test;
+import com.gsafety.hikaru.model.enumerate.Ultraviolet;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import savvy.wit.framework.application.model.BaseModel;
+import com.gsafety.hikaru.model.BaseModel;
 import savvy.wit.framework.core.base.service.dao.annotation.*;
 
 import javax.validation.constraints.NotNull;

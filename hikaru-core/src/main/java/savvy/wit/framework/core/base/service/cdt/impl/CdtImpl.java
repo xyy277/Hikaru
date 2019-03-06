@@ -49,7 +49,8 @@ public class CdtImpl implements Cdt {
     @Override
     public Cdt where(String... var) {
         boolean like = false;
-        append("where");
+        if (var.length > 0)
+            append("where");
         for (String param : var) {
             if (like) {
                 param = "'" + like(param) + "'";
