@@ -266,7 +266,8 @@ public class DaoImpl<T> implements Dao<T> {
         clazz.forEach(aClass -> {
             try {
                 create(aClass);
-            }catch (SQLException e) {
+                Thread.sleep(200);
+            }catch (Exception e) {
                 log.error(e);
             }
         });
@@ -892,6 +893,9 @@ public class DaoImpl<T> implements Dao<T> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            log.sql(sql);
+            db.close(connection,preparedStatement);
         }
         return count;
     }
@@ -899,6 +903,8 @@ public class DaoImpl<T> implements Dao<T> {
     @Override
     public long count(Class clazz, Cdt cdt) throws SQLException {
         long count = 0;
+        if (cdt == null && cdt.hasCondition())
+            return count(clazz);
         String sql = "select count(1) from "+ clazz.getSimpleName() + " " + cdt.getCondition();
         Connection connection = db.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -909,6 +915,9 @@ public class DaoImpl<T> implements Dao<T> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            log.sql(sql);
+            db.close(connection,preparedStatement);
         }
         return count;
     }

@@ -32,7 +32,7 @@ public class DataTest {
 
     public static void main(String[] args) {
         DbFactory.me().setSource("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-application\\src\\main\\resources\\db.properties");
-        for (int var = 1; var <= 20; var++) {
+        for (int var = 1; var <= 100; var++) {
             ThreadPool.me().newThread(() -> {
                 TimerAdapter.me().execute(new TimerTask() {
                     @Override
@@ -49,7 +49,7 @@ public class DataTest {
                             users.add(user);
                         }
                         try {
-                            log.log(Daos.get().insertBath(users, User.class));
+                            log.log(Daos.acquire().insertBath(users, User.class));
                         }catch (Exception e) {
                             log.error(e);
                         }
