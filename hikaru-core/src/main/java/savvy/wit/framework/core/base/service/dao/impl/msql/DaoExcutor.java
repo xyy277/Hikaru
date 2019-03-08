@@ -27,14 +27,14 @@ import java.util.stream.Collectors;
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 
- * File name : DaoImpl
+ * File name : DaoExcutor
  * Author : zhoujiajun
  * Date : 2018/6/29 21:45
  * Version : 1.0
  * Description : 
  ******************************/
 @Repository("dao")
-public class DaoImpl<T> implements Dao<T> {
+public class DaoExcutor<T> implements Dao<T> {
 
     private static Log log = LogFactory.getLog();
     private DbUtil db = DbUtil.me();
@@ -42,21 +42,21 @@ public class DaoImpl<T> implements Dao<T> {
     private List<Class<?>> enumClassList;
 
 
-    private DaoImpl() {
+    private DaoExcutor() {
         enumClassList = DbFactory.me().getEnumClassList();
     }
 
-    public static DaoImpl init() {
+    public static DaoExcutor init() {
         return LazyInit.INITIALIZATION;
     }
 
-    public static DaoImpl NEW() {
-        return new DaoImpl();
+    public static DaoExcutor NEW() {
+        return new DaoExcutor();
     }
 
 
     private static class LazyInit {
-        private static DaoImpl INITIALIZATION = new DaoImpl();
+        private static DaoExcutor INITIALIZATION = new DaoExcutor();
     }
 
     @Override
@@ -531,7 +531,6 @@ public class DaoImpl<T> implements Dao<T> {
         try {
             success = preparedStatement.execute();
         }finally {
-            log.sql(preparedStatement != null ? preparedStatement.toString() : "preparedStatement is null");
             log.sql(sql);
             db.close(connection,preparedStatement);
         }

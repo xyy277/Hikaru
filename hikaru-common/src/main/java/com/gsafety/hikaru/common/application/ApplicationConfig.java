@@ -84,5 +84,6 @@ public class ApplicationConfig implements CommandLineRunner {
             this.pack = pack;
         ApplicationInitialization.me().initialization(this.automation, this.refactor, this.pack);
         log.info("ApplicationConfig init completed");
+        LogFactory.print("Hello Hikaru !");
     }
 }

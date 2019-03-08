@@ -28,15 +28,15 @@ import java.util.List;
  * baseModel中有pagination作为分页条件
  * 查询条件都用model封装
  * 路径遵从
- * “/”              -
- * “/count”         -
- * “/add”           -
- * “/remove”        -
- * “/update”        -
- * “/fetch/{id}”    -
+ * “/”              - GET
+ * “/count”         - GET
+ * “/add”           - POST
+ * “/remove/{id}”   - GET
+ * “/update”        - POST
+ * “/fetch/{id}”    - GET
  ******************************/
 @RestController
-public class BaseController<T> {
+public class BaseController<T, PK> {
 
     @RequestMapping(value = "/count", method = RequestMethod.POST)
     public Result<Long> count(@RequestBody T t) {
@@ -68,11 +68,11 @@ public class BaseController<T> {
         return Result.success(t);
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.POST)
-    public Result<Boolean> remove(@RequestBody T t) {
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
+    public Result<Boolean> remove(@PathVariable PK id) {
         Boolean status = false;
         try {
-            status = Daos.get().delete(CDT.where("id", "=", ObjectUtil.getValueByFiledName(t, "id")), t.getClass());
+            status = Daos.get().delete(CDT.where("id", "=", id), getGenericSuperclass());
         } catch (SQLException e) {
             Result.error(new Error(500, e.getMessage()));
         }
@@ -91,7 +91,7 @@ public class BaseController<T> {
     }
 
     @RequestMapping(value = "/fetch/{id}", method = RequestMethod.GET)
-    public Result<T> fetch(@PathVariable Object id) {
+    public Result<T> fetch(@PathVariable PK id) {
         T t = null;
         try {
             t = (T) Daos.acquire().fetch(CDT.where("id", "=", id), getGenericSuperclass());
@@ -126,7 +126,7 @@ public class BaseController<T> {
         return Result.success(list);
     }
     /**
-     * 获取子类泛型
+     * 获取子类泛型T
      * @return
      */
     private Class<T> getGenericSuperclass() {
@@ -135,7 +135,7 @@ public class BaseController<T> {
         if(type instanceof ParameterizedType){//这个Type对象根据泛型声明，就有可能是4中接口之一，如果它是BaseServiceImpl<User>这种形式
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();//获取泛型的类型参数数组
-            if(actualTypeArguments != null && actualTypeArguments.length == 1){
+            if(actualTypeArguments != null && actualTypeArguments.length > 0) {
                 if(actualTypeArguments[0] instanceof Class){//类型参数也有可能不是Class类型
                     clazz = (Class<T>) actualTypeArguments[0];
                 }
