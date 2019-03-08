@@ -2,9 +2,11 @@ package com.gsafety.hikaru.api;
 
 import com.gsafety.hikaru.common.global.Error;
 import com.gsafety.hikaru.common.global.Result;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import savvy.wit.framework.core.base.service.cdt.Cdt;
 import savvy.wit.framework.core.base.service.dao.Pagination;
+import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.ObjectUtil;
 import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.Daos;
@@ -59,8 +61,11 @@ public class BaseController<T, PK> {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Result<T> add(@RequestBody T t) {
+    public Result<T> add(@Validated @RequestBody T t) {
         try {
+            if (t != null) {
+                ObjectUtil.setValueByFieldName(t, "optTime", DateUtil.getNow());
+            }
             t = (T) Daos.acquire().insert(t);
         } catch (SQLException e) {
             Result.error(new Error(500, e.getMessage()));
@@ -83,6 +88,9 @@ public class BaseController<T, PK> {
     public Result<Boolean> update(@RequestBody T t) {
         Boolean status = false;
         try {
+            if (t != null) {
+                ObjectUtil.setValueByFieldName(t, "optTime", DateUtil.getNow());
+            }
             status = Daos.get().update(t);
         } catch (SQLException e) {
             Result.error(new Error(500, e.getMessage()));

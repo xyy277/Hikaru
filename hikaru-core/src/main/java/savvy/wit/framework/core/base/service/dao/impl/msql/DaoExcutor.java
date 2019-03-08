@@ -466,8 +466,10 @@ public class DaoExcutor<T> implements Dao<T> {
             List<String> names = new ArrayList<>();
             List<Field> fields = new ArrayList<>();
             Arrays.asList(t.getClass().getDeclaredFields()).forEach(field -> {
-                names.add(field.getName());
-                fields.add(field);
+                if (field.isAnnotationPresent(Column.class)) {
+                    names.add(field.getName());
+                    fields.add(field);
+                }
                 // 泛型转换
                 List<Class> classList = enumClassList.parallelStream()
                         .filter(aClass -> aClass.getSimpleName().equals(field.getType().getSimpleName()))
@@ -482,8 +484,10 @@ public class DaoExcutor<T> implements Dao<T> {
             Class superClass = t.getClass().getSuperclass();
             while (superClass != null && superClass != Object.class) {
                 Arrays.asList(t.getClass().getSuperclass().getDeclaredFields()).forEach(field -> {
-                    names.add(field.getName());
-                    fields.add(field);
+                    if (field.isAnnotationPresent(Column.class)) {
+                        names.add(field.getName());
+                        fields.add(field);
+                    }
                     // 泛型转换
                     List<Class> classList = enumClassList.parallelStream()
                             .filter(aClass -> aClass.getSimpleName().equals(field.getType().getSimpleName()))
@@ -514,7 +518,10 @@ public class DaoExcutor<T> implements Dao<T> {
             if(preparedStatement.execute()) {
                 ObjectUtil.setValueByFieldName(t,"id",preparedStatement.getGeneratedKeys());
             }
-        }finally {
+        }catch (Exception e) {
+            connection.rollback();
+            throw new RuntimeException(e);
+        } finally {
             log.sql(preparedStatement != null ? preparedStatement.toString() : "preparedStatement is null");
             log.sql(sql);
             db.close(connection,preparedStatement);
@@ -549,32 +556,37 @@ public class DaoExcutor<T> implements Dao<T> {
             List<String> names = new ArrayList<>();
             List<Field> fields = new ArrayList<>();
             Arrays.asList(t.getClass().getDeclaredFields()).forEach(field -> {
-                types.add(field.getType().getSimpleName());
-                names.add(field.getName());
-                fields.add(field);
+                if (field.isAnnotationPresent(Column.class)) {
+                    types.add(field.getType().getSimpleName());
+                    names.add(field.getName());
+                    fields.add(field);
+                }
             });
             Class superClass = t.getClass().getSuperclass();
             while (superClass != null && superClass != Object.class) {
                 Arrays.asList(t.getClass().getSuperclass().getDeclaredFields()).forEach(field -> {
-                    types.add(field.getType().getSimpleName());
-                    names.add(field.getName());
-                    fields.add(field);
+                    if (field.isAnnotationPresent(Column.class)) {
+                        types.add(field.getType().getSimpleName());
+                        names.add(field.getName());
+                        fields.add(field);
+                    }
                 });
                 superClass = superClass.getSuperclass();
             }
             for(int var = 0 ; var < names.size(); var++) {
+                String columnName = Strings.hump2Line(names.get(var));
                 Object value = ObjectUtil.getValueByFiled(t, fields.get(var));
                 if (null == value) {
                     continue;
                 }
                 if (fields.get(var).isAnnotationPresent(Id.class)) {
-                    where = " where " +  names.get(var) + " = '" + value + "'";
+                    where = " where " +  columnName + " = '" + value + "'";
                     continue;
                 }
                 if (types.get(var).equals("String"))
-                    sql.append(names.get(var) + " = '" + value + "', ");
+                    sql.append(columnName + " = '" + value + "', ");
                 else
-                    sql.append(names.get(var) + " = " + value + ", ");
+                    sql.append(columnName + " = " + value + ", ");
             }
             if(-1 != sql.indexOf(",")){
                 sql.replace(sql.lastIndexOf(","),sql.lastIndexOf(",") + 1,""); //去除最后一个 逗号,
@@ -603,16 +615,20 @@ public class DaoExcutor<T> implements Dao<T> {
             List<String> names = new ArrayList<>();
             List<Field> fields = new ArrayList<>();
             Arrays.asList(t.getClass().getDeclaredFields()).forEach(field -> {
-                types.add(field.getType().getSimpleName());
-                names.add(field.getName());
-                fields.add(field);
+                if (field.isAnnotationPresent(Column.class)) {
+                    types.add(field.getType().getSimpleName());
+                    names.add(field.getName());
+                    fields.add(field);
+                }
             });
             Class superClass = t.getClass().getSuperclass();
             while (superClass != null && superClass != Object.class) {
                 Arrays.asList(t.getClass().getSuperclass().getDeclaredFields()).forEach(field -> {
-                    types.add(field.getType().getSimpleName());
-                    names.add(field.getName());
-                    fields.add(field);
+                    if (field.isAnnotationPresent(Column.class)) {
+                        types.add(field.getType().getSimpleName());
+                        names.add(field.getName());
+                        fields.add(field);
+                    }
                 });
                 superClass = superClass.getSuperclass();
             }
