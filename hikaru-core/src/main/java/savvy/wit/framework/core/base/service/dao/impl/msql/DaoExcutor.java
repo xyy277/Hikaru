@@ -571,7 +571,10 @@ public class DaoExcutor<T> implements Dao<T> {
                     where = " where " +  names.get(var) + " = '" + value + "'";
                     continue;
                 }
-                sql.append(names.get(var) + " = '" + value + "', ");
+                if (types.get(var).equals("String"))
+                    sql.append(names.get(var) + " = '" + value + "', ");
+                else
+                    sql.append(names.get(var) + " = " + value + ", ");
             }
             if(-1 != sql.indexOf(",")){
                 sql.replace(sql.lastIndexOf(","),sql.lastIndexOf(",") + 1,""); //去除最后一个 逗号,

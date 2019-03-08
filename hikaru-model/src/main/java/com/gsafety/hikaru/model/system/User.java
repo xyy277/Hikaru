@@ -100,8 +100,9 @@ public class User extends BaseModel {
         return "User{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", age=" + age + '\'' +
-                ", online=" + online + '\'' +
+                ", age='" + age + '\'' +
+                ", online='" + online + '\'' +
+                ", disable='" + disable + '\'' +
                 ", optTime='" + super.getOptTime() + '\'' +
                 ", optUser='" + super.getOptUser() + '\'' +
                 '}';
