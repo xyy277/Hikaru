@@ -109,7 +109,7 @@ public class BaseController<T, PK> {
         return Result.success(t);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/index", method = RequestMethod.POST)
     public Result<List<T>> query(@RequestBody T t) {
         List<T> list = new ArrayList<>();
         Cdt cdt = CDT.NEW();
