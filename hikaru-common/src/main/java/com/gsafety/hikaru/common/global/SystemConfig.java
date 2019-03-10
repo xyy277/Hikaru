@@ -13,5 +13,5 @@ public interface SystemConfig {
 
     String SYSTEM_BASE = "/";
 
-    String  SWAGGER_URI = "/swagger-ui.html";
+    String  SWAGGER_URI = "swagger-ui.html";
 }

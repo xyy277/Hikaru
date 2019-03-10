@@ -36,9 +36,9 @@ public class LegalVerifyInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) {
-        if (httpServletRequest.getRequestURI().indexOf("/error") == -1
-                && httpServletRequest.getRequestURI().indexOf(healthCheckPath) == -1)
-            logger.info(httpServletRequest.getRequestURI());
+//        if (httpServletRequest.getRequestURI().indexOf("/error") == -1
+//                && httpServletRequest.getRequestURI().indexOf(healthCheckPath) == -1)
+//            logger.info(httpServletRequest.getRequestURI());
         return true;
     }
 

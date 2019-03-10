@@ -31,7 +31,7 @@ public class DataTest {
     private static Log log = LogFactory.getLog();
 
     public static void main(String[] args) {
-        DbFactory.me().setSource("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-application\\src\\main\\resources\\db.properties");
+        DbFactory.me().setSource(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties");
         for (int var = 1; var <= 100; var++) {
             ThreadPool.me().newThread(() -> {
                 TimerAdapter.me().execute(new TimerTask() {
@@ -61,7 +61,7 @@ public class DataTest {
 
     @Before
     public void before() {
-        DbFactory.me().setSource("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-application\\src\\main\\resources\\db.properties");
+        DbFactory.me().setSource(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties");
     }
 
     @Test

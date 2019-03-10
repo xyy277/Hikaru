@@ -42,7 +42,10 @@ public class RouterFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse)servletResponse;
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-        filterChain.doFilter(request, response);
+        String uri = request.getRequestURI();
+        if ((path + "/").equals(uri) ){
+            response.sendRedirect(uri + SystemConfig.SWAGGER_URI);
+        }else filterChain.doFilter(request, response);
     }
 
     @Override

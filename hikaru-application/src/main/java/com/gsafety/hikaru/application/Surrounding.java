@@ -21,6 +21,7 @@ public class Surrounding {
     }
 
     /**
+     * 适用于本地开发环境。
      * 环境配置 路径需要根据实际进行路径修改
      */
     protected void windowsOS() {
@@ -35,7 +36,10 @@ public class Surrounding {
 //        RuntimeProxy.execute("jmeter", "cmd /k G:\\server\\apache-jmeter-5.0\\bin\\jmeter.bat");
     }
 
+    /**
+     * linux 生产环境不建议用这种方式启动注册中心登配置
+     */
     protected void linuxOS() {
-
+        // 略
     }
 }
