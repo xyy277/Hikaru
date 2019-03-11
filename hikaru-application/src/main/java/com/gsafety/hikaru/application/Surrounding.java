@@ -20,13 +20,13 @@ public class Surrounding {
 
     protected Surrounding() {
         this.system = System.getProperty("os.name");
-        LogFactory.print("Current OS: " + system);
     }
 
     /**
      * 根据系统运行环境选择不同环境配置
      */
     protected void OS() {
+        LogFactory.print("Current OS: " + system);
         if (this.system.toUpperCase().indexOf("WINDOWS") != -1) {
             windowsOS();
         } else if (this.system.toUpperCase().indexOf("LINUX") != -1) {

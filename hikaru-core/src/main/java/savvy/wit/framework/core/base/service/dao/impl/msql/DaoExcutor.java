@@ -266,7 +266,7 @@ public class DaoExcutor<T> implements Dao<T> {
         clazz.forEach(aClass -> {
             try {
                 create(aClass);
-                Thread.sleep(200);
+//                Thread.sleep(200);
             }catch (Exception e) {
                 log.error(e);
             }
@@ -347,7 +347,6 @@ public class DaoExcutor<T> implements Dao<T> {
                 sql.append(decorateSql(superClass));
                 superClass = superClass.getSuperclass();
             }
-            sql.replace(sql.lastIndexOf(","), sql.lastIndexOf(",") + 1, "");
 
             // 索引 Index/Key
             List<Field> fields = Arrays.asList(clazz.getDeclaredFields())
@@ -368,7 +367,7 @@ public class DaoExcutor<T> implements Dao<T> {
                     .filter(field -> field.isAnnotationPresent(Id.class))
                     .collect(Collectors.toList());
             if(fields.size() > 0)
-                sql.append(", PRIMARY KEY (`"+fields.get(0).getName()+"`)");
+                sql.append(" PRIMARY KEY (`"+fields.get(0).getName()+"`)");
 
 
             sql.append("\n )");
@@ -1034,7 +1033,7 @@ public class DaoExcutor<T> implements Dao<T> {
      *  索引 KEY `idx_hc_vote_project_sn` (`project_sn`) USING BTREE,
      */
     private StringBuilder decorateIndex(Field field, Class clazz) {
-        StringBuilder indexSql = new StringBuilder(" ,INDEX ");
+        StringBuilder indexSql = new StringBuilder(" INDEX ");
         Column column = field.getAnnotation(Column.class);
         if (Column.KeyType.DEFAULT != column.type()) {
             // 非默认情况添加索引类型
@@ -1048,7 +1047,7 @@ public class DaoExcutor<T> implements Dao<T> {
             // 非默认情况下添加索引排序
             indexSql.append(column.order().toString() + " ");
         }
-        indexSql.append( "USING BTREE ");
+        indexSql.append( "USING BTREE,\n ");
         return indexSql;
     }
 

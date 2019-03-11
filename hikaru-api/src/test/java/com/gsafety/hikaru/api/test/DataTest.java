@@ -13,6 +13,7 @@ import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.DbFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
@@ -29,9 +30,10 @@ import java.util.TimerTask;
 public class DataTest {
 
     private static Log log = LogFactory.getLog();
-
+    private static final String PROJECT_PATH = System.getProperty("user.dir");
     public static void main(String[] args) {
-        DbFactory.me().setSource(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties");
+        log.log(PROJECT_PATH + "\\hikaru-application\\src\\main\\resources\\db.properties");
+        DbFactory.me().setSource(PROJECT_PATH + "\\hikaru-application\\src\\main\\resources\\db.properties");
         for (int var = 1; var <= 100; var++) {
             ThreadPool.me().newThread(() -> {
                 TimerAdapter.me().execute(new TimerTask() {
@@ -41,6 +43,7 @@ public class DataTest {
                         for (int i =1; i <= 100; i++) {
                             User user = new User();
                             user.setName(StringUtil.createCode());
+                            user.setUsername(StringUtil.createCode());
                             user.setAge(DateUtil.random(120));
                             user.setOnline(DateUtil.random(2));
                             user.setDisable(DateUtil.random(2) > 0 ? true : false);
@@ -61,7 +64,7 @@ public class DataTest {
 
     @Before
     public void before() {
-        DbFactory.me().setSource(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties");
+        DbFactory.me().setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\db.properties");
     }
 
     @Test

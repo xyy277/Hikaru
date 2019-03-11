@@ -34,6 +34,13 @@ public class User extends BaseModel {
     @ApiModelProperty(value = "姓名", required = true)
     private String name;
 
+    @Column(index = true, alias = "index_user_username")
+    @Type(type = CType.VARCHAR)
+    @Comment("用户名")
+    @NotNull(message = "${property.null}")
+    @ApiModelProperty(value = "用户名", required = true)
+    private String username;
+
     @Column
     @Type(type = CType.INT, width = 3)
     @Comment("年龄")
@@ -71,6 +78,14 @@ public class User extends BaseModel {
         this.name = name;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public Integer getAge() {
         return age;
     }
@@ -100,6 +115,7 @@ public class User extends BaseModel {
         return "User{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
                 ", age='" + age + '\'' +
                 ", online='" + online + '\'' +
                 ", disable='" + disable + '\'' +
