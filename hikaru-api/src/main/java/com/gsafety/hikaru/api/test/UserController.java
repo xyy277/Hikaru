@@ -30,7 +30,7 @@ import java.util.List;
  ******************************/
 @RestController
 @RequestMapping("/user")
-public class UserController extends BaseController<User> {
+public class UserController extends BaseController<User, String> {
 
     private Logger log = LoggerFactory.getLogger(UserController.class);
 

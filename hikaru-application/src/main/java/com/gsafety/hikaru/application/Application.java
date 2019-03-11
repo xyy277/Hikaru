@@ -4,7 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import savvy.wit.framework.core.pattern.proxy.RuntimeProxy;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -21,8 +20,10 @@ import savvy.wit.framework.core.pattern.proxy.RuntimeProxy;
 @EnableFeignClients(basePackages = "com.gsafety.hikaru.feign")
 public class Application {
 
-    public static void main(String[] args) {
+    private Surrounding in = new Surrounding();
 
+    public static void main(String[] args) {
+        Application running = new Application();
         // -------------------------------------------------------------------------------------------------------------
         // |1、开发环境时：动态设置数据库密码，一次执行加密后添加到db.properties中,永久有效，重新编译后失效                  |
         // |如不需可进行注释，那么在启动前请前往EncryptionScript执行main函数，将生成的数据库密码添加到db.properties中，并重新编译
@@ -30,16 +31,9 @@ public class Application {
         // |建议在上线部署时，手动给配置文件添加加密后的password，加密方式执行EncryptionScript.main()                      |
         EncryptionScript.encryption();
         // -------------------------------------------------------------------------------------------------------------
-        RuntimeProxy runtimeProxy = RuntimeProxy.get();
-        // -------------------------------------------------------------------------------------------------------------
-        // |启动redis redis安装路径根据实际修改                                                                          |
-        runtimeProxy.execute("redis", "cmd /k  I:\\Work\\service\\redis64\\redis-server.exe");
-        // |启动consul,windows开发环境下运行时自动启动本地consul，缺点看不到consul运行日志(需本地安装consul)                |
-        runtimeProxy.execute("consul","cmd /k consul agent -dev -ui -node=node1");
-        // |以上本地开发环境下可以这么做，测试及生产环境务必删除                                                           |
-        // -------------------------------------------------------------------------------------------------------------
-        // 启动jmeter，shell 根据实际安装目录修改
-//        RuntimeProxy.execute("jmeter", "cmd /k G:\\server\\apache-jmeter-5.0\\bin\\jmeter.bat");
+
+        // 本地开发环境一键启动，适合入门开发者，减少繁琐步骤
+        running.in.OS();
 
         // 启动服务
         SpringApplication.run(Application.class, args);

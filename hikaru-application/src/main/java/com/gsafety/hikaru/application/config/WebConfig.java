@@ -132,6 +132,7 @@ public class WebConfig  implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("", SystemConfig.SWAGGER_URI);
+        registry.addRedirectViewController("/", SystemConfig.SWAGGER_URI);
     }
 
     /**

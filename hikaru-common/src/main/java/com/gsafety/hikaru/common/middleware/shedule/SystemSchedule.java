@@ -31,9 +31,9 @@ public class SystemSchedule {
         log.info("<<<<<<<-auto ");
     }
 
-    @Scheduled(cron = "0 27 17 * * ?")
+    @Scheduled(cron = "0 20 18 * * ?")
     public void shutdown() {
-        RuntimeProxy.get().execute("shutdown", "cmd /c shutdown -s -t 180");
-        log.info("The machine will shut down at 17:30 in three minutes");
+        RuntimeProxy.get().execute("shutdown", "cmd /c shutdown -s -t 600");
+        log.info("The machine will shut down at 18:30 in ten minutes");
     }
 }

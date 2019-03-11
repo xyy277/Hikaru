@@ -43,7 +43,7 @@ public class CdtTest {
 
     @org.junit.Test
     public void test() {
-        DbFactory.me().setSource("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-core\\src\\main\\resources\\properties\\db.properties");
+        DbFactory.me().setSource(System.getProperty("user.dir") + "\\hikaru-core\\src\\main\\resources\\properties\\db.properties");
 
         BaseService baseService = new BaseServiceImpl(Daos.get());
 //        log.log(baseService.query(User.class, cdt));

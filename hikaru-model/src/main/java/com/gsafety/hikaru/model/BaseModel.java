@@ -1,6 +1,7 @@
 package com.gsafety.hikaru.model;
 
 import io.swagger.annotations.ApiModelProperty;
+import savvy.wit.framework.core.base.service.dao.Pagination;
 import savvy.wit.framework.core.base.service.dao.annotation.CType;
 import savvy.wit.framework.core.base.service.dao.annotation.Column;
 import savvy.wit.framework.core.base.service.dao.annotation.Comment;
@@ -31,6 +32,8 @@ public class BaseModel implements Serializable {
     @ApiModelProperty(value = "操作人")
     private String optUser;
 
+    private Pagination pagination;
+
     public String getOptTime() {
         return optTime;
     }
@@ -45,6 +48,14 @@ public class BaseModel implements Serializable {
 
     public void setOptUser(String optUser) {
         this.optUser = optUser;
+    }
+
+    public Pagination getPagination() {
+        return pagination;
+    }
+
+    public void setPagination(Pagination pagination) {
+        this.pagination = pagination;
     }
 
     @Override

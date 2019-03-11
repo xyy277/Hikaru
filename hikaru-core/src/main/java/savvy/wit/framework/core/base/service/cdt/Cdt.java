@@ -44,4 +44,6 @@ public interface Cdt {
 
     Cdt desc(String... columns);
 
+    boolean hasCondition();
+
 }

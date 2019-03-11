@@ -31,8 +31,8 @@ public class DataTest {
     private static Log log = LogFactory.getLog();
 
     public static void main(String[] args) {
-        DbFactory.me().setSource("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-application\\src\\main\\resources\\db.properties");
-        for (int var = 1; var <= 20; var++) {
+        DbFactory.me().setSource(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties");
+        for (int var = 1; var <= 100; var++) {
             ThreadPool.me().newThread(() -> {
                 TimerAdapter.me().execute(new TimerTask() {
                     @Override
@@ -49,7 +49,7 @@ public class DataTest {
                             users.add(user);
                         }
                         try {
-                            log.log(Daos.get().insertBath(users, User.class));
+                            log.log(Daos.acquire().insertBath(users, User.class));
                         }catch (Exception e) {
                             log.error(e);
                         }
@@ -61,7 +61,7 @@ public class DataTest {
 
     @Before
     public void before() {
-        DbFactory.me().setSource("G:\\GitHub\\hikaru\\hikaru-server\\hikaru-application\\src\\main\\resources\\db.properties");
+        DbFactory.me().setSource(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties");
     }
 
     @Test

@@ -42,6 +42,11 @@ public class CdtImpl implements Cdt {
     }
 
     @Override
+    public boolean hasCondition() {
+        return sql.length() > 1;
+    }
+
+    @Override
     public Pagination page() {
         return pagination;
     }
@@ -69,11 +74,15 @@ public class CdtImpl implements Cdt {
 
     @Override
     public Cdt where(String var1, String var2, Object var3) {
-        append(" where").append(var1).append(var2);
-            if (var3.getClass().getSimpleName().equals("String"))
-                var3 = "'" + (var2.equals("like") ? like(var3.toString()) : var3.toString()) + "'";
-            else
-                var3 = (var2.equals("like") ? like(var3.toString()) : var3.toString());
+        if (sql.indexOf("where") == -1)
+            append(" where");
+        else
+            append(" and");
+        append(var1).append(var2);
+        if (var3.getClass().getSimpleName().equals("String"))
+            var3 = "'" + (var2.equals("like") ? like(var3.toString()) : var3.toString()) + "'";
+        else
+            var3 = (var2.equals("like") ? like(var3.toString()) : var3.toString());
         append(var3);
         return this;
     }

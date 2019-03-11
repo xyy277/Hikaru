@@ -39,7 +39,7 @@ public class RuntimeProxy {
 
     public Process execute(String processKey, String command) {
         Process process = null;
-        log.log(command);
+//        log.log(command);
         try {
             process = processMap.get(processKey);
             if (process != null && process.isAlive()) {

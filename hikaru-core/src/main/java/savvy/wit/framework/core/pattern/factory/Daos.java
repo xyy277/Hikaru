@@ -2,7 +2,7 @@ package savvy.wit.framework.core.pattern.factory;
 
 
 import savvy.wit.framework.core.base.service.dao.Dao;
-import savvy.wit.framework.core.base.service.dao.impl.msql.DaoImpl;
+import savvy.wit.framework.core.base.service.dao.impl.msql.DaoExcutor;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -16,11 +16,11 @@ import savvy.wit.framework.core.base.service.dao.impl.msql.DaoImpl;
 public class Daos {
 
     public static Dao get() {
-        return DaoImpl.init();
+        return DaoExcutor.init();
     }
 
     public static Dao acquire() {
-        return DaoImpl.NEW();
+        return DaoExcutor.NEW();
     }
 
 }

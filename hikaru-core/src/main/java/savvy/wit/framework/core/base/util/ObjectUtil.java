@@ -66,9 +66,12 @@ public class ObjectUtil {
      */
     public static void setValue(Object object, String name, Object... value) {
         try {
-            Arrays.asList(object.getClass().getMethods()).parallelStream()
+            List<Method> methods =  Arrays.asList(object.getClass().getMethods()).parallelStream()
                     .filter(m -> ("set"+name).toLowerCase().equals(m.getName().toLowerCase()) )
-                    .collect(Collectors.toList()).get(0).invoke(object,value);
+                    .collect(Collectors.toList());
+            if (methods.size() > 0) {
+                methods.get(0).invoke(object,value);
+            }
         }catch (Exception e){
             log.error(e);
         }

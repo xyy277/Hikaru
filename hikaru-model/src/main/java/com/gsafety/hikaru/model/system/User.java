@@ -15,9 +15,9 @@ import javax.validation.constraints.NotNull;
  * Version : 1.0
  * Description : 
  ******************************/
+// 选择表Engine，默认InnoDB
 @Table(engine = Table.Engine.MyiSAM)
 public class User extends BaseModel {
-
 
     @Id
     @Column
@@ -26,6 +26,7 @@ public class User extends BaseModel {
     @ApiModelProperty(value = "编号", required = true)
     private String id;
 
+    // 给name字段创建索引， 默认不创建
     @Column(index = true, alias = "index_user_name")
     @Type(type = CType.VARCHAR)
     @Comment("姓名")
@@ -43,13 +44,13 @@ public class User extends BaseModel {
     @Type(type = CType.INT, width = 1)
     @Comment("是否在线，默认0：离线")
     @ApiModelProperty(value = "是否在线，默认0不在线", required = true)
-    private int online;
+    private Integer online;
 
     @Column
     @Type(type = CType.BOOLEAN)
     @Comment("是否禁用，默认false:禁用")
     @ApiModelProperty(value = "是否禁用，默认false:禁用", required = true)
-    private boolean disable;
+    private Boolean disable;
 
     public User() {
     }
@@ -78,19 +79,19 @@ public class User extends BaseModel {
         this.age = age;
     }
 
-    public int getOnline() {
+    public Integer getOnline() {
         return online;
     }
 
-    public void setOnline(int online) {
+    public void setOnline(Integer online) {
         this.online = online;
     }
 
-    public boolean getDisable() {
+    public Boolean getDisable() {
         return disable;
     }
 
-    public void setDisable(boolean disable) {
+    public void setDisable(Boolean disable) {
         this.disable = disable;
     }
 
@@ -99,8 +100,9 @@ public class User extends BaseModel {
         return "User{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", age=" + age + '\'' +
-                ", online=" + online + '\'' +
+                ", age='" + age + '\'' +
+                ", online='" + online + '\'' +
+                ", disable='" + disable + '\'' +
                 ", optTime='" + super.getOptTime() + '\'' +
                 ", optUser='" + super.getOptUser() + '\'' +
                 '}';

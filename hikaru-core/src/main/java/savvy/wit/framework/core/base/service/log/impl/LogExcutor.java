@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  * Version : 1.0
  * Description : 
  ******************************/
-public class LogImpl implements Log {
+public class LogExcutor implements Log {
 
     private String front = "";
 
@@ -34,7 +34,7 @@ public class LogImpl implements Log {
 
     private static  Config config = Config.init("/properties/log.properties");
 
-    private LogImpl() {
+    private LogExcutor() {
         level = config.getValue("level");
     }
     private enum Stage {
@@ -50,13 +50,13 @@ public class LogImpl implements Log {
 
     private static String level;
     private static Long index = 0l;
-    public static LogImpl me() {
+    public static LogExcutor me() {
         init();
         return lazyInit.INITIALIZATION;
     }
 
     private static class lazyInit {
-        private static final LogImpl INITIALIZATION = new LogImpl();
+        private static final LogExcutor INITIALIZATION = new LogExcutor();
     }
 
     private static void init() {
@@ -227,7 +227,13 @@ public class LogImpl implements Log {
     Pattern pattern5 = Pattern.compile(regex5);
     Pattern pattern6 = Pattern.compile(regex6);
     @Override
-    public Log print(String string) {
+    public Log print(String... strings) {
+        String string = "";
+        if (strings != null && strings.length > 0) {
+            for (String s : strings) {
+                string += s;
+            }
+        }
         if (pattern1.matcher(string).matches()) {
             String str = find(pattern4.matcher(string));
             int num = Integer.parseInt(str);
@@ -254,7 +260,13 @@ public class LogImpl implements Log {
     }
 
     @Override
-    public Log println(String string) {
+    public Log println(String... strings) {
+        String string = "";
+        if (strings != null && strings.length > 0) {
+            for (String s : strings) {
+                string += s;
+            }
+        }
         if (pattern1.matcher(string).matches()) {
             String str = find(pattern4.matcher(string));
             int num = Integer.parseInt(str);
