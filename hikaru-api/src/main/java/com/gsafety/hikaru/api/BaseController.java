@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /*******************************
@@ -49,7 +50,7 @@ public class BaseController<T, PK> {
                 Arrays.asList(t.getClass().getDeclaredFields()).forEach(field -> {
                     Object value = ObjectUtil.getValueByFiled(t, field);
                     if (value != null) {
-                        cdt.and(field.getName(), "name".equals(field.getName()) ? "like" : "=", value);
+                        cdt.and(field.getName(), "String".equals(field.getType().getSimpleName()) ? "like" : "=", value);
                     }
                 });
             }
@@ -115,10 +116,13 @@ public class BaseController<T, PK> {
         Cdt cdt = CDT.NEW();
         try {
             if (t != null) {
+                if (t instanceof LinkedHashMap && !(((LinkedHashMap) t).size() > 0)) {
+                    return Result.error(500, "NoClassFoundError");
+                }
                 Arrays.asList(t.getClass().getDeclaredFields()).forEach(field -> {
                     Object value = ObjectUtil.getValueByFiled(t, field);
                     if (value != null) {
-                        cdt.where(field.getName(), "name".equals(field.getName()) ? "like" : "=", value);
+                        cdt.and(field.getName(), "String".equals(field.getType().getSimpleName()) ? "like" : "=", value);
                     }
                 });
                 Object value = ObjectUtil.getValueByFiledName(t, "pagination");

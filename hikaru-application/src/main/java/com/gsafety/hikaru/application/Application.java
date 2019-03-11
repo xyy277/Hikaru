@@ -4,7 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import savvy.wit.framework.core.pattern.proxy.RuntimeProxy;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -32,8 +31,10 @@ public class Application {
         // |建议在上线部署时，手动给配置文件添加加密后的password，加密方式执行EncryptionScript.main()                      |
         EncryptionScript.encryption();
         // -------------------------------------------------------------------------------------------------------------
-        running.in.windowsOS();
-//        running.in.linuxOS();
+
+        // 本地开发环境一键启动，适合入门开发者，减少繁琐步骤
+        running.in.OS();
+
         // 启动服务
         SpringApplication.run(Application.class, args);
 

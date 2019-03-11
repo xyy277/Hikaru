@@ -51,8 +51,10 @@ public class EncryptionScript {
         Counter counter = Counter.create();
         counter.setValue("append", true);
         FileAdapter.me().readLine(path, string -> {
-            if (string.indexOf("password=") != -1) {
+            if (string.indexOf("#password=") == -1 && string.indexOf("password=") != -1) {
                 counter.setValue("append", false);
+            } else if (string.indexOf("#password=") != -1 && string.indexOf("password=") == -1) {
+                counter.setValue("append", true);
             }
         });
 
@@ -74,8 +76,21 @@ public class EncryptionScript {
                 e.printStackTrace();
             }
             String cryptograph = RSAUtil.publicEncrypt(password, publicKey);
+
+            // 编译后配置文件写入
             FileAdapter.me().lazyWriter(new File(path),
                     "\npassword=" + cryptograph);
+
+            if (new File(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties").exists()) {
+                // IDE 写入配置文件
+                FileAdapter.me().lazyWriter(new File(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties"),
+                        "\npassword=" + cryptograph);
+            }
+//            if (new File(System.getProperty("user.dir") + "\\db.properties").exists()) {
+//                // 打包jar运行 写入配置文件
+//                 FileAdapter.me().lazyWriter(new File(System.getProperty("user.dir") +"\\db.properties"),
+//                        "\npassword="+cryptograph);
+//            }
             log.println("100*--");
             log.warn("请查看db.properties中密码是否添加成功，如未添加请手动添加↓");
             log.println("请将下方↓↓↓生成的字符串复制到db.properties");
