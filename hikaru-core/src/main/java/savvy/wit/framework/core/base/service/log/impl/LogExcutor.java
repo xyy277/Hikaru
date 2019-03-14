@@ -60,16 +60,16 @@ public class LogExcutor implements Log {
     }
 
     private static void init() {
-        String address = config.getValue("address");
-        File file = new File(StringUtil.isBlank(address) ? FILENAME : address + "/" + FILENAME);
-        if(!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-        try {
-            file.createNewFile();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String address = config.getValue("address");
+//        File file = new File(StringUtil.isBlank(address) ? FILENAME : address + "/" + FILENAME);
+//        if(!file.getParentFile().exists()) {
+//            file.getParentFile().mkdirs();
+//        }
+//        try {
+//            file.createNewFile();
+//        }catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

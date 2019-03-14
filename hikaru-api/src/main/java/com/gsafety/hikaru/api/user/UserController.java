@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.api.test;
+package com.gsafety.hikaru.api.user;
 
 import com.gsafety.hikaru.api.BaseController;
 import com.gsafety.hikaru.common.global.Result;
@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import savvy.wit.framework.core.base.service.dao.Order;
-import savvy.wit.framework.core.base.service.dao.Pagination;
-import savvy.wit.framework.core.pattern.factory.CDT;
 
 import java.util.List;
 

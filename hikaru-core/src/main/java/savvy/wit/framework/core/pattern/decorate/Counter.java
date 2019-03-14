@@ -1,5 +1,8 @@
 package savvy.wit.framework.core.pattern.decorate;
 
+import savvy.wit.framework.core.base.util.DateUtil;
+import savvy.wit.framework.core.pattern.factory.LogFactory;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +27,24 @@ public class Counter {
     // 存值
     private Map<String, Object> value = new HashMap();
 
+    private static long time;
+
     public static Counter create() {
+        time = System.currentTimeMillis();
         return new Counter();
+    }
+
+    public static void close() {
+        time = System.currentTimeMillis() - time;
+        LogFactory.open()
+                .printL("processing time")
+                .printL(DateUtil.formatDateTime(time))
+                .close();
+
+    }
+
+    public static Counter create(Object object) {
+        return object != null && object instanceof Counter ? (Counter) object : new Counter();
     }
 
     private Counter () {}

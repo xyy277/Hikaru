@@ -9,32 +9,32 @@ import javax.validation.constraints.NotNull;
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 
- * File name : User
+ * File name : Sys_User
  * Author : zhoujiajun
- * Date : 2019/1/3 15:15
+ * Date : 2019/3/14 12:18
  * Version : 1.0
  * Description : 
  ******************************/
 // 选择表Engine，默认InnoDB
 @Table(engine = Table.Engine.MyiSAM)
-public class User extends BaseModel {
+public class Sys_User extends BaseModel {
 
-    @Id
+    @Id(auto = true, step = 3)
     @Column
-    @Type(type = CType.VARCHAR)
+    @Type(type = CType.INT, width = 11)
     @Comment("id")
     @ApiModelProperty(value = "编号", required = true)
-    private String id;
+    private int id;
 
     // 给name字段创建索引， 默认不创建
-    @Column(index = true, alias = "index_user_name")
+    @Column
     @Type(type = CType.VARCHAR)
     @Comment("姓名")
     @NotNull(message = "${property.null}")
     @ApiModelProperty(value = "姓名", required = true)
     private String name;
 
-    @Column(index = true, alias = "index_user_username")
+    @Column
     @Type(type = CType.VARCHAR)
     @Comment("用户名")
     @NotNull(message = "${property.null}")
@@ -68,14 +68,15 @@ public class User extends BaseModel {
 
     private String uapToken;
 
-    public User() {
+    public Sys_User() {
+
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -137,17 +138,15 @@ public class User extends BaseModel {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
+        return "Sys_User{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", age='" + age + '\'' +
-                ", online='" + online + '\'' +
-                ", disable='" + disable + '\'' +
-                ", optTime='" + super.getOptTime() + '\'' +
-                ", optUser='" + super.getOptUser() + '\'' +
+                ", age=" + age +
+                ", online=" + online +
+                ", disable=" + disable +
                 ", uapToken='" + uapToken + '\'' +
-                '}';
+                "} " + super.toString();
     }
 }

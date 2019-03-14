@@ -26,7 +26,7 @@ public class Surrounding {
      * 根据系统运行环境选择不同环境配置
      */
     protected void OS() {
-        LogFactory.print("Current OS: " + system);
+        LogFactory.open(200).printL("Current OS: " + system).close();
         if (this.system.toUpperCase().indexOf("WINDOWS") != -1) {
             windowsOS();
         } else if (this.system.toUpperCase().indexOf("LINUX") != -1) {

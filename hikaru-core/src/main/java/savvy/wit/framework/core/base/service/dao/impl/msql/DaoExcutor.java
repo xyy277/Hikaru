@@ -94,17 +94,47 @@ public class DaoExcutor<T> implements Dao<T> {
                         }
                     }
                 }, file);
-                sqls.forEach(s -> {
-                    try {
-                        execute(s);
-                    } catch (Exception e) {
-                        log.error(e);
-                    }
-                });
+
+                try {
+                    executeBatch(sqls);
+                } catch (Exception e) {
+                    log.error(e);
+                }
             }
         }catch (Exception e) {
             log.error(e);
         }finally {
+        }
+    }
+
+    @Override
+    public void executeBatch(List<String> sqlList) throws SQLException {
+        if (sqlList.size() < 1) {
+            log.warn("has no sql can be executed");
+            return;
+        } else if (sqlList.size() == 1) {
+            execute(sqlList.get(0));
+            return;
+        }
+        int size = sqlList.size() > 5000 ? 500 : sqlList.size() / 10;
+        Connection connection = db.getConnection();
+        Statement statement = connection.createStatement();
+        try {
+            for (int i = 0; i < sqlList.size(); i++) {
+                log.println(sqlList.get(i));
+                statement.addBatch(sqlList.get(i));
+                if(i % size == 0) {
+                    statement.executeBatch();
+                    statement.clearBatch();
+                }
+            }
+            statement.executeBatch();
+            statement.clearBatch();
+        }catch (Exception e) {
+            connection.rollback();
+        } finally {
+            connection.close();
+            statement.close();
         }
     }
 
@@ -368,8 +398,8 @@ public class DaoExcutor<T> implements Dao<T> {
                     .collect(Collectors.toList());
             if(fields.size() > 0)
                 sql.append(" PRIMARY KEY (`"+fields.get(0).getName()+"`)");
-
-
+            else
+                sql.replace(sql.lastIndexOf(","), sql.lastIndexOf(",") + 1, "");
             sql.append("\n )");
 
             // Engine
@@ -377,6 +407,13 @@ public class DaoExcutor<T> implements Dao<T> {
                 Table table = (Table) clazz.getAnnotation(Table.class);
                 String engine = table.engine().toString();
                 sql.append("ENGINE=" + engine);
+            }
+            // id auto increment
+            if(fields.size() > 0) {
+                Id id = fields.get(0).getAnnotation(Id.class);
+                if (id.auto()) {
+                    sql.append(" AUTO_INCREMENT=" + id.step());
+                }
             }
             sql.append(" DEFAULT CHARSET=utf8;");
             connection = db.getConnection();
@@ -394,9 +431,12 @@ public class DaoExcutor<T> implements Dao<T> {
     private StringBuilder decorateSql(Class clazz) {
         StringBuilder sql = new StringBuilder();
         for (Field field : clazz.getDeclaredFields()){
+            //COLUMN_NAME
             if (field.isAnnotationPresent(Column.class)) {
                 sql.append(decorateName(field.getName()));
             }
+
+            // TYPE
             if (field.isAnnotationPresent(Type.class)) {
                 Type type = field.getAnnotation(Type.class);
                 String cType = "";
@@ -411,15 +451,20 @@ public class DaoExcutor<T> implements Dao<T> {
                     sql.append(cType);
                 else
                     sql.append(decorateField(cType, width));
+
+                // DEFAULT
                 if (type.vacancy()) {
                     sql.append(" DEFAULT " + (cType.equals(CType.BOOLEAN.toString().toLowerCase()) ? "true " : "NULL "));
                 } else {
                     sql.append((cType.equals(CType.BOOLEAN.toString().toLowerCase()) ? " DEFAULT false " :" NOT NULL "));
                 }
                 if (type.type() == CType.INT) {
-                    sql.append(" DEFAULT " + type.acquiescence() + " ");
+                    if (!(field.isAnnotationPresent(Id.class) && field.getAnnotation(Id.class).auto()))
+                        sql.append(" DEFAULT " + type.acquiescence() + " ");
                 }
             }
+
+            // COMMENT
             if (field.isAnnotationPresent(Comment.class)) {
                 Comment comment = field.getAnnotation(Comment.class);
                 sql.append(Comment.Parameter.COMMENT.toString() + " '" + comment.value() + "' ");

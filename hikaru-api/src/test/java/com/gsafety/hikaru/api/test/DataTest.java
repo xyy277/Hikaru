@@ -1,6 +1,6 @@
 package com.gsafety.hikaru.api.test;
 
-import com.gsafety.hikaru.model.system.User;
+import com.gsafety.hikaru.model.system.Sys_User;
 import org.junit.Before;
 import org.junit.Test;
 import savvy.wit.framework.core.base.pool.ThreadPool;
@@ -11,9 +11,10 @@ import savvy.wit.framework.core.pattern.adapter.TimerAdapter;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.DbFactory;
+import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
-import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
@@ -32,18 +33,18 @@ public class DataTest {
     private static Log log = LogFactory.getLog();
     private static final String PROJECT_PATH = System.getProperty("user.dir");
     public static void main(String[] args) {
-        log.log(PROJECT_PATH + "\\hikaru-application\\src\\main\\resources\\db.properties");
         DbFactory.me().setSource(PROJECT_PATH + "\\hikaru-application\\src\\main\\resources\\db.properties");
         for (int var = 1; var <= 100; var++) {
             ThreadPool.me().newThread(() -> {
                 TimerAdapter.me().execute(new TimerTask() {
                     @Override
                     public void run() {
-                        List<User> users = new ArrayList<>();
+                        List<Sys_User> users = new ArrayList<>();
                         for (int i =1; i <= 100; i++) {
-                            User user = new User();
+                            Sys_User user = new Sys_User();
                             user.setName(StringUtil.createCode());
                             user.setUsername(StringUtil.createCode());
+                            user.setPassword(StringUtil.createCode());
                             user.setAge(DateUtil.random(120));
                             user.setOnline(DateUtil.random(2));
                             user.setDisable(DateUtil.random(2) > 0 ? true : false);
@@ -52,7 +53,7 @@ public class DataTest {
                             users.add(user);
                         }
                         try {
-                            log.log(Daos.acquire().insertBath(users, User.class));
+                            log.log(Daos.acquire().insertBath(users, Sys_User.class));
                         }catch (Exception e) {
                             log.error(e);
                         }
@@ -70,6 +71,12 @@ public class DataTest {
     @Test
     public void test() {
         final Counter counter = Counter.create();
-        Daos.get().dropAndCreate(User.class);
+        Daos.get().dropAndCreate(Sys_User.class);
+        try {
+            Daos.get().execute(Files.getFiles("G:\\WORK\\Outsourced\\MaiXin\\src\\db"));
+            Counter.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -20,13 +20,19 @@ public class PrintTest {
 
     private static Log log = LogFactory.getLog();
     public static void main(String[] args) {
+        LogFactory.open(240)
+                .printL("hello world!")
+                .printL("mother fucker!")
+                .printL("son of bitch")
+                .close();
+
 //        LogFactory.print("Hello Hikaru !");
-        for (File file : Files.getFiles("C:\\Users\\Administrator\\Desktop\\hikaru\\server")) {
-//            String encoding = Files.getEncoding(file);
-//            log.log(encoding);
-            LogFactory.print(file.getName());
-            if (file.getName().indexOf("properties") != -1)
-                FileAdapter.me().readLine(file, string -> log.println(string));
-        }
+//        for (File file : Files.getFiles("C:\\Users\\Administrator\\Desktop\\hikaru\\server")) {
+////            String encoding = Files.getEncoding(file);
+////            log.log(encoding);
+//            LogFactory.print(file.getName());
+//            if (file.getName().indexOf("properties") != -1)
+//                FileAdapter.me().readLine(file, string -> log.println(string));
+//        }
     }
 }

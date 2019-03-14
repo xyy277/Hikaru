@@ -82,6 +82,8 @@ public interface Dao<T> {
      */
     void execute(String sql) throws SQLException;
 
+    void executeBatch(List<String> sql) throws SQLException;
+
     /**
      * 执行普通sql,回调返回结果集
      * @param sql sql

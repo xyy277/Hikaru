@@ -50,13 +50,15 @@ public class EncryptionScript {
         path = Strings.path2Backslash(path);
         Counter counter = Counter.create();
         counter.setValue("append", true);
-        FileAdapter.me().readLine(path, string -> {
-            if (string.indexOf("#password=") == -1 && string.indexOf("password=") != -1) {
-                counter.setValue("append", false);
-            } else if (string.indexOf("#password=") != -1 && string.indexOf("password=") == -1) {
-                counter.setValue("append", true);
-            }
-        });
+        if (new File(path).exists())
+            FileAdapter.me().readLine(path, string -> {
+                if (string.indexOf("#password=") == -1 && string.indexOf("password=") != -1) {
+                    counter.setValue("append", false);
+                } else if (string.indexOf("#password=") != -1 && string.indexOf("password=") == -1) {
+                    counter.setValue("append", true);
+                }
+            });
+
 
         if ((Boolean) counter.getValue("append")) {
             String password = "";
