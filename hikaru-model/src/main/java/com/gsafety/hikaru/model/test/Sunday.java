@@ -10,6 +10,8 @@ import com.gsafety.hikaru.model.BaseModel;
 import savvy.wit.framework.core.base.service.dao.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Map;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -23,7 +25,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
 public class Sunday extends BaseModel {
 
     @Id
@@ -51,4 +52,38 @@ public class Sunday extends BaseModel {
     @Type(type = CType.INT, width = 2, vacancy = true)
     @ApiModelProperty(value = "测试属性")
     private Test test;
+
+    @Column
+    @Comment("测试属性1")
+    @Type(type = CType.VARCHAR, width = 1024, vacancy = true)
+    @ApiModelProperty(value = "测试属性1")
+    private String[] test1;
+
+    @Column
+    @Comment("测试属性2")
+    @Type(type = CType.VARCHAR, width = 1024, vacancy = true)
+    @ApiModelProperty(value = "测试属性2")
+    private List<String> test2;
+
+    @Column
+    @Comment("测试属性3")
+    @Type(type = CType.VARCHAR, width = 1024, vacancy = true)
+    @ApiModelProperty(value = "测试属性3")
+    private Map<String, Monday> test3;
+
+    @Column
+    @Comment("monday id")
+    @Type(type = CType.VARCHAR, width = 32, vacancy = true)
+    @ApiModelProperty(value = "monday id")
+    private String mondayId;
+
+    private Monday monday;
+
+    public synchronized Monday monday() {
+        if (this.monday == null) {
+            this.monday = new Monday();
+        }
+        return this.monday;
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.gsafety.hikaru.api.test;
 
-import com.gsafety.hikaru.model.system.User;
+import com.gsafety.hikaru.model.business.User;
 import org.junit.Before;
 import org.junit.Test;
 import savvy.wit.framework.core.base.service.log.Log;

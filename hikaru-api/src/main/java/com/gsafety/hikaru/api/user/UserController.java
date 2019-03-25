@@ -3,7 +3,7 @@ package com.gsafety.hikaru.api.user;
 import com.gsafety.hikaru.api.BaseController;
 import com.gsafety.hikaru.common.global.Result;
 import com.gsafety.hikaru.common.global.ValidList;
-import com.gsafety.hikaru.model.system.User;
+import com.gsafety.hikaru.model.business.User;
 import com.gsafety.hikaru.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

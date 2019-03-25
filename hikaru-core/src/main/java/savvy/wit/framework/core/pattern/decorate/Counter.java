@@ -27,20 +27,14 @@ public class Counter {
     // 存值
     private Map<String, Object> value = new HashMap();
 
-    private static long time;
+    private long time = System.currentTimeMillis();
 
     public static Counter create() {
-        time = System.currentTimeMillis();
         return new Counter();
     }
 
-    public static void close() {
-        time = System.currentTimeMillis() - time;
-        LogFactory.open()
-                .printL("processing time")
-                .printL(DateUtil.formatDateTime(time))
-                .close();
-
+    public long close() {
+        return System.currentTimeMillis() - time;
     }
 
     public static Counter create(Object object) {

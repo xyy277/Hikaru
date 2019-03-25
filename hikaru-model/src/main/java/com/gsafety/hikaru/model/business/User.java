@@ -1,7 +1,9 @@
-package com.gsafety.hikaru.model.system;
+package com.gsafety.hikaru.model.business;
 
 import com.gsafety.hikaru.model.BaseModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import savvy.wit.framework.core.base.service.dao.annotation.*;
 
 import javax.validation.constraints.NotNull;
@@ -17,6 +19,8 @@ import javax.validation.constraints.NotNull;
  ******************************/
 // 选择表Engine，默认InnoDB
 @Table(engine = Table.Engine.MyiSAM)
+@Data
+@NoArgsConstructor
 public class User extends BaseModel {
 
     @Id
@@ -34,7 +38,7 @@ public class User extends BaseModel {
     @ApiModelProperty(value = "姓名", required = true)
     private String name;
 
-    @Column(index = true, alias = "index_user_username")
+    @Column(unique = true)
     @Type(type = CType.VARCHAR)
     @Comment("用户名")
     @NotNull(message = "${property.null}")
@@ -56,6 +60,12 @@ public class User extends BaseModel {
 
     @Column
     @Type(type = CType.INT, width = 1)
+    @Comment("性别/0保密/1男/2女")
+    @ApiModelProperty(value = "性别/0保密/1男/2女", required = true)
+    private Integer gender;
+
+    @Column
+    @Type(type = CType.INT, width = 1)
     @Comment("是否在线，默认0：离线")
     @ApiModelProperty(value = "是否在线，默认0不在线", required = true)
     private Integer online;
@@ -66,88 +76,9 @@ public class User extends BaseModel {
     @ApiModelProperty(value = "是否禁用，默认false:禁用", required = true)
     private Boolean disable;
 
+    // Token
     private String uapToken;
 
-    public User() {
-    }
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public Integer getOnline() {
-        return online;
-    }
-
-    public void setOnline(Integer online) {
-        this.online = online;
-    }
-
-    public Boolean getDisable() {
-        return disable;
-    }
-
-    public void setDisable(Boolean disable) {
-        this.disable = disable;
-    }
-
-    public String getUapToken() {
-        return uapToken;
-    }
-
-    public void setUapToken(String uapToken) {
-        this.uapToken = uapToken;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", age='" + age + '\'' +
-                ", online='" + online + '\'' +
-                ", disable='" + disable + '\'' +
-                ", optTime='" + super.getOptTime() + '\'' +
-                ", optUser='" + super.getOptUser() + '\'' +
-                ", uapToken='" + uapToken + '\'' +
-                '}';
-    }
 }

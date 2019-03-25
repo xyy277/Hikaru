@@ -16,7 +16,7 @@ import java.util.Map;
  * Date : 2018/6/29 21:45
  * Version : 1.0
  * Description :
- * TODO: 1、添加索引 2、支持动态表单，复杂关联查询，动态修改表结构
+ * TODO: 1、原子事物的支持 2、支持动态表单，复杂关联查询，动态修改表结构
  ******************************/
 public interface Dao<T> {
 
@@ -91,7 +91,7 @@ public interface Dao<T> {
      * @return 结果集
      * @throws SQLException 异常
      */
-    List<T> execute(String sql, DaoCallBack<T> callBack) throws SQLException;
+    List<T> execute(String sql, DaoCallBack<T> callBack);
 
     Map<String, Object> fetch(String sql) throws SQLException;
 

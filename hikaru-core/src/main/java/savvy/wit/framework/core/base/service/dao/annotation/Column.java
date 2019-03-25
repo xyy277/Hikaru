@@ -13,6 +13,9 @@ public @interface Column {
     // 是否索引,全部参数的前提条件，默认：false 非索引
     boolean index() default false;
 
+    // 是否唯一
+    boolean unique() default false;
+
     // 索引类型，可选参数
     KeyType type() default KeyType.DEFAULT;
 

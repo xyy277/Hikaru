@@ -55,7 +55,7 @@ public class CdtImpl implements Cdt {
     public Cdt where(String... var) {
         boolean like = false;
         if (var.length > 0)
-            append("where");
+            append("WHERE");
         for (String param : var) {
             if (like) {
                 param = "'" + like(param) + "'";
@@ -74,8 +74,8 @@ public class CdtImpl implements Cdt {
 
     @Override
     public Cdt where(String var1, String var2, Object var3) {
-        if (sql.indexOf("where") == -1)
-            append(" where");
+        if (sql.indexOf("WHERE") == -1)
+            append(" WHERE");
         else
             append(" and");
         append(var1).append(var2);
@@ -112,7 +112,7 @@ public class CdtImpl implements Cdt {
 
     @Override
     public Cdt and(String var1, String var2, Object var3) {
-        if (sql.indexOf("where") == -1) {
+        if (sql.indexOf("WHERE") == -1) {
             where(var1, var2, var3);
         }else {
             append(" and ").append(var1).append(var2);

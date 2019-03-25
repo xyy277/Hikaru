@@ -1,11 +1,6 @@
 package savvy.wit.framework.core.algorithm.model;
 
 
-/**
- * Œª‘ÀÀ„¡∑œ∞
- * @author Administrator
- *
- */
 public class BitOperation {
 	
 	public int getMaxInt1(){
@@ -23,44 +18,35 @@ public class BitOperation {
 	public long getMaxLong2(){
 		return ~((long)1<<-1);
 	}
-	// ≥À“‘2
 	public int mulTwo(int n){
 		return n<<1;
 	}
-	// ≥˝“‘2
-	public int divTwo(int n){//∏∫∆Ê ˝≤ªø…”√
+	public int divTwo(int n){
 		return n>>1;
 	}
-	// ≥À“‘2µƒn¥Œ∑Ω
 	public int mulTwoPower(int m,int n){
 		return m<<n;
 	}
-	// ≥˝“‘2µƒm¥Œ∑Ω
 	public int divTwoPower(int m,int n){
 		return m>>n;
 	}
-	// ≈–∂œ∆Ê≈º–‘
 	public boolean isOddNum(int n){
 		return (n&1)==1;
 	}
-	// Ωªªª¡Ω∏ˆ ˝
 	public int swap(int a,int b){
 		a^=b;
 		b^=a;
 		a^=b;
+		System.out.println(a);
+		System.out.println(b);
 		return max(a, b);
 	}
-	// «Ûæ¯∂‘÷µ
 	public int abs1(int n){
 		return (n^(n>>31))-(n>>31);
-		/* n>>31 »°µ√nµƒ∑˚∫≈£¨»ÙnŒ™’˝ ˝£¨n>>31µ»”⁄0£¨»ÙnŒ™∏∫ ˝£¨n>>31µ»”⁄-1 
-		»ÙnŒ™’˝ ˝ n^0=0, ˝≤ª±‰£¨»ÙnŒ™∏∫ ˝”–n^-1 –Ë“™º∆À„n∫Õ-1µƒ≤π¬Î£¨»ª∫ÛΩ¯––“ÏªÚ‘ÀÀ„£¨ 
-		Ω·π˚n±‰∫≈≤¢«“Œ™nµƒæ¯∂‘÷µºı1£¨‘Ÿºı»•-1æÕ «æ¯∂‘÷µ */   
 	}
 	public int abs2(int n){
 		return n>0?n:-n;
 	}
-	// ¡Ω∏ˆ ˝µƒ◊Ó¥Û÷µ
 	public int max(int a,int b){
 		return b & ((a-b)>>31) | a & (~(a-b)>>31);
 	}
@@ -71,44 +57,27 @@ public class BitOperation {
 		if(a>b)return a;
 		else return b;
 	}
-	// «Û◊Ó–°÷µ
 	public int min(int a,int b){
 		return a& ((a-b)>>31) | b& (~(a-b)>>31);
 	}
 	public int min1(int a,int b){
 		return a>b?b:a;
 	}
-	// ≈–∂œ¡Ω∏ˆ ˝∑˚∫≈ «∑Òœ‡Õ¨
-	public boolean isSameSign(int a,int b){//”–0µƒ«Èøˆ¿˝Õ‚
-		return (a^b)>=0; // true ±Ì æ x∫Õy”–œ‡Õ¨µƒ∑˚∫≈£¨ false±Ì æx£¨y”–œ‡∑¥µƒ∑˚∫≈°£
+	public boolean isSameSign(int a,int b) {//ÔøΩÔøΩ0ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ
+		return (a ^ b) >= 0;
 	}
-	// º∆À„2µƒn¥Œ∑Ω
 	public int getFactorialofTwo(int n){//n>0
 		return 1<<n;
 	}
-	// ≈–∂œ“ª∏ˆ ˝ «∑Ò «2µƒ√›
 	public boolean isFactorialofTwo(int n){
-		return n>0? (n&(n-1))==0 : false; /*»Áπ˚ «2µƒ√›£¨n“ª∂® «100... n-1æÕ «1111.... À˘“‘◊ˆ”Î‘ÀÀ„Ω·π˚Œ™0*/
+		return n>0? (n&(n-1))==0 : false;
 	}
-	// »°¡Ω∏ˆ ˝µƒ∆Ωæ˘÷µ
 	public int getAverage(int a,int b){
 		return (a+b)>>1;
 	}
 
 	public static void main(String[] args) {
 		BitOperation exercise=new BitOperation();
-		System.out.println(exercise.getMaxInt2());
-		System.out.println(exercise.getMaxLong2());
-		System.out.println(exercise.mulTwo(10));
-		System.out.println(exercise.divTwo(6));
-		System.out.println(exercise.mulTwoPower(3, 2));
-		System.out.println(exercise.divTwoPower(12, 2));
-		System.out.println(exercise.isOddNum(3));
-		System.out.println(exercise.swap(2, 3));
-		System.out.println(exercise.abs1(-99));
-		System.out.println(exercise.isFactorialofTwo(523612352));
-		System.out.println(exercise.isSameSign(123, -12));
-		System.out.println(exercise.getFactorialofTwo(3));
-		System.out.println(exercise.getAverage(1235, 3312));
+		System.out.println(exercise.swap(1,2));
 	}
 }

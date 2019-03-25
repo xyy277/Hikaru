@@ -1,7 +1,7 @@
 package com.gsafety.hikaru.api.user;
 
 import com.gsafety.hikaru.common.global.Result;
-import com.gsafety.hikaru.model.system.User;
+import com.gsafety.hikaru.model.business.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

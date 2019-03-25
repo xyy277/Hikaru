@@ -21,7 +21,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
 public class Monday extends BaseModel {
 
     @Id

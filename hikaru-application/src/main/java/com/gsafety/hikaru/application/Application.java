@@ -4,6 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import savvy.wit.framework.core.base.util.DateUtil;
+import savvy.wit.framework.core.pattern.decorate.Counter;
+import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -23,6 +26,8 @@ public class Application {
     private Surrounding in = new Surrounding();
 
     public static void main(String[] args) {
+        Counter counter = Counter.create();
+
         Application running = new Application();
         // -------------------------------------------------------------------------------------------------------------
         // |1、开发环境时：动态设置数据库密码，一次执行加密后添加到db.properties中,永久有效，重新编译后失效                  |
@@ -37,6 +42,8 @@ public class Application {
 
         // 启动服务
         SpringApplication.run(Application.class, args);
+
+        LogFactory.print("Application Startup takes: " + DateUtil.formatDateTime(counter.close()));
 
     }
 
