@@ -3,6 +3,7 @@ package savvy.wit.framework.core.service.impl;
 import savvy.wit.framework.core.base.callback.DaoCallBack;
 import savvy.wit.framework.core.base.service.cdt.Cdt;
 import savvy.wit.framework.core.base.service.dao.Dao;
+import savvy.wit.framework.core.base.util.ClassUtil;
 import savvy.wit.framework.core.service.BaseService;
 import savvy.wit.framework.core.service.Service;
 
@@ -169,17 +170,7 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
      * @return
      */
     private Class<T> getGenericSuperclass() {
-        Type type = this.getClass().getGenericSuperclass();//拿到带类型参数的泛型父类
-        if(type instanceof ParameterizedType){//这个Type对象根据泛型声明，就有可能是4中接口之一，如果它是BaseServiceImpl<User>这种形式
-            ParameterizedType parameterizedType = (ParameterizedType) type;
-            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();//获取泛型的类型参数数组
-            if(actualTypeArguments != null && actualTypeArguments.length == 1){
-                if(actualTypeArguments[0] instanceof Class){//类型参数也有可能不是Class类型
-                    return (Class<T>) actualTypeArguments[0];
-                }
-            }
-        }
-        return null;
+        return ClassUtil.me().getGenericSuperclass(this.getClass());
     }
 
 }

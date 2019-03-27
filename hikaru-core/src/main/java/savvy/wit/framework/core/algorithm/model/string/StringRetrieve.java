@@ -1,4 +1,4 @@
-package savvy.wit.framework.core.algorithm.model;
+package savvy.wit.framework.core.algorithm.model.string;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

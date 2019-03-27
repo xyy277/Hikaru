@@ -7,7 +7,8 @@
 ####*每一个Enum枚举类都需要实现EnumValueContract接口*
 Enum枚举值将统一以整数形式保存到数据库中
 
-
+####支持存数组集合等类型，实际存入数据库还是间隔符+字符串的形式，所以数据库空间需要提前规划
+间隔符配置，比如： ConfigFactory.setProperty("intervalMark", ","); 默认为逗号，的形式。
 ####基本类型保存会直接保存到数据库中，数组与List集合类型会以字符串追加，的方式保存，map对象集合将以json字符串的形式保存
 在保存这些非基本类型的前提字段注解@Type在mysql数据库中必须如下:
 @Type(type = CType.VARCHAR) 用来设置保存格式为字符串

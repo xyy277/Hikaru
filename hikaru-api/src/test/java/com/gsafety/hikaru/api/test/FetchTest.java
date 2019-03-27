@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.Daos;
-import savvy.wit.framework.core.pattern.factory.DbFactory;
+import savvy.wit.framework.core.pattern.factory.ConfigFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.pattern.proxy.SqlProxy;
 import savvy.wit.framework.core.pattern.proxy.SqlProxyBuilder;
@@ -35,9 +35,9 @@ public class FetchTest {
 
     @Before
     public void before() {
-        DbFactory.me().setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\db.properties")
-                .setEnumClassList("com.gsafety.hikaru.model.enumerate")// 设置泛型package
-                .setProperty("vacancy", "true");
+        ConfigFactory.me().setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\db.properties")
+                .setEnumClassList("com.gsafety.hikaru.model.enumerate") // 设置泛型package
+                .setProperty("vacancy", "true"); //根据需要设置全局配置
 
     }
 

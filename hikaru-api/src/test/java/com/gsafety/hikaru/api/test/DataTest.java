@@ -13,7 +13,7 @@ import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.adapter.TimerAdapter;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.Daos;
-import savvy.wit.framework.core.pattern.factory.DbFactory;
+import savvy.wit.framework.core.pattern.factory.ConfigFactory;
 import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
@@ -34,9 +34,8 @@ public class DataTest {
     private static Log log = LogFactory.getLog();
     private static final String PROJECT_PATH = System.getProperty("user.dir");
     public static void main(String[] args) {
-        DbFactory.me().setSource(PROJECT_PATH + "\\hikaru-application\\src\\main\\resources\\db.properties")
-                .setEnumClassList("com.gsafety.hikaru.model.enumerate")         // 设置泛型package
-                .setProperty("vacancy", "true");
+        ConfigFactory.me().setSource(PROJECT_PATH + "\\hikaru-application\\src\\main\\resources\\db.properties")
+                .setEnumClassList("com.gsafety.hikaru.model.enumerate");         // 设置泛型package
         for (int var = 1; var <= 100; var++) {
             ThreadPool.me().newThread(() -> {
                 TimerAdapter.me().execute(new TimerTask() {
@@ -68,14 +67,15 @@ public class DataTest {
 
     @Before
     public void before() {
-        DbFactory.me().setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\db.properties")
-                .setEnumClassList("com.gsafety.hikaru.model.enumerate")// 设置泛型package
-                .setProperty("vacancy", "true");
+        ConfigFactory.me().setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\db.properties")
+                .setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\test.properties")
+                .setEnumClassList("com.gsafety.hikaru.model.enumerate");// 设置泛型package
+//                .setProperty("vacancy", "true");
     }
 
     @Test
     public void test() {
-//        insert();
+        insert();
         fetch();
     }
     private void fetch() {

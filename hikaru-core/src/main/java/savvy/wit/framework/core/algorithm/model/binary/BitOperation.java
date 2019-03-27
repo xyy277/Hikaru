@@ -1,4 +1,4 @@
-package savvy.wit.framework.core.algorithm.model;
+package savvy.wit.framework.core.algorithm.model.binary;
 
 
 public class BitOperation {

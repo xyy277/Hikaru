@@ -1,7 +1,7 @@
 package com.gsafety.hikaru.application;
 
+import savvy.wit.framework.core.algorithm.model.key.KeyStore;
 import savvy.wit.framework.core.base.service.log.Log;
-import savvy.wit.framework.core.base.util.ArraysUtil;
 import savvy.wit.framework.core.base.util.RSAUtil;
 import savvy.wit.framework.core.base.util.Strings;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
@@ -12,7 +12,6 @@ import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /*******************************
@@ -30,7 +29,7 @@ public class EncryptionScript {
 
     private static Log log = LogFactory.getLog();
 
-    private final static String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCn6dre5CkrpxmUzh_UcPEKxJawwh1hDaR5pQS0W5VskSYC-Aq6SMYz7KImLet4uIkqVUVfX_03JMUZ6YDNvEHc6ZL3ssKez08LHKzQbPNtAvccDCz_0cpqp6dLpSYCd0Evr-D2ow5HxsDm70kX-qszG8E_L3M1xO25-1uvJs-wowIDAQAB";
+    private final static String PUBLIC_KEY = KeyStore.RSA_PUBLIC_KEY;
 
     public static void main(String[] args) {
         encipherment();
@@ -67,8 +66,11 @@ public class EncryptionScript {
                 log.print("请输入要加密的数据库密码：");
                 Scanner scanner = new Scanner(System.in);
                 password = scanner.nextLine();
-            } else
-                password = passwords[passwords.length - 1];
+            } else {
+                for (String s : passwords) {
+                    password += s.trim();
+                }
+            }
             RSAPublicKey publicKey = null;
             try {
                 publicKey = RSAUtil.getPublicKey(PUBLIC_KEY);

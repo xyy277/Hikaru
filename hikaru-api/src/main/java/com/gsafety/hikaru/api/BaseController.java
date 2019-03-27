@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import savvy.wit.framework.core.base.service.cdt.Cdt;
 import savvy.wit.framework.core.base.service.dao.Pagination;
+import savvy.wit.framework.core.base.util.ClassUtil;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.ObjectUtil;
 import savvy.wit.framework.core.pattern.factory.CDT;
@@ -142,17 +143,6 @@ public class BaseController<T, PK> {
      * @return
      */
     private Class<T> getGenericSuperclass() {
-        Class<T> clazz = null;
-        Type type = this.getClass().getGenericSuperclass();//拿到带类型参数的泛型父类
-        if(type instanceof ParameterizedType){//这个Type对象根据泛型声明，就有可能是4中接口之一，如果它是BaseServiceImpl<User>这种形式
-            ParameterizedType parameterizedType = (ParameterizedType) type;
-            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();//获取泛型的类型参数数组
-            if(actualTypeArguments != null && actualTypeArguments.length > 0) {
-                if(actualTypeArguments[0] instanceof Class){//类型参数也有可能不是Class类型
-                    clazz = (Class<T>) actualTypeArguments[0];
-                }
-            }
-        }
-        return clazz;
+        return ClassUtil.me().getGenericSuperclass(this.getClass());
     }
 }

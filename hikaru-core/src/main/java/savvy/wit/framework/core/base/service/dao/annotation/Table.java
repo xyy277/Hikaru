@@ -25,4 +25,6 @@ public @interface Table {
         PERFORMAN
     }
    Engine engine() default Engine.InnoDB;
+
+    String encoding() default "UTF8";
 }
