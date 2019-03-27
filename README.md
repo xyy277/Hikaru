@@ -1,4 +1,5 @@
 #拿来就用主义
+**美好愿望：架构更优雅，代码更优美，避免重复造轮子，降低成本，敏捷开发**
 ##Frameworks are friends of developers, and we did it.
 ####hikaru as a web develop distributed full-stack framework, we still have a lot to do .At the same time, more people need to get involved
 **代码结构**

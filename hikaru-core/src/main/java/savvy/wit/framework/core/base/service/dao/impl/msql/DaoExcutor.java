@@ -40,12 +40,14 @@ public class DaoExcutor<T> implements Dao<T> {
     // 通过扫描获取的泛型集合
     private List<Class<?>> enumClassList;
 
+    // 默认的间隔符为，
     private String intervalMark = ",";
 
     protected DaoExcutor() {
         ConfigFactory config = ConfigFactory.me();
-        enumClassList = config.getEnumClassList();
-        intervalMark = config.getProperty("intervalMark");
+        this.enumClassList = config.getEnumClassList();
+        String intervalMark = config.getProperty("intervalMark");
+        this.intervalMark = StringUtil.isNotBlank(intervalMark) ? intervalMark : this.intervalMark;
     }
 
     public static DaoExcutor init() {
@@ -117,6 +119,7 @@ public class DaoExcutor<T> implements Dao<T> {
         }
         int size = sqlList.size() > 5000 ? 500 : sqlList.size() / 10;
         Connection connection = db.getConnection();
+        connection.setAutoCommit(false);
         Statement statement = connection.createStatement();
         try {
             for (int i = 0; i < sqlList.size(); i++) {
@@ -129,6 +132,7 @@ public class DaoExcutor<T> implements Dao<T> {
             }
             statement.executeBatch();
             statement.clearBatch();
+            connection.commit();
         }catch (Exception e) {
             connection.rollback();
         } finally {
@@ -139,10 +143,12 @@ public class DaoExcutor<T> implements Dao<T> {
 
     public void execute(String sql) throws SQLException {
         Connection connection = db.getConnection();
+        connection.setAutoCommit(false);
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
+            connection.commit();
         }catch (Exception e) {
             connection.rollback();
         } finally {
@@ -158,8 +164,10 @@ public class DaoExcutor<T> implements Dao<T> {
         ResultSet resultSet = null;
         try {
             connection = db.getConnection();
+            connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
+            connection.commit();
             while (resultSet.next()) {
                 callbacks.add(callBack.savvy(resultSet));
             }
@@ -205,7 +213,7 @@ public class DaoExcutor<T> implements Dao<T> {
                 }
             }
         }catch (Exception e){
-            connection.rollback();
+            log.error(e);
         }finally {
             log.sql(sql);
             resultSet.close();
@@ -233,7 +241,7 @@ public class DaoExcutor<T> implements Dao<T> {
                 lists.add(map);
             }
         }catch (Exception e){
-            connection.rollback();
+            log.error(e);
         }finally {
             log.sql(sql);
             resultSet.close();
@@ -340,9 +348,11 @@ public class DaoExcutor<T> implements Dao<T> {
         String sql = "";
         try {
             connection = db.getConnection();
+            connection.setAutoCommit(false);
             sql = "DROP TABLE if EXISTS " + Strings.hump2Line(clazz.getSimpleName());
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
+            connection.commit();
         }catch (Exception e){
             connection.rollback();
             log.error(e);
@@ -368,7 +378,6 @@ public class DaoExcutor<T> implements Dao<T> {
         PreparedStatement preparedStatement = null;
         StringBuilder sql = new StringBuilder();
         try {
-            connection = db.getConnection();
             sql.append("CREATE TABLE IF NOT EXISTS" + decorateName(clazz.getSimpleName()) + "( \n");
             sql.append(decorateSql(clazz));
             Class superClass = clazz.getSuperclass();
@@ -434,8 +443,10 @@ public class DaoExcutor<T> implements Dao<T> {
                 sql.append("DEFAULT CHARSET=" + encoding);
             }
             connection = db.getConnection();
+            connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(sql.toString());
             preparedStatement.execute();
+            connection.commit();
         }catch (Exception e){
             connection.rollback();
             log.error(e);
@@ -504,7 +515,9 @@ public class DaoExcutor<T> implements Dao<T> {
         String sql = "TRUNCATE TABLE "+clazz.getName().toLowerCase();
         try {
             connection = db.getConnection();
+            connection.setAutoCommit(false);
             connection .prepareStatement(sql).execute();
+            connection.commit();
         }catch (Exception e){
             connection.rollback();
             log.error(e);
@@ -517,6 +530,7 @@ public class DaoExcutor<T> implements Dao<T> {
     public T insert(T t) throws SQLException {
         StringBuilder sql =  createInsertSQL(t.getClass());
         Connection connection = db.getConnection();
+        connection.setAutoCommit(false);
         PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
         Counter counter = Counter.create();
         try {
@@ -577,6 +591,7 @@ public class DaoExcutor<T> implements Dao<T> {
             if(preparedStatement.execute()) {
                 ObjectUtil.setValueByFieldName(t,"id",preparedStatement.getGeneratedKeys());
             }
+            connection.commit();
         }catch (Exception e) {
             connection.rollback();
             throw new RuntimeException(e);
@@ -589,14 +604,19 @@ public class DaoExcutor<T> implements Dao<T> {
     }
 
     public boolean delete(Cdt cdt, Class clazz) throws SQLException {
-        boolean success;
+        boolean success = false;
         clazz = clazz == null ? getGenericSuperclass() : clazz;
         String sql = new String("DELETE FROM " + clazz.getSimpleName().toLowerCase() + cdt.getCondition());
         Connection connection = db.getConnection();
+        connection.setAutoCommit(false);
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         try {
             success = preparedStatement.execute();
-        }finally {
+            connection.commit();
+        } catch (Exception e) {
+            connection.rollback();
+            log.error(e);
+        } finally {
             log.sql(sql);
             db.close(connection,preparedStatement);
         }
@@ -608,6 +628,7 @@ public class DaoExcutor<T> implements Dao<T> {
         StringBuilder sql = new StringBuilder("UPDATE " + t.getClass().getSimpleName().toLowerCase() + " SET ");
         String where = "";
         Connection connection = db.getConnection();
+        connection.setAutoCommit(false);
         PreparedStatement preparedStatement = null;
         try {
             List<String> types = new ArrayList<>();
@@ -652,6 +673,7 @@ public class DaoExcutor<T> implements Dao<T> {
             sql.append(where);
             preparedStatement = connection.prepareStatement(sql.toString());
             success = preparedStatement.executeUpdate() > 0;
+            connection.commit();
         }catch (Exception e) {
             log.error(e);
         }finally {
@@ -666,6 +688,7 @@ public class DaoExcutor<T> implements Dao<T> {
         StringBuilder sql = new StringBuilder("UPDATE " + t.getClass().getSimpleName().toLowerCase() + " SET ");
         String where = "";
         Connection connection = db.getConnection();
+        connection.setAutoCommit(false);
         PreparedStatement preparedStatement = null;
         try {
             List<String> types = new ArrayList<>();
@@ -706,7 +729,9 @@ public class DaoExcutor<T> implements Dao<T> {
             sql.append(cdt.getCondition()).append(where);
             preparedStatement = connection.prepareStatement(sql.toString());
             success = preparedStatement.executeUpdate() > 0;
+            connection.commit();
         }catch (Exception e) {
+            connection.rollback();
             log.error(e);
         }finally {
             log.sql(sql);
@@ -887,6 +912,7 @@ public class DaoExcutor<T> implements Dao<T> {
         }
         StringBuilder sql =  createInsertSQL(clazz);
         Connection connection = db.getConnection();
+        connection.setAutoCommit(false);
         PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
         try {
             int index = 0;
@@ -955,9 +981,11 @@ public class DaoExcutor<T> implements Dao<T> {
             }
             preparedStatement.executeBatch();
             preparedStatement.clearBatch();
+            connection.commit();
         }catch (Exception e) {
             connection.rollback();
             log.error(e);
+            count = -1;
         }
         finally {
             log.sql(sql);
@@ -978,7 +1006,8 @@ public class DaoExcutor<T> implements Dao<T> {
                 count = resultSet.getLong(1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);
+            count = -1;
         } finally {
             log.sql(sql);
             db.close(connection,preparedStatement);
@@ -1000,7 +1029,8 @@ public class DaoExcutor<T> implements Dao<T> {
                 count = resultSet.getLong(1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e);
+            count = -1;
         } finally {
             log.sql(sql);
             db.close(connection,preparedStatement);
