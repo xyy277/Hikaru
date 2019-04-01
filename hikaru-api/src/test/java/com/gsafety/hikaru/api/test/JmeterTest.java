@@ -14,6 +14,8 @@ import savvy.wit.framework.core.pattern.proxy.RuntimeProxy;
 public class JmeterTest {
 
     public static void main(String[] args) {
-        RuntimeProxy.get().execute("test", "cmd /k G:\\server\\apache-jmeter-5.0\\bin\\jmeter.bat");
+        RuntimeProxy.get().execute("consul","consul agent -dev -ui -node=node1", true);
+
+//        RuntimeProxy.get().execute("test", "G:\\server\\apache-jmeter-5.0\\bin\\jmeter.bat", true);
     }
 }

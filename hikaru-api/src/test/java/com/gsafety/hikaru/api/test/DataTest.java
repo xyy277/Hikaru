@@ -68,7 +68,6 @@ public class DataTest {
     @Before
     public void before() {
         ConfigFactory.me().setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\db.properties")
-                .setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\test.properties")
                 .setEnumClassList("com.gsafety.hikaru.model.enumerate")// 设置泛型package
                 .setProperty("vacancy", "true")
                 .setProperty("intervalMark", "@$");

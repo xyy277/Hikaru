@@ -114,6 +114,19 @@ public class FileAdapter {
 
     }
 
+    public void readLine(InputStream inputStream, String encoding, StringCallBack callBack) {
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, encoding));
+            String line;
+            while ((line = br.readLine()) != null) {
+                callBack.use(line);
+            }
+            if (br != null) br.close();
+        } catch (Exception e) {
+            log.error(e);
+        }
+    }
+
     public void readLine(String name, StringCallBack callBack) {
         try {
             File file = new File(name);

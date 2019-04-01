@@ -4,6 +4,7 @@ import savvy.wit.framework.core.base.callback.DaoCallBack;
 import savvy.wit.framework.core.base.service.cdt.Cdt;
 import savvy.wit.framework.core.base.service.dao.Dao;
 import savvy.wit.framework.core.base.util.ClassUtil;
+import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.service.BaseService;
 import savvy.wit.framework.core.service.Service;
 
@@ -26,7 +27,7 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
 
 
     public BaseServiceImpl(Dao dao) {
-        super(dao);
+        super(dao == null ? Daos.get() : dao);
     }
 
     public BaseServiceImpl () {

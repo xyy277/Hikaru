@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import savvy.wit.framework.core.base.pool.ThreadPool;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
@@ -39,12 +40,14 @@ public class Application {
         // -------------------------------------------------------------------------------------------------------------
 
         // 本地开发环境一键启动，适合入门开发者，减少繁琐步骤
-        running.in.OS();
+//        ThreadPool.me().newThread(() -> running.in.OS()).start();
 
         // 启动服务
-        SpringApplication.run(Application.class, args);
+//        ThreadPool.me().newThread(() -> {
+            SpringApplication.run(Application.class, args);
+            LogFactory.print("Application Startup takes: " + DateUtil.formatDateTime(counter.close()));
+//        }).start();
 
-        LogFactory.print("Application Startup takes: " + DateUtil.formatDateTime(counter.close()));
 
     }
 

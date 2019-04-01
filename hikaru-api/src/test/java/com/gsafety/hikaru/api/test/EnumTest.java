@@ -31,14 +31,15 @@ public class EnumTest {
         Sunday sunday = new Sunday();
         sunday.setUltraviolet(Ultraviolet.Powerful);
         sunday.setTest(Test.OK);
-        log.log(        EnumConvertBase.convert().getEnumClass());
+//        log.log(        EnumConvertBase.convert().getEnumClass());
         int i = EnumConvertBase.convert().enum2Value((EnumValueContract) sunday.getUltraviolet());
         log.log(i);
         log.println("100*xx");
         Class c = Ultraviolet.class;
         log.log(c.getSimpleName());
         log.println("100*==");
-        Set<Class<?>> set = Scanner.scanning("com.gsafety.hikaru.common.enumerate");
+        Set<Class<?>> set = Scanner.scanning("com.gsafety.hikaru.model.enumerate");
+        log.log(set);
         for (Field field : sunday.getClass().getDeclaredFields()) {
 //            log.log(field.getName());
 //            log.log(field.getClass());

@@ -13,7 +13,7 @@ import java.util.Map;
  * Version : 1.0
  * Description : 
  ******************************/
-public class SqlProxyBuilder implements SqlProxy {
+public class SqlBuilder implements SqlProxy {
 
     private boolean generate;
 
@@ -21,7 +21,7 @@ public class SqlProxyBuilder implements SqlProxy {
 
     private Map<String, String> param = new HashMap<>();
 
-    private SqlProxyBuilder() {}
+    protected SqlBuilder() {}
 
     /**
      * 请求sql代理，返回代理单例对象
@@ -32,7 +32,7 @@ public class SqlProxyBuilder implements SqlProxy {
     }
 
     private static class LazyInit {
-        private static final SqlProxy INITIALIZATION = new SqlProxyBuilder();
+        private static final SqlProxy INITIALIZATION = new SqlBuilder();
     }
 
     /**

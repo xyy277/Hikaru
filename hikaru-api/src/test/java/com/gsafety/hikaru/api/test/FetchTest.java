@@ -11,7 +11,7 @@ import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.ConfigFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.pattern.proxy.SqlProxy;
-import savvy.wit.framework.core.pattern.proxy.SqlProxyBuilder;
+import savvy.wit.framework.core.pattern.proxy.SqlBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class FetchTest {
         list.add("12312");
         list.add("vasd");
         list.add(3);
-        fetch(SqlProxyBuilder.ask().proxy("select * from sunday s left join monday m on s.opt_user = m.opt_user " +
+        fetch(SqlBuilder.ask().proxy("select * from sunday s left join monday m on s.opt_user = m.opt_user " +
                 "where s.monday_id in ${ids} and m.id = ${mid}")
                 .param("ids", new String[]{"123123", "asdasdas"})
                 .param("mid", new Integer[]{1,3,5})
