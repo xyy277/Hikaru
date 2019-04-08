@@ -426,7 +426,7 @@ public class DaoExcutor<T> implements Dao<T> {
             if (clazz.isAnnotationPresent(Table.class)) {
                 Table table = (Table) clazz.getAnnotation(Table.class);
                 String engine = table.engine().toString();
-                sql.append("ENGINE=" + engine);
+                sql.append(" ENGINE=" + engine);
             }
             // id auto increment
             if(fields.size() > 0) {
@@ -440,7 +440,7 @@ public class DaoExcutor<T> implements Dao<T> {
             if (clazz.isAnnotationPresent(Table.class)) {
                 Table table = (Table) clazz.getAnnotation(Table.class);
                 String encoding = table.encoding().toString();
-                sql.append("DEFAULT CHARSET=" + encoding);
+                sql.append(" DEFAULT CHARSET=" + encoding);
             }
             connection = db.getConnection();
             connection.setAutoCommit(false);

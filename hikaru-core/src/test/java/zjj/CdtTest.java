@@ -2,13 +2,13 @@ package zjj;
 
 import org.junit.Before;
 import savvy.wit.framework.core.base.service.cdt.Cdt;
-import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.service.dao.Order;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.JsonUtil;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.CDT;
+import savvy.wit.framework.core.pattern.factory.ConfigFactory;
 import savvy.wit.framework.core.pattern.factory.Daos;
-import savvy.wit.framework.core.pattern.factory.DbFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.service.BaseService;
 import savvy.wit.framework.core.service.impl.BaseServiceImpl;
@@ -43,7 +43,7 @@ public class CdtTest {
 
     @org.junit.Test
     public void test() {
-        DbFactory.me().setSource(System.getProperty("user.dir") + "\\hikaru-core\\src\\main\\resources\\properties\\db.properties");
+        ConfigFactory.me().setSource(System.getProperty("user.dir") + "\\hikaru-core\\src\\main\\resources\\properties\\db.properties");
 
         BaseService baseService = new BaseServiceImpl(Daos.get());
 //        log.log(baseService.query(User.class, cdt));

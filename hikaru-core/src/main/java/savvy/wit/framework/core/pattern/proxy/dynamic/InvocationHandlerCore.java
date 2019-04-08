@@ -1,4 +1,4 @@
-package savvy.wit.framework.core.pattern.proxy;
+package savvy.wit.framework.core.pattern.proxy.dynamic;
 
 import savvy.wit.framework.core.pattern.aop.AfterAdvice;
 import savvy.wit.framework.core.pattern.aop.aspectj.AfterAdviceAspectJ;
@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 处理器
+ * Title : 处理器JDK方式动态代理
  * File name : InvocationHandlerCore
  * Author : zhoujiajun
  * Date : 2019/3/29 9:23

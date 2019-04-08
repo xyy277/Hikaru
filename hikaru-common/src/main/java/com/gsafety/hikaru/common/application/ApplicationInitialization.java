@@ -2,13 +2,7 @@ package com.gsafety.hikaru.common.application;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import savvy.wit.framework.core.base.util.Scanner;
 import savvy.wit.framework.core.pattern.factory.Daos;
-import savvy.wit.framework.core.pattern.factory.DbFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ

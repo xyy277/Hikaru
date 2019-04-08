@@ -271,7 +271,7 @@ public class FileAdapter {
             fw.flush();
             fw.close();
         }catch (Exception e) {
-            log.error(e);
+            throw new RuntimeException(e);
         }
     }
 

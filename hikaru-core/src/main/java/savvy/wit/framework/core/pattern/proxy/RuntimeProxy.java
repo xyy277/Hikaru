@@ -63,6 +63,23 @@ public class RuntimeProxy {
         }
     }
 
+    public synchronized void execute(String command, boolean monitoring) {
+        Process process = null;
+        log.log(command);
+        try {
+            process = runtime.exec(commandAdapter(command));
+            while (process.isAlive()) {
+                if (monitoring) {
+                    FileAdapter.me().readLine(process.getInputStream(), encoding, string -> log.println(string));
+                }
+            }
+            FileAdapter.me().readLine(process.getErrorStream(), encoding, string -> log.println(string));
+            log.print("80*=").print("<< process isAlive: " + process.isAlive() + " >>").println("80*=");
+        } catch (Exception e) {
+            log.error(e);
+        }
+    }
+
     public synchronized void execute(String... commands) {
         for (String command : commands) {
             log.println(command);
