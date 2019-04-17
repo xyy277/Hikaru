@@ -50,13 +50,16 @@ public class RuntimeProxy {
                 log.print("80*=").print("["+ processKey +" ] ").print("<< process already alive >>").println("80*=");
             }
             process = runtime.exec(commandAdapter(command));
+            processMap.put(processKey, process);
             while (process.isAlive()) {
-                processMap.put(processKey, process);
-                if (monitoring) {
-                    FileAdapter.me().readLine(process.getInputStream(), encoding, string -> log.println(string));
+                if (!monitoring) {
+                    break;
                 }
+                FileAdapter.me().readLine(process.getInputStream(), encoding, string -> log.println(string));
             }
-            FileAdapter.me().readLine(process.getErrorStream(), encoding, string -> log.println(string));
+            if (monitoring) {
+                FileAdapter.me().readLine(process.getErrorStream(), encoding, string -> log.println(string));
+            }
             log.print("80*=").print("["+ processKey +" ] ").print("<< process isAlive: " + process.isAlive() + " >>").println("80*=");
         } catch (Exception e) {
             log.error(e);
@@ -68,12 +71,15 @@ public class RuntimeProxy {
         log.log(command);
         try {
             process = runtime.exec(commandAdapter(command));
-            while (process.isAlive()) {
-                if (monitoring) {
-                    FileAdapter.me().readLine(process.getInputStream(), encoding, string -> log.println(string));
+            while (process != null && process.isAlive()) {
+                if (!monitoring) {
+                    break;
                 }
+                FileAdapter.me().readLine(process.getInputStream(), encoding, string -> log.println(string));
             }
-            FileAdapter.me().readLine(process.getErrorStream(), encoding, string -> log.println(string));
+            if (monitoring) {
+                FileAdapter.me().readLine(process.getErrorStream(), encoding, string -> log.println(string));
+            }
             log.print("80*=").print("<< process isAlive: " + process.isAlive() + " >>").println("80*=");
         } catch (Exception e) {
             log.error(e);

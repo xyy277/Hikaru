@@ -35,24 +35,16 @@ public class EncryptionScript {
         encipherment();
     }
 
-    private static class Path {
-
-    }
 
     /**
      * 自动修改db
      */
     public static void encryption(String... passwords) {
         String path = "";
-        if (new File("./db.properties").exists()) {
-            path = "./db.properties";
-        } else {
+        if (new File("./db.properties").exists())
+            path ="./db.properties";
+        else
             path = Thread.currentThread().getContextClassLoader().getResource("db.properties").getFile();
-            if (!new File(path).exists()) {
-//                path = ((FileInputStream)new Path().getClass().getClassLoader().getResourceAsStream("db.properties"));
-                log.log(path);
-            }
-        }
         path = path.substring(0, 1).equals("/") ? path.substring(1, path.length()) : path;
         path = Strings.path2Backslash(path);
         Counter counter = Counter.create();
@@ -90,21 +82,13 @@ public class EncryptionScript {
             String cryptograph = RSAUtil.publicEncrypt(password, publicKey);
 
             // 编译后配置文件写入
-            try {
-                FileAdapter.me().lazyWriter(new File(path),
-                        "\npassword=" + cryptograph);
-            } catch (Exception e) {
-                log.warn("方式1：修改" + path + "位置处的配置文件出错");
-            }
+            FileAdapter.me().lazyWriter(new File(path),
+                    "\npassword=" + cryptograph);
 
             if (new File(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties").exists()) {
                 // IDE 写入配置文件
-                try {
-                    FileAdapter.me().lazyWriter(new File(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties"),
-                            "\npassword=" + cryptograph);
-                } catch (Exception e) {
-                    log.warn("方式2： 修改配置文件出错，方式修改用IDE工具打开的项目文件");
-                }
+                FileAdapter.me().lazyWriter(new File(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties"),
+                        "\npassword=" + cryptograph);
             }
 //            if (new File(System.getProperty("user.dir") + "\\db.properties").exists()) {
 //                // 打包jar运行 写入配置文件
@@ -125,19 +109,19 @@ public class EncryptionScript {
     public static void encipherment() {
         log.println("100*--");
         log.print("请输入要加密的数据库密码：");
-            Scanner scanner = new Scanner(System.in);
-            String password = scanner.nextLine();
-            RSAPublicKey publicKey = null;
-            try {
-                publicKey = RSAUtil.getPublicKey(PUBLIC_KEY);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidKeySpecException e) {
-                e.printStackTrace();
-            }
-            String cryptograph = RSAUtil.publicEncrypt(password, publicKey);
-            log.println("请将下方↓↓↓生成的字符串复制到db.properties");
-            log.println("password=" + cryptograph);
+        Scanner scanner = new Scanner(System.in);
+        String password = scanner.nextLine();
+        RSAPublicKey publicKey = null;
+        try {
+            publicKey = RSAUtil.getPublicKey(PUBLIC_KEY);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        String cryptograph = RSAUtil.publicEncrypt(password, publicKey);
+        log.println("请将下方↓↓↓生成的字符串复制到db.properties");
+        log.println("password=" + cryptograph);
         log.println("100*==");
     }
 }

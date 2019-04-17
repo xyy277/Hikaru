@@ -28,11 +28,12 @@ public class ApplicationListener implements ServletContextListener {
         log.info("ApplicationListener init");
         // 很low的方式去配置参数
         // 设置log打印格式
-        LogFactory.front("❤").behind("-->:>");
+        LogFactory.front("").behind("\t\t:");
         ConfigFactory dbFactory = ConfigFactory.me();
         dbFactory.setSource("./db.properties", "db.properties")                 // 设置dao数据源
                 .setEnumClassList("com.gsafety.hikaru.model.enumerate")         // 设置泛型package
-                .setProperty("vacancy", "true");                                // 设置参数vacancy - 插入数据为null时，补“”
+                .setProperty("vacancy", "true")                                 // 设置参数vacancy - 插入数据为null时，补“”
+                .setProperty("intervalMark", "@$");
     }
 
     @Override
