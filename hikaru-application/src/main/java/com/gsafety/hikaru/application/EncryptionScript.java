@@ -41,22 +41,29 @@ public class EncryptionScript {
      */
     public static void encryption(String... passwords) {
         String path = "";
-        if (new File("./db.properties").exists())
+        if (new File("./db.properties").exists()) {
             path ="./db.properties";
-        else
+        }
+        else {
             path = Thread.currentThread().getContextClassLoader().getResource("db.properties").getFile();
+        }
         path = path.substring(0, 1).equals("/") ? path.substring(1, path.length()) : path;
-        path = Strings.path2Backslash(path);
+//        path = Strings.path2Backslash(path);
         Counter counter = Counter.create();
         counter.setValue("append", true);
-        if (new File(path).exists())
+        counter.setValue("check", true);
+        if (new File(path).exists()) {
             FileAdapter.me().readLine(path, string -> {
-                if (string.indexOf("#password=") == -1 && string.indexOf("password=") != -1) {
-                    counter.setValue("append", false);
-                } else if (string.indexOf("#password=") != -1 && string.indexOf("password=") == -1) {
-                    counter.setValue("append", true);
+                if ((Boolean)counter.getValue("check")) {
+                    if (string.indexOf("#password=") != -1) {
+                        counter.setValue("append", true);
+                    } else if ( string.indexOf("password=") != -1) {
+                        counter.setValue("append", false);
+                        counter.setValue("check", false);
+                    }
                 }
             });
+        }
 
 
         if ((Boolean) counter.getValue("append")) {
@@ -90,11 +97,12 @@ public class EncryptionScript {
                 FileAdapter.me().lazyWriter(new File(System.getProperty("user.dir") + "\\hikaru-application\\src\\main\\resources\\db.properties"),
                         "\npassword=" + cryptograph);
             }
-//            if (new File(System.getProperty("user.dir") + "\\db.properties").exists()) {
-//                // 打包jar运行 写入配置文件
-//                 FileAdapter.me().lazyWriter(new File(System.getProperty("user.dir") +"\\db.properties"),
-//                        "\npassword="+cryptograph);
-//            }
+            // 需要运行jar与配置文件同级目录存放
+            if (new File(System.getProperty("user.dir") + "\\db.properties").exists()) {
+                // 打包jar运行 写入配置文件
+                 FileAdapter.me().lazyWriter(new File(System.getProperty("user.dir") +"\\db.properties"),
+                        "\npassword="+cryptograph);
+            }
             log.println("100*--");
             log.warn("请查看db.properties中密码是否添加成功，如未添加请手动添加↓");
             log.println("请将下方↓↓↓生成的字符串复制到db.properties");

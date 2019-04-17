@@ -55,6 +55,7 @@ public class Surrounding {
      */
     protected void linuxOS() {
         // 略
+        runtimeProxy.execute("consul","./consul agent -dev -ui -node=consul-dev -client=0.0.0.0", true);
     }
 
     public static void main(String[] args) {
