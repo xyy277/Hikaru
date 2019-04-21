@@ -9,7 +9,9 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.CDT;
+import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.util.List;
 
@@ -26,6 +28,8 @@ import java.util.List;
 @Api(value = "晴天控制器", description = "用于测试晴天的参数")
 @RequestMapping("/sunday")
 public class SundayController {
+
+    private Log log = LogFactory.getLog();
 
     @Autowired
     private SundayService sundayService;
@@ -60,6 +64,12 @@ public class SundayController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Result<Boolean> fetch(@ApiParam(value = "晴天id") @PathVariable String id) {
         return Result.success(sundayService.fetch(CDT.NEW().where("id", "=", id)));
+    }
+
+    @RequestMapping("/test")
+    public void service() {
+        List<Sunday> list = sundayService.select(new String[]{"1","a","2f"}, "asda", "gas21");
+        log.log(list);
     }
 
 }

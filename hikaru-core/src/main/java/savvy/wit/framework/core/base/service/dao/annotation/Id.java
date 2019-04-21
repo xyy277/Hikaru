@@ -8,7 +8,9 @@ import java.lang.annotation.*;
 @Documented
 public @interface Id {
 
+    // 针对 数据库 int型自增主键
     boolean auto() default false;
 
+    int step() default 1;
 
 }

@@ -26,7 +26,7 @@ public class Surrounding {
      * 根据系统运行环境选择不同环境配置
      */
     protected void OS() {
-        LogFactory.print("Current OS: " + system);
+        LogFactory.open(200).printL("Current OS: " + system).close();
         if (this.system.toUpperCase().indexOf("WINDOWS") != -1) {
             windowsOS();
         } else if (this.system.toUpperCase().indexOf("LINUX") != -1) {
@@ -41,9 +41,9 @@ public class Surrounding {
     protected void windowsOS() {
         // -------------------------------------------------------------------------------------------------------------
         // |启动redis redis安装路径根据实际修改                                                                          |
-        runtimeProxy.execute("redis", "cmd /k  I:\\Work\\service\\redis64\\redis-server.exe");
+        runtimeProxy.execute("redis", "I:\\Work\\service\\redis64\\redis-server.exe", false);
         // |启动consul,windows开发环境下运行时自动启动本地consul，缺点看不到consul运行日志(需本地安装consul)                |
-        runtimeProxy.execute("consul","cmd /k consul agent -dev -ui -node=node1");
+        runtimeProxy.execute("consul","consul agent -dev -ui -node=node1", true);
         // |以上本地开发环境下可以这么做，测试及生产环境务必删除                                                           |
         // -------------------------------------------------------------------------------------------------------------
         // 启动jmeter，shell 根据实际安装目录修改
@@ -55,5 +55,11 @@ public class Surrounding {
      */
     protected void linuxOS() {
         // 略
+        runtimeProxy.execute("consul","./consul agent -dev -ui -node=consul-dev -client=0.0.0.0", true);
+    }
+
+    public static void main(String[] args) {
+        Surrounding run = new Surrounding();
+        run.OS();
     }
 }

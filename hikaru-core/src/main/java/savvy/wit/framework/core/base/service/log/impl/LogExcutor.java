@@ -29,7 +29,32 @@ public class LogExcutor implements Log {
     private String front = "";
 
     private String behind = "";
-
+    private static String regex1;
+    private static String regex2;
+    private static String regex3;
+    private static String regex4;
+    private static String regex5;
+    private static String regex6;
+    private static Pattern pattern1;
+    private static Pattern pattern2;
+    private static Pattern pattern3;
+    private static Pattern pattern4;
+    private static Pattern pattern5;
+    private static Pattern pattern6;
+    static {
+        regex1 = "[0-9]+(\\*){1}[^0-9]+";
+        regex2 = "[0-9]+(\\*){1}[0-9]+";
+        regex3 = "[^0-9]+(\\*){1}[0-9]+";
+        regex4 = "[0-9]+";
+        regex5 = "(?!(\\*))+[^0-9]+";
+        regex6 = "[^0-9]+(?!(\\*))+";
+        pattern1 = Pattern.compile(regex1);
+        pattern2 = Pattern.compile(regex2);
+        pattern3 = Pattern.compile(regex3);
+        pattern4 = Pattern.compile(regex4);
+        pattern5 = Pattern.compile(regex5);
+        pattern6 = Pattern.compile(regex6);
+    }
     private static final String FILENAME = "logs\\"+ DateUtil.getNow("yyyy") + "\\" + DateUtil.getNow("MM") + "\\" + DateUtil.getNow("yyyy-MM-dd") + ".log";
 
     private static  Config config = Config.init("/properties/log.properties");
@@ -60,16 +85,16 @@ public class LogExcutor implements Log {
     }
 
     private static void init() {
-        String address = config.getValue("address");
-        File file = new File(StringUtil.isBlank(address) ? FILENAME : address + "/" + FILENAME);
-        if(!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-        try {
-            file.createNewFile();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String address = config.getValue("address");
+//        File file = new File(StringUtil.isBlank(address) ? FILENAME : address + "/" + FILENAME);
+//        if(!file.getParentFile().exists()) {
+//            file.getParentFile().mkdirs();
+//        }
+//        try {
+//            file.createNewFile();
+//        }catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -214,18 +239,6 @@ public class LogExcutor implements Log {
         write(logs);
     }
 
-    String regex1 = "[0-9]+(\\*){1}[^0-9]+";
-    String regex2 = "[0-9]+(\\*){1}[0-9]+";
-    String regex3 = "[^0-9]+(\\*){1}[0-9]+";
-    String regex4 = "[0-9]+";
-    String regex5 = "(?!(\\*))+[^0-9]+";
-    String regex6 = "[^0-9]+(?!(\\*))+";
-    Pattern pattern1 = Pattern.compile(regex1);
-    Pattern pattern2 = Pattern.compile(regex2);
-    Pattern pattern3 = Pattern.compile(regex3);
-    Pattern pattern4 = Pattern.compile(regex4);
-    Pattern pattern5 = Pattern.compile(regex5);
-    Pattern pattern6 = Pattern.compile(regex6);
     @Override
     public Log print(String... strings) {
         String string = "";

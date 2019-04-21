@@ -2,7 +2,7 @@ package com.gsafety.hikaru.service.impl;
 
 import com.gsafety.hikaru.common.helper.RedisUtil;
 import com.gsafety.hikaru.feign.TestFeign;
-import com.gsafety.hikaru.model.system.User;
+import com.gsafety.hikaru.model.business.User;
 import com.gsafety.hikaru.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

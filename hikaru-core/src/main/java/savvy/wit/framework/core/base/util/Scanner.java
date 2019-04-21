@@ -28,7 +28,7 @@ public class Scanner {
     public static List<Class<?>> scanning(String... packs) {
         List<Class<?>> list = new ArrayList<>();
         for (String pack : packs) {
-            list.addAll(scanning(pack));
+            list.addAll(scanning(pack.trim()));
         }
         return list;
     }
@@ -36,7 +36,7 @@ public class Scanner {
     public static List<Class<?>> scanning(List<String> packs) {
         List<Class<?>> list = new ArrayList<>();
         for (String pack : packs) {
-            list.addAll(scanning(pack));
+            list.addAll(scanning(pack.trim()));
         }
         return list;
     }

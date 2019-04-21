@@ -3,6 +3,7 @@ package savvy.wit.framework.core.pattern.factory;
 
 import savvy.wit.framework.core.base.service.dao.Dao;
 import savvy.wit.framework.core.base.service.dao.impl.msql.DaoExcutor;
+import savvy.wit.framework.core.pattern.proxy.QueryLink;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -15,12 +16,20 @@ import savvy.wit.framework.core.base.service.dao.impl.msql.DaoExcutor;
  ******************************/
 public class Daos {
 
+    /**
+     * 增强dao
+     * @return
+     */
     public static Dao get() {
-        return DaoExcutor.init();
+        return QueryLink.init();
     }
 
+    /**
+     * 初始dao
+     * @return
+     */
     public static Dao acquire() {
-        return DaoExcutor.NEW();
+        return DaoExcutor.init();
     }
 
 }

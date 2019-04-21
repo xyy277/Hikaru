@@ -3,13 +3,13 @@ package com.gsafety.hikaru.common.application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import savvy.wit.framework.core.base.util.StringUtil;
-import savvy.wit.framework.core.pattern.factory.DbFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 /*******************************
@@ -40,6 +40,13 @@ public class ApplicationConfig implements CommandLineRunner {
     private boolean automation;
     private boolean refactor;
     private String pack;
+
+    @Value("${server.address}")
+    private String address;
+    @Value("${server.port}")
+    private String port;
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
 
     /**
      * 第二种方式获取，boolean若没有配置会报错
@@ -84,6 +91,9 @@ public class ApplicationConfig implements CommandLineRunner {
             this.pack = pack;
         ApplicationInitialization.me().initialization(this.automation, this.refactor, this.pack);
         log.info("ApplicationConfig init completed");
-        LogFactory.print("Hello Hikaru !");
+        LogFactory.open(200)
+                .printL("Hello Hikaru !", "Welcome")
+                .printL("visit address: " + address + ":" + port + contextPath)
+                .close();
     }
 }

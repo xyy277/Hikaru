@@ -41,17 +41,6 @@ public class DateUtil {
     }
 
     /**
-     * 获取处理耗时
-     * @param start
-     * @param end
-     * @return
-     */
-    public static String getTimeConsuming( long start,long end){
-        long time=end-start;//计算插入耗时
-        return "耗时:\t"+(time>10000?getTime(time, "mm分ss秒"):time+"毫秒");
-    }
-
-    /**
      * 获取当前系统时间
      * @param format 日期转化格式
      * 		       建议格式:yyyy-MM-dd HH:mm:ss

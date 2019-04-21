@@ -2,7 +2,9 @@ package savvy.wit.framework.core.base.util;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.GetConnectionTimeoutException;
-import savvy.wit.framework.core.pattern.factory.DbFactory;
+import savvy.wit.framework.core.algorithm.model.key.KeyStore;
+import savvy.wit.framework.core.algorithm.model.key.RSAKeyFactory;
+import savvy.wit.framework.core.pattern.factory.ConfigFactory;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
@@ -23,7 +25,7 @@ import java.util.Properties;
  ******************************/
 public class DbUtil {
 
-    private static final String PRIVATE_KEY = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKfp2t7kKSunGZTOH9Rw8QrElrDCHWENpHmlBLRblWyRJgL4CrpIxjPsoiYt63i4iSpVRV9f_TckxRnpgM28Qdzpkveywp7PTwscrNBs820C9xwMLP_Rymqnp0ulJgJ3QS-v4PajDkfGwObvSRf6qzMbwT8vczXE7bn7W68mz7CjAgMBAAECgYAWpDTsGy3mAfk0FHs8RSJrhkifev1FKfbEpFi3DSZf5k6O1e10Yv2-4KiYp1Z6B8APIkJhcusM9XtSXCcPFtR2gbJk7DPkUZvzJDW3uLMwJct9IGFGc20lwD-wQg8xGZEcapFmmiTBusfa1qfDP19pxV5RI9aiz3yRxhCLrdmvuQJBAPNamSsTOCTNjZHuVg33W5uauD5x54Ga92kRiUsdY28KEs8Mj6qxWIT6z7TJbJigvW_e5xc8IVk0h8kzbDwtv6cCQQCwo6cjZkSVd2qXb8VcJfYzxwcE9po4JxKt0EqDiItPpaFkaaVpa0cpoCb5Ea00QCKfkdpsDujn2FSQWwXPKMalAkEA1Q-2WOtb1YUOdP0J5PJ0BzmgJDQP7_5grWIIJXbWjupv601hH55kFRGO9wb_iGX7Vc3_3-zqebKvS-40zj9zswJAcS3rAfudJkgFvFKZmpmYT0TPcpav6hrfFQ_JLs5mtPnjl3s5yXo7dqhvUFfLKxeNF8FUurgy85rhVD1-U2ZFIQJAG4RRuIE9mx4NscEiDOmrm8-U_dGwbJq1KUr-IexPT-icr4YqUAu0sCr_f42ao47mHK_bQjHC7PMzw99EhzD9eA";
+    private static final String PRIVATE_KEY = KeyStore.RSA_PRIVATE_KEY;
 
     public DbUtil() {
         init();
@@ -57,7 +59,7 @@ public class DbUtil {
         } catch (InvalidKeySpecException e) {
             e.printStackTrace();
         }
-        Properties config = DbFactory.me().getProperties();
+        Properties config = ConfigFactory.me().getProperties();
         driver = config.getProperty("driver");
         url = config.getProperty("url");
         user = config.getProperty("user");

@@ -2,7 +2,7 @@ package com.gsafety.hikaru.common.listener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import savvy.wit.framework.core.pattern.factory.DbFactory;
+import savvy.wit.framework.core.pattern.factory.ConfigFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import javax.servlet.ServletContextEvent;
@@ -28,11 +28,12 @@ public class ApplicationListener implements ServletContextListener {
         log.info("ApplicationListener init");
         // 很low的方式去配置参数
         // 设置log打印格式
-        LogFactory.front("❤").behind("-->:>");
-        DbFactory dbFactory = DbFactory.me();
-        dbFactory.setSource("./db.properties", "db.properties")                 // 设置dao数据源
+        LogFactory.front("").behind("\t\t:");
+        ConfigFactory dbFactory = ConfigFactory.me();
+        dbFactory.setSource("db.properties", "./db.properties")                 // 设置dao数据源
                 .setEnumClassList("com.gsafety.hikaru.model.enumerate")         // 设置泛型package
-                .setProperty("vacancy", "true");                                // 设置参数vacancy - 插入数据为null时，补“”
+                .setProperty("vacancy", "true")                                 // 设置参数vacancy - 插入数据为null时，补“”
+                .setProperty("intervalMark", "@$");
     }
 
     @Override

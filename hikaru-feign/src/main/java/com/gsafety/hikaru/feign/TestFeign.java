@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * configuration（）指明FeignClient的配置类，默认的配置类为FeignClientsConfiguration类，在缺省情况下，这个类注入了默认的Decoder、Encoder和Constant等配置的bean。
  * fallback()为配置熔断器的处理类
  ******************************/
-@FeignClient( name = "${hikaruServerName}", url = "${hikaruServerUrl}")
+@FeignClient("${hikaruServerName}")
 public interface TestFeign {
 
     /**

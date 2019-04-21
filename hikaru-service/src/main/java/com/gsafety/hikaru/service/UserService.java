@@ -1,6 +1,6 @@
 package com.gsafety.hikaru.service;
 
-import com.gsafety.hikaru.model.system.User;
+import com.gsafety.hikaru.model.business.User;
 import org.springframework.http.ResponseEntity;
 import savvy.wit.framework.core.base.service.cdt.Cdt;
 import savvy.wit.framework.core.service.BaseService;
