@@ -46,8 +46,7 @@ public class UserController extends BaseController<User, String> {
 
     @RequestMapping(value = "/addBatch", method = RequestMethod.POST)
     public Result<List<User>> addBatch(@RequestBody @Validated ValidList<User> users) {
-        userService.insertBath(users);
-        return Result.success((userService.query()));
+        return Result.success( userService.insertBath(users));
     }
 
 

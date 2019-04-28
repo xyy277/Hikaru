@@ -1,10 +1,13 @@
 package com.gsafety.hikaru.api.test;
 
 import com.gsafety.hikaru.model.business.User;
+import com.gsafety.hikaru.service.UserService;
+import com.gsafety.hikaru.service.impl.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
+import savvy.wit.framework.core.base.util.JsonUtil;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.ConfigFactory;
@@ -27,10 +30,10 @@ import java.util.UUID;
  * Description : 
  ******************************/
 public class ServiceTest {
-    private Log log = LogFactory.getLog();
+    private static Log log = LogFactory.getLog();
     private static final String PROJECT_PATH = System.getProperty("user.dir");
 
-    BaseService<User> baseService;
+    UserService userService;
 
     @Before
     public void init() {
@@ -39,10 +42,10 @@ public class ServiceTest {
                 .setEnumClassList("com.gsafety.hikaru.model.enumerate")// 设置泛型package
                 .setProperty("vacancy", "true")
                 .setProperty("intervalMark", "@$");
-        baseService = new BaseServiceImpl<>(Daos.get());
+        userService = new UserServiceImpl(Daos.get());
 
         log.log( () -> {
-            Daos.get().create(User.class);
+//            Daos.get().create(User.class);
         });
     }
 
@@ -52,14 +55,33 @@ public class ServiceTest {
         List<User> userList = new ArrayList<>();
         for (int var = 0; var < 100; var++) {
             User user = new User();
-            user.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-            user.setName(StringUtil.createCode(10));
-            user.setAge(DateUtil.random(100));
+            user.setName(StringUtil.createCode());
+            user.setUsername(StringUtil.createCode());
+            user.setPassword(StringUtil.createCode());
+            user.setAge(DateUtil.random(120));
+            user.setOnline(DateUtil.random(2));
+            user.setDisable(DateUtil.random(2) > 0 ? true : false);
+            user.setOptTime(DateUtil.getNow());
+            user.setOptUser(StringUtil.createCode());
             userList.add(user);
         }
-//        baseService.insertBath(userList);
+        userService.insertBath(userList);
 
-        List<User> users = baseService.query(CDT.where("name", "=", "zhoujiajun"));
+        List<User> users = userService.query(CDT.where("name", "=", "zhoujiajun"));
         log.log(users);
+    }
+
+
+    public static void main(String[] args) {
+        User user = new User();
+        user.setName(StringUtil.createCode());
+        user.setUsername(StringUtil.createCode());
+        user.setPassword(StringUtil.createCode());
+        user.setAge(DateUtil.random(120));
+        user.setOnline(DateUtil.random(2));
+        user.setDisable(DateUtil.random(2) > 0 ? true : false);
+        user.setOptTime(DateUtil.getNow());
+        user.setOptUser(StringUtil.createCode());
+        log.println(JsonUtil.toJson(user));
     }
 }

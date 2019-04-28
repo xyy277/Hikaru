@@ -20,13 +20,6 @@ import java.io.IOException;
 @RequestMapping("/ws")
 public class WebSocketController {
 
-    //页面请求
-    @GetMapping("/{cid}")
-    public ModelAndView socket(@PathVariable String cid) {
-        ModelAndView mav=new ModelAndView("/socket");
-        mav.addObject("cid", cid);
-        return mav;
-    }
     //推送数据接口
     @RequestMapping(value = "/push/{cid}", method = RequestMethod.GET)
     public Result pushToWeb(@PathVariable String cid, @RequestParam String message) {

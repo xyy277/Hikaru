@@ -114,7 +114,12 @@ public class RuntimeProxy {
     }
 
     private String commandAdapter(String command) {
-        command = "cmd /c " + command;
+        String system = System.getProperty("os.name");
+        if (system.toUpperCase().indexOf("WINDOWS") != -1) {
+            command = "cmd /c " + command;
+        } else if (system.toUpperCase().indexOf("LINUX") != -1) {
+            command = "sc -c " + command;
+        }
         return command;
     }
 

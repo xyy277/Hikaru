@@ -41,7 +41,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 //    }
 
     @Autowired
-    private UserServiceImpl (Dao dao) {
+    public UserServiceImpl (Dao dao) {
         super(dao);
     }
 
