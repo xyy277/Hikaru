@@ -9,6 +9,9 @@ import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
+
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : boot启动类
@@ -26,8 +29,13 @@ public class Application {
 
     private Surrounding in = new Surrounding();
 
-    public static void main(String[] args) {
+    @PostConstruct
+    void started() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
 
+    public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         Counter counter = Counter.create();
 
         Application running = new Application();
@@ -36,7 +44,7 @@ public class Application {
         // |如不需可进行注释，那么在启动前请前往EncryptionScript执行main函数，将生成的数据库密码添加到db.properties中，并重新编译
         // |2、上线部署时，如若在db.properties中添加有password会按正常方式执行，如若不存在，会在启动之后在控制台要求输入明文密码，这种方式会影响部署美感
         // |建议在上线部署时，手动给配置文件添加加密后的password，加密方式执行EncryptionScript.main()                   |
-        EncryptionScript.encryption();
+        EncryptionScript.encryption("db.properties");
         // -------------------------------------------------------------------------------------------------------------
 
         // 本地开发环境一键启动，适合入门开发者，减少繁琐步骤
