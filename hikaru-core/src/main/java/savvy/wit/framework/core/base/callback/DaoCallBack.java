@@ -3,7 +3,6 @@ package savvy.wit.framework.core.base.callback;/**
  */
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -16,5 +15,5 @@ import java.sql.SQLException;
  ******************************/
 public interface DaoCallBack<T> {
 
-    T savvy(ResultSet resultSet) throws SQLException;
+    T savvy(ResultSet resultSet) throws Exception;
 }

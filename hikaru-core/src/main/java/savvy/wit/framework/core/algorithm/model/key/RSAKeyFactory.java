@@ -30,8 +30,8 @@ public class RSAKeyFactory implements KeyStore {
 
     protected RSAKeyFactory() {
       Map map = RSAUtil.createKeys(1024);
-      this.privateKey = (String) map.get("privateKey");
-      this.publicKey = (String) map.get("publicKey");
+      this.privateKey = (String) map.get(RSAUtil.PRIVATE_KEY);
+      this.publicKey = (String) map.get(RSAUtil.PUBLIC_KEY);
         try {
             this.rsaPrivateKey = RSAUtil.getPrivateKey(this.privateKey);
             this.rsaPublicKey = RSAUtil.getPublicKey(this.publicKey);

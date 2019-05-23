@@ -1,7 +1,10 @@
 package savvy.wit.framework.core.pattern.proxy;
 
 import org.springframework.stereotype.Repository;
+import savvy.wit.framework.core.base.callback.DaoCallBack;
 import savvy.wit.framework.core.base.service.dao.impl.msql.DaoExcutor;
+
+import java.sql.Connection;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -27,4 +30,13 @@ public class QueryLink<T> extends DaoExcutor<T> implements DaoProxy<T> {
         private static QueryLink INITIALIZATION = new QueryLink();
     }
 
+    @Override
+    public void execute(Connection connection, String sql) {
+        
+    }
+
+    @Override
+    public void execute(Connection connection, String sql, DaoCallBack callBack) {
+
+    }
 }

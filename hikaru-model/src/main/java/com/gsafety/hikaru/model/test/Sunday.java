@@ -77,6 +77,7 @@ public class Sunday extends BaseModel {
     @ApiModelProperty(value = "monday id")
     private String mondayId;
 
+    @QueryLink(value = Monday.class, name = "mondayId")
     private Monday monday;
 
     public synchronized Monday monday() {

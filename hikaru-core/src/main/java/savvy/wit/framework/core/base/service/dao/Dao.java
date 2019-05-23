@@ -93,6 +93,8 @@ public interface Dao<T> {
      */
     List<T> execute(String sql, DaoCallBack<T> callBack);
 
+    Object executed(String sql, DaoCallBack<Object> callBack);
+
     Map<String, Object> fetch(String sql) throws SQLException;
 
     List<Map<String, Object>> query(String sql) throws SQLException;

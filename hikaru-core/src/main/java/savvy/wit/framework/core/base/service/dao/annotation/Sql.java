@@ -8,5 +8,11 @@ import java.lang.annotation.*;
 @Documented
 public @interface Sql {
 
+    /**
+     *
+     * @return
+     */
+    String pre() default "";
+
     String value() default "";
 }

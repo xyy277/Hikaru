@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 public class DaoExcutor<T> implements Dao<T> {
 
     private static Log log = LogFactory.getLog();
-    private DbUtil db = DbUtil.me();
+    private DbUtil db = null;
     // 通过扫描获取的泛型集合
     private List<Class<?>> enumClassList;
 
@@ -45,6 +45,7 @@ public class DaoExcutor<T> implements Dao<T> {
 
     protected DaoExcutor() {
         ConfigFactory config = ConfigFactory.me();
+        this.db = DbUtil.me();
         this.enumClassList = config.getEnumClassList();
         String intervalMark = config.getProperty("intervalMark");
         this.intervalMark = StringUtil.isNotBlank(intervalMark) ? intervalMark : this.intervalMark;
@@ -181,7 +182,8 @@ public class DaoExcutor<T> implements Dao<T> {
         }finally {
             log.sql(sql);
             try {
-                resultSet.close();
+                if (resultSet != null)
+                    resultSet.close();
                 db.close(connection,preparedStatement);
             } catch (SQLException e) {
                 log.warn("close Failed:\n" + e.getMessage());
@@ -191,6 +193,40 @@ public class DaoExcutor<T> implements Dao<T> {
             }
         }
         return callbacks;
+    }
+
+    public Object executed(String sql, DaoCallBack<Object> callBack) {
+        Object result = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = db.getConnection();
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            connection.commit();
+            while (resultSet.next()) {
+                result = callBack.savvy(resultSet);
+            }
+        }catch (Exception e){
+            log.warn("Exception happened:\n" + e.getMessage());
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                log.warn("rollback Failed:\n" + e1.getMessage());
+            }
+        }finally {
+            log.sql(sql);
+            try {
+                if (resultSet != null)
+                    resultSet.close();
+                db.close(connection,preparedStatement);
+            } catch (SQLException e) {
+                log.warn("close Failed:\n" + e.getMessage());
+            }
+        }
+        return result;
     }
 
     public Map<String, Object> fetch(String sql) throws SQLException {
@@ -1103,9 +1139,9 @@ public class DaoExcutor<T> implements Dao<T> {
         }
         Object o = ObjectUtil.getValue(resultSet, columnType, name);
         if (!primitive) {
-            if (type.indexOf("[]") != -1 ) {
+            if (type.indexOf("[]") != -1  && o.toString().indexOf(intervalMark) != -1) {
                 return  o.toString().split(intervalMark);
-            }else if (type.indexOf("List") != -1) {
+            }else if (type.indexOf("List") != -1  && o.toString().indexOf(intervalMark) != -1) {
                 return Arrays.asList(o.toString().split(intervalMark));
             } else if (type.indexOf("Map") != -1) {
 //                String[] strings = o.toString().split("@@");
