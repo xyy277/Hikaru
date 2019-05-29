@@ -6,7 +6,9 @@ import com.gsafety.hikaru.model.test.Sunday;
 import org.junit.Before;
 import org.junit.Test;
 import savvy.wit.framework.core.base.callback.impl.AbstractDaoCallBack;
+import savvy.wit.framework.core.base.service.cdt.Cdt;
 import savvy.wit.framework.core.base.service.log.Log;
+import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.ConfigFactory;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
@@ -15,10 +17,7 @@ import savvy.wit.framework.core.pattern.proxy.SqlProxy;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -36,13 +35,16 @@ public class FetchTest {
 
     public static void main(String[] args) {
         SqlProxy proxy = SqlBuilder.ask();
-        proxy.param("id", 1);
-        proxy.proxy("select * from monday where id = ${id} ${m}" +( 1 == 1 ? "${aaa}" :  "${b2s}"));
-        proxy.param("m", "'or 1=1 - -'");
-
+        proxy.param("id", 1)
+                .proxy("select * from monday where id = ${id} ${m}" +( 1 == 1 ? "${aaa}" :  "${b2s}"))
+                .inject().joint("aaa", "and a = b")
+                .joint("aaa", "1233333");
         Monday monday = new Monday();
+        monday.setId(UUID.randomUUID().toString().replaceAll("-",""));
         String sql = proxy.request();
         log.log(sql);
+        Cdt cdt = CDT.NEW().where("a", "like", monday.getId());
+        log.log(cdt.getCondition());
     }
 
     @Before
@@ -60,12 +62,13 @@ public class FetchTest {
         list.add("12312");
         list.add("vasd");
         list.add(3);
-        fetch(SqlBuilder.ask().proxy("select * from sunday s left join monday m on s.opt_user = m.opt_user " +
-                "where s.monday_id in ${ids}")
+        /**
+         * TODO: 自动生成关联sql
+         */
+        fetch(SqlBuilder.ask().proxy("SELECT  * FROM sunday s_1 LEFT JOIN monday m_2 ON (s_1.monday_id = m_2.id) WHERE s_1.monday_id IN ${ids}")
                 .param("ids", new String[]{"123123", "asdasdas"})
                 .param("mid", "123123123123")
                 .param("asdasd", list).request());
-
     }
 
     private void insert() {
@@ -103,17 +106,22 @@ public class FetchTest {
     private void fetch(String sql) {
 //        Sunday sunday = new Sunday();
 //        Daos.get().execute(sql, resultSet -> {
-//            sunday.setId(resultSet.getString("s.id"));
-//            sunday.setMondayId(resultSet.getString("s.monday_id"));
-//            sunday.monday().setId(resultSet.getString("m.id"));
-//            sunday.monday().setName(resultSet.getString("m.name"));
+//            sunday.setId(resultSet.getString("s_1.id"));
+//            sunday.setMondayId(resultSet.getString("s_1.monday_id"));
+//            sunday.monday().setId(resultSet.getString("m_2.id"));
+//            sunday.monday().setName(resultSet.getString("m_2.name"));
 //            return sunday;
 //        });
 
         List list = Daos.get().execute(sql, new AbstractDaoCallBack<Sunday>(){
             @Override
             public Sunday savvy(ResultSet resultSet) throws Exception {
-                return super.savvy(resultSet);
+                Sunday sunday = super.savvy(resultSet);
+//                Monday monday = new Monday();
+//                monday.setId(resultSet.getString("m_2.id"));
+//                monday.setName(resultSet.getString("m_2.name"));
+//                sunday.setMonday(monday);
+                return sunday;
             }
         });
         log.log(list);

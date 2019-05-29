@@ -1,5 +1,6 @@
 package savvy.wit.framework.core.pattern.builder;
 
+import savvy.wit.framework.core.base.cache.SQLCache;
 import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.pattern.proxy.SqlProxy;
@@ -21,6 +22,8 @@ import java.util.regex.Pattern;
 public class SqlBuilder implements SqlProxy {
 
     private Log log = LogFactory.getLog();
+
+    private SQLCache cache;
 
     private boolean generate;
 
@@ -57,12 +60,12 @@ public class SqlBuilder implements SqlProxy {
     }
 
     /**
-     *
-     * @param key
+     * 参数化注入
+     * @param placeholder
      * @param value
      * @return
      */
-    public SqlProxy param(String key, Object value) {
+    public SqlProxy param(String placeholder, Object value) {
         StringBuilder builder = new StringBuilder();
         if (value.getClass().isArray() || value instanceof List) {
             builder.append(" ( ");
@@ -88,7 +91,6 @@ public class SqlBuilder implements SqlProxy {
             }
             builder.append(" ) ");
         } else {
-
             // 防止注入
             if (injectDefender(value.toString())) {
                 throw new RuntimeException("inject sql warning:\t"+ value.toString());
@@ -101,21 +103,50 @@ public class SqlBuilder implements SqlProxy {
                 builder.append(value.toString());
         }
 
-        param.put(key, builder.toString());
+        param.put(placeholder, builder.toString());
         return LazyInit.INITIALIZATION;
     }
 
     /**
-     * 内部解析sql：
-     *  param --》 sql
-     * 1、设置动态参数
-     * 2、防止sql注入
+     * 拼接
+     * @param placeholder 占位符
+     * @param sql
+     * @return
      */
-    private void parsing() {
-        if (isValid(this.sql)) {
-            log.log(sql);
-        } else
-            throw new RuntimeException("SQL inject warning");
+    public SqlProxy joint(String placeholder, String sql) {
+        if (Provider.inject) {
+            param.put(placeholder, sql);
+        } else {
+            param.remove(placeholder);
+        }
+        return LazyInit.INITIALIZATION;
+    }
+
+    /**
+     * sql解析
+     * @param sql
+     * @return
+     */
+    private String parsing(String sql) {
+        StringBuilder result = new StringBuilder();
+        char[] chars = sql.toCharArray();
+        boolean start = false;
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c == '$') {
+                if (i < chars.length - 1 &&  chars[i+1] == '{') {
+                    start = true;
+                }
+            }
+            if (start) {
+                if (c == '}') {
+                    start = false;
+                }
+                continue;
+            }
+            result.append(c);
+        }
+        return result.toString();
     }
 
     private boolean isValid(String str) {
@@ -139,13 +170,49 @@ public class SqlBuilder implements SqlProxy {
      * @return
      */
     public String request() {
-        param.forEach((s, s2) -> {
-            String key = "${" + s + "}";
-            if (this.sql.indexOf(key) != -1) {
-                this.sql = this.sql.replace(key, s2);
-            }
-        });
-//        parsing();
-        return this.sql;
+        try {
+            param.forEach((s, s2) -> {
+                String key = "${" + s + "}";
+                if (this.sql.indexOf(key) != -1) {
+                    this.sql = this.sql.replace(key, s2);
+                }
+            });
+            this.sql = parsing(this.sql);
+            return this.sql;
+        } finally {
+            Provider.close();
+            clean();
+        }
+    }
+
+    /**
+     * 代理结束，data recover
+     */
+    private void clean() {
+        this.sql = "";
+        param = new HashMap<>();
+    }
+
+    /**
+     * 开启注入
+     *
+     * @return
+     */
+    public SqlProxy inject() {
+        Provider.open();
+        return LazyInit.INITIALIZATION;
+    }
+
+    private static class Provider {
+
+        private static boolean inject = false;
+
+        private static void open() {
+            inject = true;
+        }
+
+        private static void close() {
+            inject = false;
+        }
     }
 }

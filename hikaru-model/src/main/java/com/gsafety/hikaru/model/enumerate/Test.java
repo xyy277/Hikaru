@@ -1,5 +1,6 @@
 package com.gsafety.hikaru.model.enumerate;
 
+import savvy.wit.framework.core.base.service.enumerate.EnumValue;
 import savvy.wit.framework.core.base.service.enumerate.EnumValueContract;
 
 /*******************************
@@ -11,6 +12,7 @@ import savvy.wit.framework.core.base.service.enumerate.EnumValueContract;
  * Version : 1.0
  * Description : 
  ******************************/
+@EnumValue
 public enum Test implements EnumValueContract<Test> {
 
     OK(1),

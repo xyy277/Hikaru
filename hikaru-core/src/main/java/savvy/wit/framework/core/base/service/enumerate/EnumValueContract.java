@@ -7,7 +7,7 @@ package savvy.wit.framework.core.base.service.enumerate;
  * Author : zhoujiajun
  * Date : 2019/2/19 9:32
  * Version : 1.0
- * Description : 
+ * Description : 泛型转化实现接口
  ******************************/
 public interface EnumValueContract<T> {
 

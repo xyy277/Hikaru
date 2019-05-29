@@ -1,5 +1,6 @@
 package com.gsafety.hikaru.model.enumerate;
 
+import savvy.wit.framework.core.base.service.enumerate.EnumValue;
 import savvy.wit.framework.core.base.service.enumerate.EnumValueContract;
 
 /*******************************
@@ -10,7 +11,9 @@ import savvy.wit.framework.core.base.service.enumerate.EnumValueContract;
  * Date : 2019/2/19 9:24
  * Version : 1.0
  * Description : 描述紫外线强度
+ * Update: 加@EnumValue注解利于快速扫描
  ******************************/
+@EnumValue
 public enum Ultraviolet implements EnumValueContract<Ultraviolet> {
 
     // 强

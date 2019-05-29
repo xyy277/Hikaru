@@ -20,6 +20,10 @@ public class EnumConvertBase<E extends EnumValueContract> {
 
     protected static Log log = LogFactory.getLog();
 
+    protected EnumConvertBase() {
+        
+    }
+
     public static EnumConvertBase convert() {
         return LazyInit.INITIALIZATION;
     }

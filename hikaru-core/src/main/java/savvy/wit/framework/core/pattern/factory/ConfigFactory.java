@@ -1,5 +1,7 @@
 package savvy.wit.framework.core.pattern.factory;
 
+import savvy.wit.framework.core.base.service.enumerate.EnumValue;
+import savvy.wit.framework.core.base.service.enumerate.EnumValueContract;
 import savvy.wit.framework.core.base.util.Scanner;
 
 import java.io.*;
@@ -7,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -80,7 +84,11 @@ public class ConfigFactory {
      * @return
      */
     public ConfigFactory setEnumClassList(String... pack) {
-        this.enumClassList.addAll(Scanner.scanning(pack));
+        // 扫描Enum中 带EnumValue注解或者实现了EnumValueContract接口
+        this.enumClassList.addAll(Scanner.scanning(pack).stream()
+        .filter(aClass -> aClass.isAnnotationPresent(EnumValue.class) ? true : Stream.of(aClass.getInterfaces())
+        .filter(aClass1 -> aClass1 == EnumValueContract.class).collect(Collectors.toList()).size() > 0 ? true : false)
+        .collect(Collectors.toList()));
         return LazyInit.INITIALIZATION;
     }
 

@@ -1,6 +1,7 @@
 package savvy.wit.framework.core.base.callback.impl;
 
 import com.alibaba.fastjson.JSON;
+import savvy.wit.framework.core.base.cache.SQLCache;
 import savvy.wit.framework.core.base.callback.DaoCallBack;
 import savvy.wit.framework.core.base.service.dao.annotation.Column;
 import savvy.wit.framework.core.base.service.dao.annotation.QueryLink;
@@ -31,6 +32,11 @@ public class AbstractDaoCallBack<T> implements DaoCallBack<T> {
     private static String intervalMark = "";
     private List<Class<?>> enumClassList = ConfigFactory.me().getEnumClassList();
     private Counter counter = Counter.create();
+    private List<String> types = new ArrayList<>();
+    private List<String> names = new ArrayList<>();
+    private List<String> links = new ArrayList<>();
+    private Map<String, List<String>> map = new HashMap<>();
+    private SQLCache cache; // sql缓存
 
     @Override
     public T savvy(ResultSet resultSet) throws Exception {
@@ -57,10 +63,6 @@ public class AbstractDaoCallBack<T> implements DaoCallBack<T> {
     }
 
     private Map<String, List<String>> getParamTypeAndName(Class clazz) {
-        Map<String, List<String>> map = new HashMap<>();
-        List<String> types = new ArrayList<>();
-        List<String> names = new ArrayList<>();
-        List<String> links = new ArrayList<>();
         while (clazz != null && clazz != Object.class) {
             Arrays.asList(clazz.getDeclaredFields()).forEach(field -> {
                 if (field.isAnnotationPresent(Column.class)) {
@@ -80,8 +82,9 @@ public class AbstractDaoCallBack<T> implements DaoCallBack<T> {
                    QueryLink queryLink = field.getAnnotation(QueryLink.class);
                    // 关联类
                    Class linkClass = queryLink.value();
-                   // 关联属性
-                   String linkName = queryLink.name();
+                   map.putAll(getParamTypeAndName(linkClass));
+//                   // 关联属性
+//                   String linkName = queryLink.name();
                 }
             });
             clazz = clazz.getSuperclass();
