@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.application;
+package com.gsafety.hikaru.application.hikaru;
 
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.pattern.proxy.RuntimeProxy;
