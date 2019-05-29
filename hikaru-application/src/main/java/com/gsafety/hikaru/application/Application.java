@@ -27,7 +27,7 @@ import java.util.TimeZone;
 @EnableFeignClients(basePackages = "com.gsafety.hikaru.feign")
 public class Application {
 
-    private Surrounding in = new Surrounding();
+    private static Surrounding surrounding = Surrounding.deploy();
 
     @PostConstruct
     void started() {
@@ -38,7 +38,12 @@ public class Application {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         Counter counter = Counter.create();
 
-        Application running = new Application();
+        surrounding.OS();
+        if (!surrounding.isRunning()) {
+            // 你需要手动执行Surrounding的main方法 开启相关环境，如果你对系统依赖的环境熟并且已经确保配置正确可以注释此行
+            return;
+        }
+
         // -------------------------------------------------------------------------------------------------------------
         // |1、开发环境时：动态设置数据库密码，一次执行加密后添加到db.properties中,永久有效，重新编译后失效             |
         // |如不需可进行注释，那么在启动前请前往EncryptionScript执行main函数，将生成的数据库密码添加到db.properties中，并重新编译
@@ -47,14 +52,8 @@ public class Application {
         EncryptionScript.encryption("db.properties");
         // -------------------------------------------------------------------------------------------------------------
 
-        // 本地开发环境一键启动，适合入门开发者，减少繁琐步骤
-//        ThreadPool.me().newThread(() -> running.in.OS()).start();
-
-        // 启动服务
-//        ThreadPool.me().newThread(() -> {
-            SpringApplication.run(Application.class, args);
-            LogFactory.print("Application Startup takes: " + DateUtil.formatDateTime(counter.close()));
-//        }).start();
+        SpringApplication.run(Application.class, args);
+        LogFactory.print("Application Startup takes: " + DateUtil.formatDateTime(counter.close()));
 
 
     }

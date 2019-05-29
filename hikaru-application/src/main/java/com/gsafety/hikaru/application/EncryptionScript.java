@@ -39,7 +39,7 @@ public class EncryptionScript {
      */
     public static void encryption(String... fileNames) {
         for (String fileName : fileNames) {
-            log.println("当前修改文件为：\t"+ fileName);
+//            log.println("当前修改文件为：\t"+ fileName);
             String path = "";
             if (new File("./" + fileName).exists()) {
                 path ="./" + fileName;
@@ -68,7 +68,7 @@ public class EncryptionScript {
             if ((Boolean) counter.getValue("append")) {
                 String password = "";
                 log.println("100*--");
-                log.print("请输入要加密的数据库密码：");
+                log.print("请输入要连接的数据库密码，系统将对其加密：");
                 Scanner scanner = new Scanner(System.in);
                 password = scanner.nextLine();
                 RSAPublicKey publicKey = null;

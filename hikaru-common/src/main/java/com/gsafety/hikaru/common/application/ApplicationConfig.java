@@ -10,6 +10,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import savvy.wit.framework.core.base.util.StringUtil;
+import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 /*******************************
@@ -89,6 +90,10 @@ public class ApplicationConfig implements CommandLineRunner {
             this.refactor = Boolean.parseBoolean(refactor);
         if(StringUtil.isNotBlank(pack))
             this.pack = pack;
+        // 库我也帮你建吧
+        Daos.get().execute("CREATE DATABASE IF NOT EXISTS "
+                + env.getProperty("hikaru.database.name")
+                + " DEFAULT CHARSET utf8 COLLATE utf8_general_ci");
         ApplicationInitialization.me().initialization(this.automation, this.refactor, this.pack);
         log.info("ApplicationConfig init completed");
         LogFactory.open(200)
