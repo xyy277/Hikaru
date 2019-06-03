@@ -368,8 +368,8 @@ public class DaoExcutor<T> implements Dao<T> {
             }
         }
         List<Class<?>> classList = Scanner.scanning(packList);
+        log.println(classList.stream().map(aClass -> aClass.getPackage() + "|| {5*-}  " + aClass.getSimpleName()).collect(Collectors.toList()).toArray());
         log.print("100*-").print("<< starting >>").println("100*-");
-        log.print("<< starting >>");
         create(refactor,
                 classList.parallelStream()
                 .filter(aClass -> aClass.isAnnotationPresent(Table.class)).collect(Collectors.toList()));

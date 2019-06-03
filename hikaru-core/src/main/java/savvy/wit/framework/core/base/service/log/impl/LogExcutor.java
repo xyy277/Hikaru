@@ -7,8 +7,6 @@ import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.factory.Config;
 import savvy.wit.framework.core.pattern.factory.Daos;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -75,6 +73,7 @@ public class LogExcutor implements Log {
 
     private static String level;
     private static Long index = 0l;
+    private int intercept = -1;
     public static LogExcutor me() {
         init();
         return lazyInit.INITIALIZATION;
@@ -241,45 +240,103 @@ public class LogExcutor implements Log {
 
     @Override
     public Log print(String... strings) {
-        String string = "";
-        if (strings != null && strings.length > 0) {
+        if (strings != null && strings.length >= 0) {
             for (String s : strings) {
-                string += s;
+                System.out.print(printResult(s).toString());
             }
-        }
-        if (pattern1.matcher(string).matches()) {
-            String str = find(pattern4.matcher(string));
-            int num = Integer.parseInt(str);
-            str = "";
-            String symbol = find(pattern5.matcher(string));
-            for (int var = 0; var < num; var++) {
-                str += symbol;
-            }
-            System.out.print(str);
-        } else if (pattern2.matcher(string).matches()) {
-            System.out.print(Integer.parseInt(string.split("\\*")[0]) * Integer.parseInt(string.split("\\*")[1]));
-        } else if (pattern3.matcher(string).matches()) {
-            int num = Integer.parseInt(find(pattern4.matcher(string)));
-            String str = "";
-            String symbol = find(pattern6.matcher(string));
-            for (int var = 0; var < num; var++) {
-                str += symbol;
-            }
-            System.out.print(str);
         } else {
-            System.out.print(string);
+            System.out.print("");
         }
         return me();
     }
 
     @Override
     public Log println(String... strings) {
-        String string = "";
         if (strings != null && strings.length > 0) {
             for (String s : strings) {
-                string += s;
+                System.out.println(printResult(s).toString());
+            }
+        } else {
+            System.out.println("");
+        }
+        return me();
+    }
+
+    StringBuilder printResult(String string) {
+        if (StringUtil.isBlank(string)) {
+            return new StringBuilder("");
+        }
+        if (string.indexOf("{") == -1) {
+            return new StringBuilder(matcher(string));
+        }
+        StringBuilder result = new StringBuilder();
+        boolean start = false;
+        boolean match = false;
+        String matchString = "";
+        int index = 0; // 游标
+        int count = 0; // 匹配次数
+        char[] chars = string.toCharArray();
+        boolean pad = false;
+        int intercept = 0;
+        if (string.indexOf("||") != -1) {
+            intercept = string.substring(0,string.indexOf("||")).length();
+            if (this.intercept >= 0
+                    && this.intercept >= intercept
+                    && this.intercept < chars.length) {
+                pad = true;
             }
         }
+        // 填补占位
+        char[] chars1 = new char[chars.length + this.intercept - intercept];
+        for (int i = 0; i < chars1.length; i++) {
+            if (i < intercept) {
+                chars1[i] = chars[i];
+            }
+            if (i >= intercept && i < this.intercept) {
+                chars1[i] = ' ';
+            }
+            if (i >= this.intercept) {
+                chars1[i] = chars[i-this.intercept + intercept];
+            }
+        }
+        // calculate
+        for (int i = 0; i < chars1.length; i++) {
+            if (pad) {
+                if ((chars1[i] == '|' && i < chars1.length - 1 && chars1[i+1] == '|')
+                        || (chars1[i] == '|' && i-1 >= 0 && chars1[i-1] == '|')) {
+                    continue;
+                }
+            }
+            if (chars1[i] == '{' && i < chars1.length - 1) {
+                index = i;
+                start = true;
+            }
+            if (start && chars1[i] == '}') {
+                match = true;
+                start = false;
+            }
+            // 截取段跳过
+            if (start && !match) {
+                matchString += chars1[i];
+                continue;
+            }
+            // 截取段做匹配
+            if (match) {
+                count ++;
+                match = false;
+                result.append(matcher(matchString.substring(1,matchString.length())));
+                matchString = "";
+            } else {
+                result.append(chars1[i]);
+            }
+        }
+        if (count == 0) {
+            result.append(matchString);
+        }
+        return result;
+    }
+
+    private String matcher(String string) {
         if (pattern1.matcher(string).matches()) {
             String str = find(pattern4.matcher(string));
             int num = Integer.parseInt(str);
@@ -288,9 +345,9 @@ public class LogExcutor implements Log {
             for (int var = 0; var < num; var++) {
                 str += symbol;
             }
-            System.out.println(str);
+            return str;
         } else if (pattern2.matcher(string).matches()) {
-            System.out.println(Integer.parseInt(string.split("\\*")[0]) * Integer.parseInt(string.split("\\*")[1]));
+            return String.valueOf(Integer.parseInt(string.split("\\*")[0]) * Integer.parseInt(string.split("\\*")[1]));
         } else if (pattern3.matcher(string).matches()) {
             int num = Integer.parseInt(find(pattern4.matcher(string)));
             String str = "";
@@ -298,11 +355,44 @@ public class LogExcutor implements Log {
             for (int var = 0; var < num; var++) {
                 str += symbol;
             }
-            System.out.println(str);
+            return str;
         } else {
-            System.out.println(string);
+            return string;
         }
-        return me();
+    }
+
+    @Override
+    public void println(Object... objects) {
+        if (objects == null || objects.length <= 0) {
+            System.out.println("");
+            return;
+        }
+        intercept = Arrays.asList(objects).stream()
+                .filter(o -> o.toString().indexOf("||") != -1)
+                .map(o -> o.toString().substring(0, o.toString().lastIndexOf("||")))
+                .max((o1, o2) -> o1.toString().length()-o2.toString().length())
+                .get().toString().length();
+        for (Object o : objects) {
+            println(o.toString());
+        }
+        intercept = 0;
+    }
+
+    @Override
+    public void print(Object... objects) {
+        if (objects == null || objects.length <= 0) {
+            System.out.println("");
+            return;
+        }
+        intercept = Arrays.asList(objects).stream()
+                .filter(o -> o.toString().indexOf("||") != -1)
+                .map(o -> o.toString().substring(0, o.toString().lastIndexOf("||")))
+                .max((o1, o2) -> o1.toString().length()-o2.toString().length())
+                .get().toString().length();
+        for (Object o : objects) {
+            print(o.toString());
+        }
+        intercept = 0;
     }
 
     private String find(Matcher matcher) {

@@ -112,7 +112,6 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
     @Override
     public List<T> query(Cdt cdt) {
         List<T> list = new ArrayList<>();
-        log.log(getGenericSuperclass());
         try {
             list = dao().query(cdt, getGenericSuperclass());
         }catch (Exception e) {
@@ -135,7 +134,6 @@ public class BaseServiceImpl<T> extends Service implements BaseService<T> {
     @Override
     public List<T> query() {
         List<T> list = new ArrayList<>();
-        log.log(getGenericSuperclass());
         try {
             list = dao().query(null, getGenericSuperclass());
         }catch (Exception e) {

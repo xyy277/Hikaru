@@ -27,6 +27,10 @@ public interface Log {
 
     Log println(String... string);
 
+    void println(Object... objects);
+
+    void print(Object... objects);
+
     void front(String front);
 
     void behind(String behind);
