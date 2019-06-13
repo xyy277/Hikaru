@@ -28,10 +28,6 @@ public class HikaruApplication {
     }
 
     public static void run(String[] args) {
-        main(args);
-    }
-
-    public static void main(String[] args) {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         Counter counter = Counter.create();
 
@@ -52,4 +48,5 @@ public class HikaruApplication {
         SpringApplication.run(Application.class, args);
         LogFactory.print("Application Startup takes: " + DateUtil.formatDateTime(counter.close()));
     }
+
 }

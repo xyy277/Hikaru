@@ -20,12 +20,12 @@ public class SystemSchedule {
 
     private Logger log = LoggerFactory.getLogger(SystemSchedule.class);
 
-    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     public void checkLog() {
         log.info("check SystemSchedule Log->>>>>>>");
     }
 
-    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     public void auto() {
         log.info("<<<<<<<-auto ");
     }

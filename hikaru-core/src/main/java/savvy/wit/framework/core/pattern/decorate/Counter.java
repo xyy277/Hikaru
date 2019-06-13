@@ -29,6 +29,14 @@ public class Counter {
 
     private long time = System.currentTimeMillis();
 
+    public static Counter me() {
+        return LazyInit.INITIALIZATION;
+    }
+
+    private static class LazyInit {
+        private static Counter INITIALIZATION = new Counter();
+    }
+
     public static Counter create() {
         return new Counter();
     }

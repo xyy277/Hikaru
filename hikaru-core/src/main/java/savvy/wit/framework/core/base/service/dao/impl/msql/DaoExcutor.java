@@ -158,6 +158,25 @@ public class DaoExcutor<T> implements Dao<T> {
         }
     }
 
+    @Override
+    public void execute(String... sqls) throws SQLException{
+        Connection connection = db.getConnection();
+        connection.setAutoCommit(false);
+        PreparedStatement preparedStatement = null;
+        try {
+            for (String sql : sqls) {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.execute();
+                log.sql(sqls);
+            }
+            connection.commit();
+        }catch (Exception e) {
+            connection.rollback();
+        } finally {
+            db.close(connection,preparedStatement);
+        }
+    }
+
     public List<T> execute(String sql, DaoCallBack<T> callBack) {
         List<T> callbacks = new ArrayList<>();
         Connection connection = null;

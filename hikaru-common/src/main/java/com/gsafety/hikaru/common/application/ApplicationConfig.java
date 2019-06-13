@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
+import savvy.wit.framework.core.pattern.proxy.RuntimeProxy;
+
+import java.util.Map;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -96,9 +99,45 @@ public class ApplicationConfig implements CommandLineRunner {
                 + " DEFAULT CHARSET utf8 COLLATE utf8_general_ci");
         ApplicationInitialization.me().initialization(this.automation, this.refactor, this.pack);
         log.info("ApplicationConfig init completed");
+        String url = address + ":" + port + contextPath;
         LogFactory.open(200)
                 .printL("Hello Hikaru !", "Welcome")
-                .printL("visit address: " + address + ":" + port + contextPath)
+                .printL("visit address: http://" + url)
                 .close();
+
+        // 初始化完成打开浏览器
+        Browser.open(true, url);
     }
+
+
+
+
+
+    private static class Browser {
+
+        /**
+         *
+         * @param open
+         * @param url
+         */
+        private static void open(Boolean open, String url) {
+            if (!open) {
+                return;
+            }
+            Map<String, String> map = System.getenv();
+            String userName = map.get("USERNAME");// 获取用户名
+            String computerName = map.get("COMPUTERNAME");// 获取计算机名
+            String userDomain = map.get("USERDOMAIN");// 获取计算机域名
+            RuntimeProxy.get().execute(
+                    "chrome",
+                    "C:\\Users\\" + userName + "\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe " + url,
+                    false);
+            RuntimeProxy.get().execute(
+                    "chrome",
+                    "C:\\Users\\" + "Administrator" + "\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe " + url,
+                    false);
+        }
+    }
+
+
 }

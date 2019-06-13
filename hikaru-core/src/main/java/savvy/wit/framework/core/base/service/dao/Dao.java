@@ -83,6 +83,8 @@ public interface Dao<T> {
      */
     void execute(String sql) throws SQLException;
 
+    void execute(String... sqls) throws SQLException;
+
     void executeBatch(List<String> sql) throws SQLException;
 
     /**
