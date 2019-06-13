@@ -46,7 +46,15 @@ public class HikaruApplication {
         // -------------------------------------------------------------------------------------------------------------
 
         SpringApplication.run(Application.class, args);
-        LogFactory.print("Application Startup takes: " + DateUtil.formatDateTime(counter.close()));
+        LogFactory.open()
+                .printL("                                            /                   ")
+                .printL("                                 ^__^      /                    ")
+                .printL("                         _______/(oo)                           ")
+                .printL("                     /\\/(       / (_<)                         ")
+                .printL("                         | w----|\\                             ")
+                .printL("                         /|     |/                              ")
+                .printL("Application Startup takes: " + DateUtil.formatDateTime(counter.close()))
+                .close();
     }
 
 }
