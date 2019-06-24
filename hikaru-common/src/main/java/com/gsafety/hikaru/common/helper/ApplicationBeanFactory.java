@@ -1,12 +1,11 @@
 package com.gsafety.hikaru.common.helper;
 
-import org.apache.poi.ss.formula.functions.T;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+import savvy.wit.framework.core.base.service.log.Log;
+import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -27,22 +26,16 @@ public class ApplicationBeanFactory implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
-    private Logger log = LoggerFactory.getLogger(ApplicationBeanFactory.class);
+    private Log log = LogFactory.getLog();
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if(ApplicationBeanFactory.applicationContext == null) {
+            LogFactory.open()
+                    .printL("ApplicationBeanFactory init success")
+                    .close();
             ApplicationBeanFactory.applicationContext = applicationContext;
         }
-        log.info("---------------------------------------------------------------------------");
-
-        log.info("---------------------------------------------------------------------------");
-
-        log.info("------------------------ApplicationBeanFactory init------------------------");
-
-        log.info("========ApplicationContext配置成功,在普通类可以通过调用SpringUtils.getAppContext()获取applicationContext对象,applicationContext="+ ApplicationBeanFactory.applicationContext+"========");
-
-        log.info("----------------------------------------------------------------------------");
     }
 
     //获取applicationContext

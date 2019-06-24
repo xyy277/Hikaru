@@ -14,6 +14,7 @@ import savvy.wit.framework.core.pattern.factory.ConfigFactory;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.service.BaseService;
+import savvy.wit.framework.core.service.Configuration;
 import savvy.wit.framework.core.service.impl.BaseServiceImpl;
 
 import java.util.ArrayList;
@@ -37,15 +38,17 @@ public class ServiceTest {
 
     @Before
     public void init() {
-        ConfigFactory.me().setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\db.properties")
-                .setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\test.properties")
-                .setEnumClassList("com.gsafety.hikaru.model.enumerate")// 设置泛型package
-                .setProperty("vacancy", "true")
-                .setProperty("intervalMark", "@$");
+        Configuration configuration = ConfigFactory.me();
+        String url = System.getProperty("user.dir");
+        url = url.substring(0, url.lastIndexOf("\\"));
+        configuration.setSource(url + "\\hikaru-application\\src\\main\\resources\\db.properties")  // 设置dao数据源
+                .setProperty("vacancy", "true")                                                                                     // 设置参数vacancy - 插入数据为null时，补“”
+                .setProperty("intervalMark", "@$")
+                .setEnumClassList("com.gsafety.hikaru.model.enumerate");                                                             // 设置泛型package
         userService = new UserServiceImpl(Daos.get());
 
         log.log( () -> {
-//            Daos.get().create(User.class);
+//            Daos.get().dropAndCreate(User.class);
         });
     }
 
@@ -59,15 +62,16 @@ public class ServiceTest {
             user.setUsername(StringUtil.createCode());
             user.setPassword(StringUtil.createCode());
             user.setAge(DateUtil.random(120));
+            user.setGender(DateUtil.random(2));
             user.setOnline(DateUtil.random(2));
             user.setDisable(DateUtil.random(2) > 0 ? true : false);
             user.setOptTime(DateUtil.getNow());
             user.setOptUser(StringUtil.createCode());
             userList.add(user);
         }
-        userService.insertBath(userList);
+//        userService.insertBath(userList);
 
-        List<User> users = userService.query(CDT.where("name", "=", "zhoujiajun"));
+        List<User> users = userService.query(CDT.where("name", "like", "z"));
         log.log(users);
     }
 

@@ -16,6 +16,7 @@ import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.ConfigFactory;
 import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
+import savvy.wit.framework.core.service.Configuration;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -67,10 +68,11 @@ public class DataTest {
 
     @Before
     public void before() {
-        ConfigFactory.me().setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\db.properties")
-                .setEnumClassList("com.gsafety.hikaru.model.enumerate")// 设置泛型package
-                .setProperty("vacancy", "true")
-                .setProperty("intervalMark", "@$");
+        Configuration configuration = ConfigFactory.me();
+        configuration.setSource("db.properties", "./db.properties")                 // 设置dao数据源
+                .setProperty("vacancy", "true")                                     // 设置参数vacancy - 插入数据为null时，补“”
+                .setProperty("intervalMark", "@$")
+                .setEnumClassList("com.gsafety.hikaru.model.enumerate");            // 设置泛型package
     }
 
     @Test

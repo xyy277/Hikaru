@@ -3,7 +3,6 @@ package com.gsafety.hikaru.application.hikaru;
 import savvy.wit.framework.core.algorithm.model.key.KeyStore;
 import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.RSAUtil;
-import savvy.wit.framework.core.base.util.Strings;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
@@ -48,7 +47,6 @@ public class EncryptionScript {
                 path = Thread.currentThread().getContextClassLoader().getResource(fileName).getFile();
             }
             path = path.substring(0, 1).equals("/") ? path.substring(1, path.length()) : path;
-//        path = Strings.path2Backslash(path);
             Counter counter = Counter.create();
             counter.setValue("append", true);
             counter.setValue("check", true);

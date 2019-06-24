@@ -1,16 +1,10 @@
 package savvy.wit.framework.core.pattern.factory;
 
-import savvy.wit.framework.core.base.service.enumerate.EnumValue;
-import savvy.wit.framework.core.base.service.enumerate.EnumValueContract;
-import savvy.wit.framework.core.base.util.Scanner;
+import savvy.wit.framework.core.service.Configuration;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -21,18 +15,16 @@ import java.util.stream.Stream;
  * Version : 1.0
  * Description : 动态可扩展配置数据源
  ******************************/
-public class ConfigFactory {
+public class ConfigFactory extends DbFactory implements Configuration {
 
     private Properties properties;
 
-    private List<Class<?>> enumClassList = new ArrayList<>();
-
-    public static ConfigFactory me() {
+    public static Configuration me() {
         return LazyInit.INITIALIZATION;
     }
 
     private static class LazyInit {
-        private static final ConfigFactory  INITIALIZATION = new ConfigFactory();
+        private static final Configuration  INITIALIZATION = new ConfigFactory();
     }
 
     protected ConfigFactory (){}
@@ -49,11 +41,8 @@ public class ConfigFactory {
         return properties.getProperty(key);
     }
 
-    public List<Class<?>> getEnumClassList() {
-        return enumClassList;
-    }
 
-    public void setProperties(Properties properties) {
+    public Configuration setProperties(Properties properties) {
         if (this.properties == null)
             this.properties = new Properties();
         Enumeration enumeration = properties.propertyNames();//得到配置文件的名字
@@ -62,6 +51,7 @@ public class ConfigFactory {
             String value = properties.getProperty(key);
             this.properties.setProperty(key, value);
         }
+        return LazyInit.INITIALIZATION;
     }
 
     /**
@@ -70,7 +60,7 @@ public class ConfigFactory {
      * @param value
      * @return
      */
-    public ConfigFactory setProperty(String key, String value) {
+    public Configuration setProperty(String key, String value) {
         if (this.properties == null) {
             this.properties = new Properties();
         }
@@ -78,21 +68,8 @@ public class ConfigFactory {
         return LazyInit.INITIALIZATION;
     }
 
-    /**
-     * 扫描并设置Enum类，为dao初始化流程之一
-     * @param pack
-     * @return
-     */
-    public ConfigFactory setEnumClassList(String... pack) {
-        // 扫描Enum中 带EnumValue注解或者实现了EnumValueContract接口
-        this.enumClassList.addAll(Scanner.scanning(pack).stream()
-        .filter(aClass -> aClass.isAnnotationPresent(EnumValue.class) ? true : Stream.of(aClass.getInterfaces())
-        .filter(aClass1 -> aClass1 == EnumValueContract.class).collect(Collectors.toList()).size() > 0 ? true : false)
-        .collect(Collectors.toList()));
-        return LazyInit.INITIALIZATION;
-    }
 
-    public ConfigFactory setSource(Properties... properties) {
+    public Configuration setSource(Properties... properties) {
         for (Properties property : properties) {
             setProperties(property);
         }
@@ -103,7 +80,7 @@ public class ConfigFactory {
      * 后者覆盖前者方式加载
      * @param paths
      */
-    public ConfigFactory setSource(String... paths) {
+    public Configuration setSource(String... paths) {
         InputStream inputStream = null;
         properties = properties == null ? new Properties() : properties;
         for (String path : paths) {

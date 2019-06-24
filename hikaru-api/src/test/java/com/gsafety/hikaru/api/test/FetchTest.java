@@ -14,6 +14,7 @@ import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.pattern.builder.SqlBuilder;
 import savvy.wit.framework.core.pattern.proxy.SqlProxy;
+import savvy.wit.framework.core.service.Configuration;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,15 +50,17 @@ public class FetchTest {
 
     @Before
     public void before() {
-        ConfigFactory.me().setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\db.properties")
-                .setEnumClassList("com.gsafety.hikaru.model.enumerate") // 设置泛型package
-                .setProperty("vacancy", "true"); //根据需要设置全局配置
+        Configuration configuration = ConfigFactory.me();
+        configuration.setSource("db.properties", "./db.properties")                 // 设置dao数据源
+                .setProperty("vacancy", "true")                                     // 设置参数vacancy - 插入数据为null时，补“”
+                .setProperty("intervalMark", "@$")
+                .setEnumClassList("com.gsafety.hikaru.model.enumerate");            // 设置泛型package
 //        Daos.get().create(false, Sunday.class, Monday.class);
     }
 
     @Test
     public void test() {
-//        insert();
+        insert();
         List list = new ArrayList();
         list.add("12312");
         list.add("vasd");
@@ -72,9 +75,9 @@ public class FetchTest {
     }
 
     private void insert() {
-        Daos.get().dropAndCreate(Monday.class, Sunday.class);
+        Daos.get().create(Monday.class, Sunday.class);
         Monday monday = new Monday();
-        monday.setId("123");
+        monday.setId("123123");
         monday.setName("ojbk");
         monday.setOptUser("admin");
         try {

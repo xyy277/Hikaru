@@ -1,7 +1,9 @@
 package test;
 
 import savvy.wit.framework.core.base.service.log.Log;
+import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
+import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
@@ -20,12 +22,21 @@ public class PrintTest {
 
     private static Log log = LogFactory.getLog();
     public static void main(String[] args) {
+        Counter counter = Counter.create();
         LogFactory.open(240)
                 .printL("hello world!")
                 .printL("mother fucker!")
                 .printL("son of bitch")
                 .close();
-
+        LogFactory.open()
+                .printL("                                             /                  ")
+                .printL("                                 ^__^      /                    ")
+                .printL("                         _______/(oo)                           ")
+                .printL("                     /\\/(       /(__)                          ")
+                .printL("                         | w----|\\                             ")
+                .printL("                         /\\     |/                             ")
+                .printL("Application Startup takes: " + DateUtil.formatDateTime(counter.destroy()))
+                .close();
 //        LogFactory.print("Hello Hikaru !");
 //        for (File file : Files.getFiles("C:\\Users\\Administrator\\Desktop\\hikaru\\server")) {
 ////            String encoding = Files.getEncoding(file);

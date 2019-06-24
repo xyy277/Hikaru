@@ -27,6 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.ConfigFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
+import savvy.wit.framework.core.service.Configuration;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {ApiTest.class})
@@ -41,10 +42,11 @@ public class ApiTest {
 
     @Before
     public void init() {
-        ConfigFactory.me().setSource(PROJECT_PATH.substring(0, PROJECT_PATH.lastIndexOf("\\")) + "\\hikaru-application\\src\\main\\resources\\db.properties")
-                .setEnumClassList("com.gsafety.hikaru.model.enumerate")// 设置泛型package
-                .setProperty("vacancy", "true")
-                .setProperty("intervalMark", "@$");
+        Configuration configuration = ConfigFactory.me();
+        configuration.setSource("db.properties", "./db.properties")                 // 设置dao数据源
+                .setProperty("vacancy", "true")                                     // 设置参数vacancy - 插入数据为null时，补“”
+                .setProperty("intervalMark", "@$")
+                .setEnumClassList("com.gsafety.hikaru.model.enumerate");            // 设置泛型package
     }
     @Test
     public void test() {

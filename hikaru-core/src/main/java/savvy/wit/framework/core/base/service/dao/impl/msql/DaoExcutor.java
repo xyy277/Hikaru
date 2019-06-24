@@ -16,6 +16,7 @@ import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.ConfigFactory;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
+import savvy.wit.framework.core.service.Configuration;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -25,26 +26,26 @@ import java.util.stream.Collectors;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
- * Title : 
+ * Title :
  * File name : DaoExcutor
  * Author : zhoujiajun
  * Date : 2018/6/29 21:45
  * Version : 1.0
- * Description : 
+ * Description :
  ******************************/
 @Repository("originalDao")
 public class DaoExcutor<T> implements Dao<T> {
 
-    private static Log log = LogFactory.getLog();
+    protected Log log = LogFactory.getLog();
     private DbUtil db = null;
     // 通过扫描获取的泛型集合
-    private List<Class<?>> enumClassList;
+    protected List<Class<?>> enumClassList;
 
     // 默认的间隔符为，
-    private String intervalMark = ",";
+    protected String intervalMark = ",";
 
     protected DaoExcutor() {
-        ConfigFactory config = ConfigFactory.me();
+        Configuration config = ConfigFactory.me();
         this.db = DbUtil.me();
         this.enumClassList = config.getEnumClassList();
         String intervalMark = config.getProperty("intervalMark");
@@ -61,6 +62,35 @@ public class DaoExcutor<T> implements Dao<T> {
 
     private static class LazyInit {
         private static DaoExcutor INITIALIZATION = new DaoExcutor();
+    }
+
+    protected Connection getConnection() {
+        Connection connection = null;
+        try {
+            connection = db.getConnection();
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        return connection;
+    }
+    protected void close(Object... objects) {
+        if (objects != null && objects.length > 0) {
+            for (Object object : objects) {
+                try {
+                    if (object instanceof Connection) {
+                        ((Connection) object).close();
+                    } else if (object instanceof PreparedStatement) {
+                        ((PreparedStatement) object).close();
+                    } else if (object instanceof Statement) {
+                        ((com.mysql.jdbc.Statement) object).close();
+                    } else if (object instanceof ResultSet) {
+                        ((ResultSet) object).close();
+                    }
+                } catch (SQLException e) {
+                    log.error(e);
+                }
+            }
+        }
     }
 
     public void execute(File... files) throws SQLException {

@@ -1,5 +1,6 @@
 package com.gsafety.hikaru.common.application;
 
+import com.gsafety.hikaru.common.application.init.ApplicationInitialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +107,7 @@ public class ApplicationConfig implements CommandLineRunner {
                 .close();
 
         // 初始化完成打开浏览器
-        Browser.open(true, url);
+        Browser.open(false, url);
     }
 
 
@@ -116,9 +117,9 @@ public class ApplicationConfig implements CommandLineRunner {
     private static class Browser {
 
         /**
-         *
-         * @param open
-         * @param url
+         * 打开浏览器
+         * @param open 是否打开
+         * @param url 打开之后跳转网页地址
          */
         private static void open(Boolean open, String url) {
             if (!open) {

@@ -4,14 +4,6 @@ import com.gsafety.hikaru.application.hikaru.HikaruApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import savvy.wit.framework.core.base.service.log.Log;
-import savvy.wit.framework.core.base.util.Scanner;
-import savvy.wit.framework.core.pattern.factory.LogFactory;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -30,7 +22,7 @@ public class Application {
 
     public static void main(String[] args) {
 
-        HikaruApplication.run(args);
+        HikaruApplication.run(Application.class, args);
 
     }
 

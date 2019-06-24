@@ -55,8 +55,10 @@ public class SqlBuilder implements SqlProxy {
      * @param sql 请求被代理的sql数组
      */
     public SqlProxy proxy(String sql) {
-        this.sql = sql;
-        return LazyInit.INITIALIZATION;
+        synchronized (SqlBuilder.class) {
+            this.sql = sql;
+            return LazyInit.INITIALIZATION;
+        }
     }
 
     /**

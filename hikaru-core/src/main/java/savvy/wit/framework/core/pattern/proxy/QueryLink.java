@@ -32,7 +32,7 @@ public class QueryLink<T> extends DaoExcutor<T> implements DaoProxy<T> {
 
     @Override
     public void execute(Connection connection, String sql) {
-        
+
     }
 
     @Override

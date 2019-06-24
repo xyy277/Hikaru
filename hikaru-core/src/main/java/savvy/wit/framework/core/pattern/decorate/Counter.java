@@ -41,7 +41,8 @@ public class Counter {
         return new Counter();
     }
 
-    public long close() {
+    public long destroy() {
+        cleanAll();
         return System.currentTimeMillis() - time;
     }
 

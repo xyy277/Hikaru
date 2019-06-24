@@ -1,4 +1,4 @@
-package com.gsafety.hikaru.common.exception;
+package com.gsafety.hikaru.common.exception.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

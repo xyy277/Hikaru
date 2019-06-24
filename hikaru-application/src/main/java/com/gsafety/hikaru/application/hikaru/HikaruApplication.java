@@ -1,6 +1,5 @@
 package com.gsafety.hikaru.application.hikaru;
 
-import com.gsafety.hikaru.application.Application;
 import org.springframework.boot.SpringApplication;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.pattern.decorate.Counter;
@@ -27,7 +26,7 @@ public class HikaruApplication {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
-    public static void run(String[] args) {
+    public static void run(Class clazz, String... args) {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         Counter counter = Counter.create();
 
@@ -45,15 +44,16 @@ public class HikaruApplication {
         EncryptionScript.encryption("db.properties");
         // -------------------------------------------------------------------------------------------------------------
 
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(clazz, args);
+
         LogFactory.open()
-                .printL("                                            /                   ")
+                .printL("                                             /                  ")
                 .printL("                                 ^__^      /                    ")
                 .printL("                         _______/(oo)                           ")
-                .printL("                     /\\/(       / (_<)                         ")
+                .printL("                     /\\/(       /(__)                          ")
                 .printL("                         | w----|\\                             ")
-                .printL("                         /|     |/                              ")
-                .printL("Application Startup takes: " + DateUtil.formatDateTime(counter.close()))
+                .printL("                         /\\     |/                             ")
+                .printL("Application Startup takes: " + DateUtil.formatDateTime(counter.destroy()))
                 .close();
     }
 
