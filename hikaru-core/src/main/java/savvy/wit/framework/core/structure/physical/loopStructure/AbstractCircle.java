@@ -218,7 +218,7 @@ public abstract class AbstractCircle implements Acreage, LoopFactory{
     @Override
     public Image draw(int width, int height, Curve curve, boolean save, String... param) {
         return  save ?
-                ImageUtil.me().draw(width, height,1,(graphics) -> {
+                ImageUtil.me().draw(width, height,1,(graphics, image) -> {
                     graphics.setColor(Color.WHITE);
                     graphics.drawString(".", curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
                     for (int var = 1; var+1 < curve.getPoints().length; var++) {
@@ -227,7 +227,7 @@ public abstract class AbstractCircle implements Acreage, LoopFactory{
                                 curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
                     }
                 }).save(param).getImage() :
-                ImageUtil.me().draw(width, height,1,(graphics) -> {
+                ImageUtil.me().draw(width, height,1,(graphics, image) -> {
                     graphics.setColor(Color.WHITE);
                     graphics.drawString(".", curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
                     for (int var = 1; var+1 < curve.getPoints().length; var++) {
@@ -240,8 +240,8 @@ public abstract class AbstractCircle implements Acreage, LoopFactory{
 
     @Override
     public void draw(DrawImageCallBack callBack, int width, int height, Curve curve, String... param) {
-        ImageUtil.me().draw(width, height,1,(graphics) -> {
-            callBack.draw(graphics);
+        ImageUtil.me().draw(width, height,1,(graphics, image) -> {
+            callBack.draw(graphics, image);
             graphics.drawString(".", curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
             for (int var = 1; var+1 < curve.getPoints().length; var++) {
                 graphics.drawLine(
@@ -264,8 +264,8 @@ public abstract class AbstractCircle implements Acreage, LoopFactory{
     @Override
     public Image draw(DrawImageCallBack callBack, int width, int height, Curve curve, boolean save, String... param) {
         return  save ?
-                ImageUtil.me().draw(width, height,1,(graphics) -> {
-                    callBack.draw(graphics);
+                ImageUtil.me().draw(width, height,1,(graphics, image) -> {
+                    callBack.draw(graphics, image);
                     graphics.drawString(".", curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
                     for (int var = 1; var+1 < curve.getPoints().length; var++) {
                         graphics.drawLine(
@@ -273,8 +273,8 @@ public abstract class AbstractCircle implements Acreage, LoopFactory{
                                 curve.getPoints()[var+1].getX(), curve.getPoints()[var+1].getY());
                     }
                 }).save(param).getImage() :
-                ImageUtil.me().draw(width, height,1,(graphics) -> {
-                    callBack.draw(graphics);
+                ImageUtil.me().draw(width, height,1,(graphics, image) -> {
+                    callBack.draw(graphics, image);
                     graphics.drawString(".", curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
                     for (int var = 1; var+1 < curve.getPoints().length; var++) {
                         graphics.drawLine(
@@ -295,11 +295,11 @@ public abstract class AbstractCircle implements Acreage, LoopFactory{
      */
     public Image drawUSelf(DrawImageCallBack callBack, int width, int height, boolean save, String... param) {
         return  save ?
-                ImageUtil.me().draw(width, height,1,(graphics) -> {
-                    callBack.draw(graphics);
+                ImageUtil.me().draw(width, height,1,(graphics, image) -> {
+                    callBack.draw(graphics, image);
                 }).save(param).getImage() :
-                ImageUtil.me().draw(width, height,1,(graphics) -> {
-                    callBack.draw(graphics);
+                ImageUtil.me().draw(width, height,1,(graphics, image) -> {
+                    callBack.draw(graphics, image);
                 }).getImage();
 
     }

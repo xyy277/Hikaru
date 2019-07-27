@@ -35,7 +35,7 @@ public class AgilityTest {
         circle.setPrecision(precision);
         circle.setRadian(radian);
         Curve curve = circle.calculateCurve();
-        log.log(circle.draw( graphics -> {
+        log.log(circle.draw( (graphics, image) -> {
             graphics.setColor(Color.gray);
             graphics.fillRect(0,0,600,600);
             graphics.setColor(Color.green);

@@ -107,7 +107,7 @@ public class ApplicationConfig implements CommandLineRunner {
                 .close();
 
         // 初始化完成打开浏览器
-        Browser.open(false, url);
+        Browser.open(true, url);
     }
 
 
@@ -129,6 +129,7 @@ public class ApplicationConfig implements CommandLineRunner {
             String userName = map.get("USERNAME");// 获取用户名
             String computerName = map.get("COMPUTERNAME");// 获取计算机名
             String userDomain = map.get("USERDOMAIN");// 获取计算机域名
+            // command 谷歌浏览器路径
             RuntimeProxy.get().execute(
                     "chrome",
                     "C:\\Users\\" + userName + "\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe " + url,

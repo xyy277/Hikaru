@@ -75,7 +75,7 @@ public class ImageUtil {
                 throw new RuntimeException("image create error");
             }
             Graphics graphics = image.getGraphics();
-            callBack.draw(graphics);
+            callBack.draw(graphics, image);
             if (graphics != null) {
                 graphics.dispose();
             }

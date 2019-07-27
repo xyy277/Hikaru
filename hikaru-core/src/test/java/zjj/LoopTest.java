@@ -58,7 +58,7 @@ public class LoopTest {
         /**
          * 自定义画法
          */
-        ImageUtil.me().draw(800,800,1,(graphics) -> {
+        ImageUtil.me().draw(800,800,1,(graphics, image) -> {
             graphics.setColor(Color.white);
             graphics.drawString(".",curve.getPoints()[0].getX(), curve.getPoints()[0].getY());
             for (int var = 1; var+1 < curve.getPoints().length; var++) {

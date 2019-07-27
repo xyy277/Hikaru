@@ -22,6 +22,7 @@ public class PrintTest {
 
     private static Log log = LogFactory.getLog();
     public static void main(String[] args) {
+        new PrintTest().test();
         Counter counter = Counter.create();
         LogFactory.open(240)
                 .printL("hello world!")
@@ -45,5 +46,16 @@ public class PrintTest {
 //            if (file.getName().indexOf("properties") != -1)
 //                FileAdapter.me().readLine(file, string -> log.println(string));
 //        }
+    }
+
+    private String result;
+
+    private void test() {
+        this.result = "avbb";
+        test01(this.result);
+    }
+    private void test01(String a) {
+        this.result = null;
+        log.log(a);
     }
 }

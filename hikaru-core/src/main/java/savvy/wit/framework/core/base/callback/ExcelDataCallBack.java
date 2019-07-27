@@ -3,13 +3,13 @@ package savvy.wit.framework.core.base.callback;
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 
- * File name : StringCallBack
+ * File name : ExcelDataCallBack
  * Author : zhoujiajun
- * Date : 2018/11/30 14:43
+ * Date : 2019/7/26 10:31
  * Version : 1.0
  * Description : 
  ******************************/
-public interface StringCallBack {
+public interface ExcelDataCallBack<T> {
 
-    String use(String string);
+    String[] getValues(T t, int count);
 }

@@ -60,6 +60,7 @@ public class EncryptionScript {
                             counter.setValue("check", false);
                         }
                     }
+                    return string;
                 });
             }
 

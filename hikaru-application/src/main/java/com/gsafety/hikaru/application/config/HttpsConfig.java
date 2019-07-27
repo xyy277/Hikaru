@@ -22,11 +22,11 @@ import org.springframework.context.annotation.Bean;
 public class HttpsConfig {
     // 在某配置类中添加如下内容
     // 监听的http请求的端口,需要在application配置中添加http.port=端口号  如80
-    @Value("${http.port}")
+//    @Value("${http.port}")
     Integer httpPort;
 
     //正常启用的https端口 如443
-    @Value("${server.port}")
+//    @Value("${server.port}")
     Integer httpsPort;
 
     // SpringBoot2.x 写法

@@ -1,10 +1,13 @@
 package savvy.wit.framework.core.base.util;
 
+import savvy.wit.framework.core.base.callback.StringCallBack;
 import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -130,6 +133,38 @@ public class Strings {
             status = true;
         }
         return status;
+    }
+
+
+    public static Map<String, String> getParam(String source, StringCallBack callBack) {
+        Map<String, String> map = new HashMap<>();
+        StringBuilder key = new StringBuilder();
+        char[] chars = source.toCharArray();
+        boolean start = false;
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if (c == '$') {
+                if (i < chars.length - 1 &&  chars[i+1] == '{') {
+                    start = true;
+                    continue;
+                }
+            }
+            if (c == '{') {
+                if (i > 0 && chars[i -1] == '$'){
+                    continue;
+                }
+            }
+            if (start) {
+                if (c == '}') {
+                    start = false;
+                    map.put(key.toString(), callBack.use(key.toString()));
+                    key = new StringBuilder();
+                } else {
+                    key.append(c);
+                }
+            }
+        }
+        return map;
     }
 
     public static String path2Backslash (String value) {

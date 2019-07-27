@@ -1,6 +1,7 @@
 package savvy.wit.framework.core.base.callback;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -13,5 +14,5 @@ import java.awt.*;
  ******************************/
 public interface DrawImageCallBack {
 
-    void draw(Graphics graphics);
+    void draw(Graphics graphics, BufferedImage image);
 }

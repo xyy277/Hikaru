@@ -78,7 +78,7 @@ public class StringUtil extends DateUtil {
     }
 
     public static boolean isBlank(String string) {
-        return string == null ? true : "".equals(string) ? true : false;
+        return string == null || "".equals(string);
     }
 
     public static boolean isNotBlank(String string) {

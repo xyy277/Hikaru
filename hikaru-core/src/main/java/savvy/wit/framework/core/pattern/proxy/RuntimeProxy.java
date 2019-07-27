@@ -45,20 +45,20 @@ public class RuntimeProxy {
         Process process = null;
         log.log(command);
         try {
-            process = processMap.get(processKey);
+//            process = processMap.get(processKey);
             if (process != null && process.isAlive()) {
                 log.print("80*=").print("["+ processKey +" ] ").print("<< process already alive >>").println("80*=");
             }
             process = runtime.exec(commandAdapter(command));
-            processMap.put(processKey, process);
+//            processMap.put(processKey, process);
             while (process.isAlive()) {
                 if (!monitoring) {
                     break;
                 }
-                FileAdapter.me().readLine(process.getInputStream(), encoding, string -> log.println(string));
+                FileAdapter.me().readLine(process.getInputStream(), encoding, string -> log.println(string).toString());
             }
             if (monitoring) {
-                FileAdapter.me().readLine(process.getErrorStream(), encoding, string -> log.println(string));
+                FileAdapter.me().readLine(process.getErrorStream(), encoding, string -> log.println(string).toString());
             }
             log.print("80*=").print("["+ processKey +" ] ").print("<< process isAlive: " + process.isAlive() + " >>").println("80*=");
         } catch (Exception e) {
@@ -75,10 +75,10 @@ public class RuntimeProxy {
                 if (!monitoring) {
                     break;
                 }
-                FileAdapter.me().readLine(process.getInputStream(), encoding, string -> log.println(string));
+                FileAdapter.me().readLine(process.getInputStream(), encoding, string -> log.println(string).toString());
             }
             if (monitoring) {
-                FileAdapter.me().readLine(process.getErrorStream(), encoding, string -> log.println(string));
+                FileAdapter.me().readLine(process.getErrorStream(), encoding, string -> log.println(string).toString());
             }
             log.print("80*=").print("<< process isAlive: " + process.isAlive() + " >>").println("80*=");
         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class RuntimeProxy {
             try {
                 Process process = runtime.exec(commandAdapter(command));
                 if (process != null && process.isAlive()) {
-                    FileAdapter.me().readLine(process.getInputStream(), encoding, line -> log.log(line));
+                    FileAdapter.me().readLine(process.getInputStream(), encoding, line -> log.println(line).toString());
                 }
             } catch (IOException e) {
                 log.error(e);

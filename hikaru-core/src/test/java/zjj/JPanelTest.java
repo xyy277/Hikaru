@@ -38,7 +38,7 @@ public class JPanelTest {
     public void test() {
         Curve curve = loop.calculateCurve();
         log.log(() -> Arrays.asList(curve.getPoints()));
-        loop.drawUSelf(graphics -> {
+        loop.drawUSelf((graphics, image) -> {
             graphics.setColor(Color.BLACK);
             graphics.fillRect(0,0,600,600);
             graphics.setColor(Color.WHITE);
