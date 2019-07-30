@@ -1,4 +1,4 @@
-package test;
+package savvy.wit.framework.test;
 
 import java.math.BigDecimal;
 

@@ -19,6 +19,8 @@ public interface ExcelImageCallBack {
      * 后四个参数，前两个表示图片左上角所在的cellNum和 rowNum，后两个参数对应的表示图片右下角所在的cellNum和 rowNum，
      * excel中的cellNum和rowNum的index都是从0开始的
      * new HSSFClientAnchor(0, 0, 0, 0, (short) 1, 1, (short) 2, 2);
+     * @param num       sheet number
+     * @param anchors   图片位置数组
      */
     HSSFClientAnchor[] ProcessingImage(int num, HSSFClientAnchor[] anchors);
 }

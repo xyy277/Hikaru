@@ -19,10 +19,14 @@ import java.util.List;
 public interface ExcelMergedRegionCallBack {
 
     /**
-     * 合并单元格设置单元格宽度
+     *  合并单元格设置单元格宽度
      *  sheet.setColumnWidth(i, i == 0 ? 10 * 256 : 20 * 256); // 宽度设置
      *  sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, titles.length -1));
-     * @param sheet
+     * @param workbook              excel工作簿
+     * @param sheet                 当前sheet
+     * @param num                   sheet number
+     * @param cellRangeAddressList  合并单元格数组
+     * @return
      */
     List<CellRangeAddress> addMergedRegion(HSSFWorkbook workbook, Sheet sheet, int num, List<CellRangeAddress> cellRangeAddressList);
 

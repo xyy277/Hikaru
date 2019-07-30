@@ -33,6 +33,7 @@ import java.util.List;
  * 数据模式都已满足单个表格多个sheet的形式，几个回调函数中都带有num（sheet index）用于判断当前处理sheet 方便不同sheet特殊处理
  * 同时，针对excel插入图片满足每个sheet 自定义插入位置，图片传入类型为[]...二维数组形式，当不需要插入图片时，该参数略省，此时图片位置回调可以返回null
  * v2.为了缩短导出时间，将采用多线程模式对该类进行重构，以满足多个sheet的同时构建
+ * @see savvy.wit.framework.test.ExcelTest
  ******************************/
 public class ExcelUtil {
 

@@ -1,4 +1,4 @@
-package test;
+package savvy.wit.framework.test;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
