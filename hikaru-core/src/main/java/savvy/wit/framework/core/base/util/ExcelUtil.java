@@ -39,6 +39,8 @@ public class ExcelUtil {
 
     /**
      * 获取excel
+     * 满足生成一个excel包含多个sheet
+     * 一个sheet 包含多个表格 及插图
      * 1、自定义表头设置格式（合并 单元格，宽高样式等）
      * 2、正文数据回调处理及样式
      * 3、每一个单元格的样式处理
@@ -46,10 +48,11 @@ public class ExcelUtil {
      * @param response                  response
      * @param fileName                  文件名
      * @param sheetNames                sheet 数组，一个excel可有多个sheet
+     * @param titleList                 title 数组集合，外层集合多个sheet  -  内层数组对应多个table  -  里层每列的附表头数据value
      * @param mergedRegionCallBack      自定义表头（数据及样式），合并单元格
-     * @param lists                     传入导出数据 List<List<T>> lists， 数据
-     * @param startRows                 开始行号 [] - num   每个sheet的正文开始row number
-     * @param startCells                开始列号 [] - num   每个sheet的正文开始cell number
+     * @param arrayList                 传入导出数据 List<List<T>> lists， 数据
+     * @param startRowList              开始行号 List<[]> - num   每个sheet的正文开始row number
+     * @param startCellList             开始列号 List<[]> - num   每个sheet的正文开始cell number
      * @param dataCallBack              数据回调，T - cellValues[]
      * @param styleCallBack             样式 - 每一个单元格的样式回调 （行号，列号）
      * @param imageCallBack             图片位置设置回调
@@ -57,15 +60,17 @@ public class ExcelUtil {
      * @param <T>                       传入对象类型
      * @return
      */
-    public static <T> File getExcel(HttpServletResponse response, String fileName, String[] sheetNames,
-                                ExcelMergedRegionCallBack mergedRegionCallBack, List<List<T>> lists,
-                                int[] startRows, int[] startCells, ExcelDataCallBack<T> dataCallBack, ExcelStyleCallBack styleCallBack,
+    public static <T> File getExcel(HttpServletResponse response, String fileName, String[] sheetNames, List<List<String[]>> titleList,
+                                ExcelMergedRegionCallBack mergedRegionCallBack, List<List<T>>[] arrayList,
+                                List<int[]> startRowList, List<int[]> startCellList, ExcelDataCallBack<T> dataCallBack, ExcelStyleCallBack styleCallBack,
                                 ExcelImageCallBack imageCallBack, BufferedImage[]... bufferedImages) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = null; HSSFRow row = null; Cell cell = null;
-        for (int x = 0; x < sheetNames.length; x++) {
+        for (int x = 0; x < sheetNames.length; x++) { // x - sheet number
+            int[] startRows = startRowList.get(x);
+            int[] startCells = startCellList.get(x);
             String sheetName = sheetNames[x];
-            List<T> list = lists.get(x);
+            List<List<T>> lists = arrayList[x];
             sheet = workbook.createSheet(sheetName);
             /**
              * 通过sheet 自定义表头及表格式
@@ -74,11 +79,17 @@ public class ExcelUtil {
              * 格式包括：
              * 合并单元格设置宽度
              */
-            List<CellRangeAddress> cellRangeAddressList = new ArrayList<>();
-            cellRangeAddressList = mergedRegionCallBack.addMergedRegion(workbook, sheet, x, cellRangeAddressList);
-            if (cellRangeAddressList != null) {
-                for (CellRangeAddress cellRangeAddress : cellRangeAddressList) {
-                    sheet.addMergedRegion(cellRangeAddress);
+            for (int i = 0; i < titleList.size(); i++) {
+                List<String[]> titles = titleList.get(i);
+                for (int j = 0; j < titles.size(); j++) {
+                    String[] title = titles.get(j);
+                    List<CellRangeAddress> cellRangeAddressList = new ArrayList<>();
+                    cellRangeAddressList = mergedRegionCallBack.addMergedRegion(workbook, sheet, title, x, j, cellRangeAddressList);
+                    if (cellRangeAddressList != null) {
+                        for (CellRangeAddress cellRangeAddress : cellRangeAddressList) {
+                            sheet.addMergedRegion(cellRangeAddress);
+                        }
+                    }
                 }
             }
             /**
@@ -90,16 +101,19 @@ public class ExcelUtil {
              * 每列信息通过回调的方式确定由正文起始（起始行列从0 开始计算）第一列到正文最后一列
              * 随后对每一个单元格中的样式进行回调处理，回调参数 （HSSFCellStyle，行号，列号，数据容量）
              */
-            for (int i = 0; i < list.size(); i++) { // 行
-                row = sheet.createRow(i + startRows[x]);
-                List<Object> values = new ArrayList<>();
-                values = dataCallBack.getValues(x, row, list.get(i), values);
-                for (int j = 0; j < values.size(); j++) { // 列
-                    cell = row.createCell(j + startCells[x]);
-                    HSSFCellStyle style = workbook.createCellStyle();
-                    style = styleCallBack.getCellStyle(style, i + startRows[x], j + startCells[x], list.size());
-                    cell.setCellStyle(style);
-                    setValue(cell, values.get(j));
+            for (int y = 0; y < lists.size(); y++) {
+                List<T> list = lists.get(y);
+                for (int i = 0; i < list.size(); i++) { // 行
+                    row = sheet.createRow(i + startRows[y]);
+                    List<Object> values = new ArrayList<>();
+                    values = dataCallBack.getValues(x, y, row, list.get(i), values);
+                    for (int j = 0; j < values.size(); j++) { // 列
+                        cell = row.createCell(j + startCells[y]);
+                        HSSFCellStyle style = workbook.createCellStyle();
+                        style = styleCallBack.getCellStyle(style, i + startRows[y], j + startCells[y], list.size(), y);
+                        cell.setCellStyle(style);
+                        setValue(cell, values.get(j));
+                    }
                 }
             }
             // 图片

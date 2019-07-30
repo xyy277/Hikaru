@@ -19,11 +19,12 @@ public interface ExcelStyleCallBack {
     /**
      * 回调设置任意行列单元格样式
      * 目前仅设计在正文处使用，表头处采用全自定方式
-     * @param style 样式
-     * @param row   行       number
-     * @param cell  列       number
-     * @param size  总行数
+     * @param style     样式
+     * @param row       行       number
+     * @param cell      列       number
+     * @param size      总行数
+     * @param tableNum  表下标 number - sheet中多个表对应的下标
      * @return
      */
-    HSSFCellStyle getCellStyle(HSSFCellStyle style, int row, int cell, int size);
+    HSSFCellStyle getCellStyle(HSSFCellStyle style, int row, int cell, int size, int tableNum);
 }
