@@ -48,7 +48,7 @@ public class ImageController {
         int excursion = 10;
         Object object = request.getSession().getAttribute(name);
         final Counter counter = object != null ? (Counter) object : Counter.create();
-        BufferedImage image = ImageUtil.me().draw(WIDTH,HEIGHT, 1, (graphics) -> {
+        BufferedImage image = ImageUtil.me().draw(WIDTH,HEIGHT, 1, (graphics,bufferedImage) -> {
             graphics.setColor(Color.BLACK);
             graphics.fillRect(0,0,WIDTH,HEIGHT);
             graphics.setColor(Color.WHITE);
@@ -86,7 +86,7 @@ public class ImageController {
         circle.setPrecision(precision);
         circle.setRadian(radian);
         Curve curve = circle.calculateCurve();
-        Image image = circle.draw( graphics -> {
+        Image image = circle.draw( (graphics,bufferedImage) -> {
             graphics.setColor(Color.gray);
             graphics.fillRect(0,0,width,height);
             graphics.setColor(Color.green);

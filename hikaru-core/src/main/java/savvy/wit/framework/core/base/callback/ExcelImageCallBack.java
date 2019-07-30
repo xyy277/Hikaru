@@ -20,5 +20,5 @@ public interface ExcelImageCallBack {
      * excel中的cellNum和rowNum的index都是从0开始的
      * new HSSFClientAnchor(0, 0, 0, 0, (short) 1, 1, (short) 2, 2);
      */
-    HSSFClientAnchor[] ProcessingImage(HSSFClientAnchor[] anchors);
+    HSSFClientAnchor[] ProcessingImage(int num, HSSFClientAnchor[] anchors);
 }

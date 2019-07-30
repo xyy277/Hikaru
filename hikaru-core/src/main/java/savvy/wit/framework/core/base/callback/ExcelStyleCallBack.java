@@ -29,5 +29,14 @@ public interface ExcelStyleCallBack {
     // 表足
     Integer FOOTER = 3;
 
-    Map<Integer, HSSFCellStyle> getCellStyle(HSSFWorkbook workbook, Map<Integer, HSSFCellStyle> styles);
+    /**
+     * 回调设置任意行列单元格样式
+     * 目前仅设计在正文处使用，表头处采用全自定方式
+     * @param style
+     * @param row   行       number
+     * @param cell  列       number
+     * @param size  总行数
+     * @return
+     */
+    HSSFCellStyle getCellStyle(HSSFCellStyle style, int row, int cell, int size);
 }
