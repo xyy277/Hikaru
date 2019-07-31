@@ -57,12 +57,12 @@ public class ExcelUtil {
      * @param styleCallBack             样式 - 每一个单元格的样式回调 （行号，列号）
      * @param imageCallBack             图片位置设置回调
      * @param bufferedImages            图片数组
-     * @param <T>                       传入对象类型
+     *                                   传入对象类型
      * @return
      */
-    public static <T> File getExcel(HttpServletResponse response, String fileName, String[] sheetNames, List<List<String[]>> titleList,
-                                ExcelMergedRegionCallBack mergedRegionCallBack, List<List<T>>[] arrayList,
-                                List<int[]> startRowList, List<int[]> startCellList, ExcelDataCallBack<T> dataCallBack, ExcelStyleCallBack styleCallBack,
+    public static File getExcel(HttpServletResponse response, String fileName, String[] sheetNames, List<List<String[]>> titleList,
+                                ExcelMergedRegionCallBack mergedRegionCallBack, List<List<Object>>[] arrayList,
+                                List<int[]> startRowList, List<int[]> startCellList, ExcelDataCallBack dataCallBack, ExcelStyleCallBack styleCallBack,
                                 ExcelImageCallBack imageCallBack, BufferedImage[]... bufferedImages) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = null; HSSFRow row = null; Cell cell = null;
@@ -70,7 +70,7 @@ public class ExcelUtil {
             int[] startRows = startRowList.get(x);
             int[] startCells = startCellList.get(x);
             String sheetName = sheetNames[x];
-            List<List<T>> lists = arrayList[x];
+            List<List<Object>> lists = arrayList[x];
             sheet = workbook.createSheet(sheetName);
             /**
              * 通过sheet 自定义表头及表格式
@@ -102,7 +102,7 @@ public class ExcelUtil {
              * 随后对每一个单元格中的样式进行回调处理，回调参数 （HSSFCellStyle，行号，列号，数据容量）
              */
             for (int y = 0; y < lists.size(); y++) {
-                List<T> list = lists.get(y);
+                List<Object> list = lists.get(y);
                 for (int i = 0; i < list.size(); i++) { // 行
                     row = sheet.createRow(i + startRows[y]);
                     List<Object> values = new ArrayList<>();
@@ -110,7 +110,7 @@ public class ExcelUtil {
                     for (int j = 0; j < values.size(); j++) { // 列
                         cell = row.createCell(j + startCells[y]);
                         HSSFCellStyle style = workbook.createCellStyle();
-                        style = styleCallBack.getCellStyle(style, i + startRows[y], j + startCells[y], list.size(), y);
+                        style = styleCallBack.getCellStyle(style, i + startRows[y], j + startCells[y], list.size(), x, y);
                         cell.setCellStyle(style);
                         setValue(cell, values.get(j));
                     }

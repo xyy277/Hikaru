@@ -23,7 +23,7 @@ public interface ExcelMergedRegionCallBack {
      *  sheet.setColumnWidth(i, i == 0 ? 10 * 256 : 20 * 256); // 宽度设置
      *  sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, titles.length -1));
      * @param workbook              excel工作簿
-     * @param titles                当前表头 - 当前sheet下 当前table中的表头
+     * @param title                 当前表头 - 当前sheet下 当前table中的表头
      * @param sheet                 当前sheet
      * @param sheetNum              sheet number
      * @param tableNum              table number

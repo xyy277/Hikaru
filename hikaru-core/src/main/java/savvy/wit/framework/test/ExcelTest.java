@@ -38,42 +38,7 @@ public class ExcelTest {
         /**
          * 数据准备
          */
-        List[] arrayList = new List[4];
-        int rowNumber = 5;
-        BigDecimal total = new BigDecimal(0);
-        for (int j = 0; j < 4; j++) {
-            List<List<User>> lists = new ArrayList<>();
-            List<User> list = new ArrayList<>();
-            for (int i = 0; i < rowNumber + 2; i++) {
-                User user = new User();
-                if (i < rowNumber) {
-                    user.setBirthday(DateUtil.getNow("dd/MM/yyyy"));
-                    user.setName(new BigDecimal(DateUtil.random(10)));
-                    user.setNickname(new BigDecimal(DateUtil.random(10)));
-                    user.setUsername(new BigDecimal(DateUtil.random(10)));
-                    user.setPassword(new BigDecimal(DateUtil.random(10)));
-                    user.setTotal(user.getName().add(user.getNickname()).add(user.getUsername()).add(user.getPassword()));
-                } else if (i == rowNumber){
-                    user.setBirthday("Total");
-                    user.setName(list.stream().map(user1 -> user1.getName()).reduce(BigDecimal.ZERO, BigDecimal::add));
-                    user.setNickname(list.stream().map(user1 -> user1.getNickname()).reduce(BigDecimal.ZERO, BigDecimal::add));
-                    user.setUsername(list.stream().map(user1 -> user1.getUsername()).reduce(BigDecimal.ZERO, BigDecimal::add));
-                    user.setPassword(list.stream().map(user1 -> user1.getPassword()).reduce(BigDecimal.ZERO, BigDecimal::add));
-                    user.setTotal(list.stream().map(user1 -> user1.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
-                    total = user.getTotal();
-                } else {
-                    user.setBirthday("Proporção");
-                    user.setName(list.stream().map(user1 -> user1.getName()).max((o1, o2) -> o1.compareTo(o2)).get().divide(total, 2, BigDecimal.ROUND_HALF_UP));
-                    user.setNickname(list.stream().map(user1 -> user1.getNickname()).max((o1, o2) -> o1.compareTo(o2)).get().divide(total, 2, BigDecimal.ROUND_HALF_UP));
-                    user.setUsername(list.stream().map(user1 -> user1.getUsername()).max((o1, o2) -> o1.compareTo(o2)).get().divide(total, 2, BigDecimal.ROUND_HALF_UP));
-                    user.setPassword(list.stream().map(user1 -> user1.getPassword()).max((o1, o2) -> o1.compareTo(o2)).get().divide(total, 2, BigDecimal.ROUND_HALF_UP));
-                    user.setTotal(list.stream().map(user1 -> user1.getTotal()).max((o1, o2) -> o1.compareTo(o2)).get().divide(total, 2, BigDecimal.ROUND_HALF_UP));
-                }
-                list.add(user);
-            }
-            lists.add(list);
-            arrayList[j] = lists;
-        }
+        List[] arrayList = getData();
         String fileName = "Atendimento Diário às Emergências";
         String[] sheetNames = new String[] {"第一个表格", "第二个表格", "第三个表格","第四个表格"};
         List<int[]> startRows = new ArrayList<>();
@@ -106,7 +71,7 @@ public class ExcelTest {
                 values.add(ObjectUtil.getValueByFiled(o, fields[i]).toString());
             }
             return values;
-        },(style, row, cell, size, tableNum) -> { // 正文单元格样式 - style 行、列，从0,0 开始计算
+        },(style, row, cell, size, sheetNum,tableNum) -> { // 正文单元格样式 - style 行、列，从0,0 开始计算
             setBorder(style);
             if (cell == 1) { // 第一列
                 style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
@@ -124,12 +89,12 @@ public class ExcelTest {
             switch (num) {
                 case 0:
                     for (int i = 0; i < anchors.length; i++) {
-                        anchors[i] = new HSSFClientAnchor(0,0,0,0, (short)0, 1+(i+1)*11, (short) 8, (i+1)*11+25);
+                        anchors[i] = new HSSFClientAnchor(0,0,0,0, (short)1, 1+(i+1)*11, (short) 8, (i+1)*11+25);
                     }
                     break;
                 case 1:
                     for (int i = 0; i < anchors.length; i++) {
-                        anchors[i] = new HSSFClientAnchor(0,0,0,0, (short)0, 1+(i+1)*11, (short) 7, (i+1)*11+25);
+                        anchors[i] = new HSSFClientAnchor(0,0,0,0, (short)1, 1+(i+1)*11, (short) 7, (i+1)*11+25);
                     }
                     break;
             }
@@ -195,12 +160,51 @@ public class ExcelTest {
         return cellRangeAddressList;
     }
 
-
     private static void setBorder(CellStyle style) {
         style.setBorderTop(HSSFCellStyle.BORDER_THIN);
         style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
         style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
         style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+    }
+
+    private static List[] getData() {
+        List[] arrayList = new List[4];
+        int rowNumber = 5;
+        BigDecimal total = new BigDecimal(0);
+        for (int j = 0; j < 4; j++) {
+            List<List<User>> lists = new ArrayList<>();
+            List<User> list = new ArrayList<>();
+            for (int i = 0; i < rowNumber + 2; i++) {
+                User user = new User();
+                if (i < rowNumber) {
+                    user.setBirthday(DateUtil.getNow("dd/MM/yyyy"));
+                    user.setName(new BigDecimal(DateUtil.random(10)));
+                    user.setNickname(new BigDecimal(DateUtil.random(10)));
+                    user.setUsername(new BigDecimal(DateUtil.random(10)));
+                    user.setPassword(new BigDecimal(DateUtil.random(10)));
+                    user.setTotal(user.getName().add(user.getNickname()).add(user.getUsername()).add(user.getPassword()));
+                } else if (i == rowNumber){
+                    user.setBirthday("Total");
+                    user.setName(list.stream().map(user1 -> user1.getName()).reduce(BigDecimal.ZERO, BigDecimal::add));
+                    user.setNickname(list.stream().map(user1 -> user1.getNickname()).reduce(BigDecimal.ZERO, BigDecimal::add));
+                    user.setUsername(list.stream().map(user1 -> user1.getUsername()).reduce(BigDecimal.ZERO, BigDecimal::add));
+                    user.setPassword(list.stream().map(user1 -> user1.getPassword()).reduce(BigDecimal.ZERO, BigDecimal::add));
+                    user.setTotal(list.stream().map(user1 -> user1.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add));
+                    total = user.getTotal();
+                } else {
+                    user.setBirthday("Proporção");
+                    user.setName(list.stream().map(user1 -> user1.getName()).max((o1, o2) -> o1.compareTo(o2)).get().divide(total, 2, BigDecimal.ROUND_HALF_UP));
+                    user.setNickname(list.stream().map(user1 -> user1.getNickname()).max((o1, o2) -> o1.compareTo(o2)).get().divide(total, 2, BigDecimal.ROUND_HALF_UP));
+                    user.setUsername(list.stream().map(user1 -> user1.getUsername()).max((o1, o2) -> o1.compareTo(o2)).get().divide(total, 2, BigDecimal.ROUND_HALF_UP));
+                    user.setPassword(list.stream().map(user1 -> user1.getPassword()).max((o1, o2) -> o1.compareTo(o2)).get().divide(total, 2, BigDecimal.ROUND_HALF_UP));
+                    user.setTotal(list.stream().map(user1 -> user1.getTotal()).max((o1, o2) -> o1.compareTo(o2)).get().divide(total, 2, BigDecimal.ROUND_HALF_UP));
+                }
+                list.add(user);
+            }
+            lists.add(list);
+            arrayList[j] = lists;
+        }
+        return arrayList;
     }
 
 }

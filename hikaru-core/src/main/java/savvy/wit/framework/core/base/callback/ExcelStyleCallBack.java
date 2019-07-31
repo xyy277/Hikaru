@@ -23,8 +23,9 @@ public interface ExcelStyleCallBack {
      * @param row       行       number
      * @param cell      列       number
      * @param size      总行数
+     * @param sheetNum  页下标 number - sheet中多个表对应的下标
      * @param tableNum  表下标 number - sheet中多个表对应的下标
      * @return
      */
-    HSSFCellStyle getCellStyle(HSSFCellStyle style, int row, int cell, int size, int tableNum);
+    HSSFCellStyle getCellStyle(HSSFCellStyle style, int row, int cell, int size, int sheetNum, int tableNum);
 }

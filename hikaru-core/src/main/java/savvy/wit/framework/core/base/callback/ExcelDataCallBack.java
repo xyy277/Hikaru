@@ -13,18 +13,18 @@ import java.util.List;
  * Version : 1.0
  * Description : 
  ******************************/
-public interface ExcelDataCallBack<T> {
+public interface ExcelDataCallBack {
 
 
     /**
      * 获取一行中所有列的数据
      * 一列数据为某个对象的所有属性值或可自定义属性
-     * @param sheetNum sheet number - sheet 下标，一个excel 多个sheet
-     * @param tableNum table number - table 下标，一个sheet 多个table
-     * @param row 行
-     * @param t   对象
-     * @param values 返回值
+     * @param sheetNum  sheet number - sheet 下标，一个excel 多个sheet
+     * @param tableNum  table number - table 下标，一个sheet 多个table
+     * @param row       行
+     * @param object    对象
+     * @param values    返回值
      * @return
      */
-    List<Object> getValues(int sheetNum, int tableNum, Row row, T t, List<Object> values);
+    List<Object> getValues(int sheetNum, int tableNum, Row row, Object object, List<Object> values);
 }
