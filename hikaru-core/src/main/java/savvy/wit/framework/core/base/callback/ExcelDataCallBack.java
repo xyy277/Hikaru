@@ -1,8 +1,7 @@
 package savvy.wit.framework.core.base.callback;
 
-import org.apache.poi.ss.usermodel.Row;
-
 import java.util.List;
+import java.util.Map;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -13,18 +12,18 @@ import java.util.List;
  * Version : 1.0
  * Description : 
  ******************************/
-public interface ExcelDataCallBack {
+public interface ExcelDataCallBack<T> {
 
+
+    String SIGN_K_V = "-";
 
     /**
      * 获取一行中所有列的数据
      * 一列数据为某个对象的所有属性值或可自定义属性
      * @param sheetNum  sheet number - sheet 下标，一个excel 多个sheet
      * @param tableNum  table number - table 下标，一个sheet 多个table
-     * @param row       行
-     * @param object    对象
-     * @param values    返回值
-     * @return
+     * @param list      对象集合
+     * @return 一张表中所有数据
      */
-    List<Object> getValues(int sheetNum, int tableNum, Row row, Object object, List<Object> values);
+    Map<String, Object> getData(int sheetNum, int tableNum, List<T> list);
 }

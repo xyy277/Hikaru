@@ -40,7 +40,7 @@ public class ExcelTest2 {
         /**
          * 数据准备
          */
-        List[] arrayList = getData();
+        List arrayList = getData();
         String fileName = "Atendimento Diário às Emergências";
         String[] sheetNames = new String[] {"第一个表格", "第二个表格", "第三个表格","第四个表格"};
         List<int[]> startRows = new ArrayList<>();
@@ -50,8 +50,9 @@ public class ExcelTest2 {
         List<List<String[]>>titleList = new ArrayList<>();
         List<String[]> titles = new ArrayList<>();
         String[] title_ = new String[]{null, "Válidas","Consultas", "Registo", "Inválidas", "Total"};
-        titles.add(title_);
-        titleList.add(titles);titleList.add(titles);titleList.add(titles);titleList.add(titles);
+        String[] titles2 = new String [] {};
+        titles.add(title_);titles.add(titles2);
+        titleList.add(titles);
         // ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         /**
@@ -60,20 +61,7 @@ public class ExcelTest2 {
         Counter counter = Counter.create();
         ExcelUtil.getExcel(null, fileName, sheetNames,titleList, (workbook, sheet, title, sheetNum, tableNum, cellRangeAddressList) -> { // 多页sheet - num sheet number, sheet 自定义表头， 表头格式 - 自定义宽高， 合并单元格
                     return getRangeAddressList(workbook,sheet,title, sheetNum, tableNum,cellRangeAddressList);
-                }, arrayList, startRows, startCells, (sheetNum, tableNum, row, o, values) -> { // 正文
-                    row.setHeight((short)450);
-                    if (tableNum == 0) { // 表1
-                        Field[] fields = o.getClass().getDeclaredFields();
-                        for (int i = 0; i < fields.length; i++) {
-                            values.add(ObjectUtil.getValueByFiled(o, fields[i]).toString());
-                        }
-                    } else if (tableNum == 1){ // 表2
-
-                    } else if (tableNum == 2) { // 表3
-
-                    }
-                    return values;
-                },(style, row, cell, size, sheetNum, tableNum) -> { // 正文单元格样式 - style 行、列，从0,0 开始计算
+                }, arrayList, startRows, startCells, null,(style, row, cell, size, sheetNum, tableNum) -> { // 正文单元格样式 - style 行、列，从0,0 开始计算
                     setBorder(style);
                     if (cell == 1) { // 第一列
                         style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
@@ -166,9 +154,9 @@ public class ExcelTest2 {
         style.setBorderRight(HSSFCellStyle.BORDER_THIN);
     }
 
-    private static List[] getData() {
-        List[] arrayList = new List[1]; // 一页
-        for (int j = 0; j < arrayList.length; j++) { // 多页
+    private static List getData() {
+        List arrayList = new ArrayList(); // 一页
+        for (int j = 0; j < 1; j++) { // 多页
             List<List<Object>> lists = new ArrayList<>();
             for (int x = 0; x < 3; x++) { // 多表
                 if (x == 0) { // 第一张 表
@@ -232,7 +220,7 @@ public class ExcelTest2 {
                     lists.add(maps);
                 }
             }
-            arrayList[j] = lists;
+            arrayList.add(lists);
         }
         return arrayList;
     }

@@ -15,10 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -26,13 +23,20 @@ import java.util.List;
  * File name : ExcelUtil
  * Author : zhoujiajun
  * Date : 2019/7/29 17:08
- * Version : 1.0
+ * Version : 1.1
  * Description : 解析或导出excel
  * v1.单线程模式导出excel表格，自定义表格结构及单元格样式
- * 导出excel时，传入数据集数据结构为List<List<T>> 外层list index为 sheet number（单个excel多个sheet）
+ * 导出excel时，传入数据集数据结构为List<List<Map<String, Object>>> 外层list index为 sheet number（单个excel多个sheet）
  * 数据模式都已满足单个表格多个sheet的形式，几个回调函数中都带有num（sheet index）用于判断当前处理sheet 方便不同sheet特殊处理
  * 同时，针对excel插入图片满足每个sheet 自定义插入位置，图片传入类型为[]...二维数组形式，当不需要插入图片时，该参数略省，此时图片位置回调可以返回null
+ *
+ * v1.1 对传入数据格式进行升级，同时为了得到控制，对该工具中间添加了新的代理类
+ * @see savvy.wit.framework.core.pattern.proxy.ExcelProxy
+ * 该代理类可以让创建和生成一个复杂excel变得直观可控
+ *
  * v2.为了缩短导出时间，将采用多线程模式对该类进行重构，以满足多个sheet的同时构建
+ *
+ * 相关测试
  * @see savvy.wit.framework.test.ExcelTest
  ******************************/
 public class ExcelUtil {
@@ -50,10 +54,10 @@ public class ExcelUtil {
      * @param sheetNames                sheet 数组，一个excel可有多个sheet
      * @param titleList                 title 数组集合，外层集合多个sheet  -  内层数组对应多个table  -  里层每列的附表头数据value
      * @param mergedRegionCallBack      自定义表头（数据及样式），合并单元格
-     * @param arrayList                 传入导出数据 List<List<T>> lists， 数据
+     * @param arrayList                 传入导出数据 List<List<Map<String,Object>>> lists， 数据
      * @param startRowList              开始行号 List<[]> - num   每个sheet的正文开始row number
      * @param startCellList             开始列号 List<[]> - num   每个sheet的正文开始cell number
-     * @param dataCallBack              数据回调，T - cellValues[]
+     * remove  dataCallBack(v1.1弃用)    数据回调，T - cellValues[]
      * @param styleCallBack             样式 - 每一个单元格的样式回调 （行号，列号）
      * @param imageCallBack             图片位置设置回调
      * @param bufferedImages            图片数组
@@ -61,7 +65,7 @@ public class ExcelUtil {
      * @return
      */
     public static File getExcel(HttpServletResponse response, String fileName, String[] sheetNames, List<List<String[]>> titleList,
-                                ExcelMergedRegionCallBack mergedRegionCallBack, List<List<Object>>[] arrayList,
+                                ExcelMergedRegionCallBack mergedRegionCallBack, List<List<Map<String,Object>>> arrayList,
                                 List<int[]> startRowList, List<int[]> startCellList, ExcelDataCallBack dataCallBack, ExcelStyleCallBack styleCallBack,
                                 ExcelImageCallBack imageCallBack, BufferedImage[]... bufferedImages) {
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -70,7 +74,7 @@ public class ExcelUtil {
             int[] startRows = startRowList.get(x);
             int[] startCells = startCellList.get(x);
             String sheetName = sheetNames[x];
-            List<List<Object>> lists = arrayList[x];
+            List<Map<String, Object>> lists = arrayList.get(x); // 当前sheet 中多个表格的data
             sheet = workbook.createSheet(sheetName);
             /**
              * 通过sheet 自定义表头及表格式
@@ -102,17 +106,27 @@ public class ExcelUtil {
              * 随后对每一个单元格中的样式进行回调处理，回调参数 （HSSFCellStyle，行号，列号，数据容量）
              */
             for (int y = 0; y < lists.size(); y++) {
-                List<Object> list = lists.get(y);
-                for (int i = 0; i < list.size(); i++) { // 行
+                Map<String, Object> map = lists.get(y); // 整张表数据
+                if (map == null || map.size() <1) {
+                    continue;
+                }
+                // 将整张表的数据转为2dArray
+                Object[][] tableValues = new Object[map.size()/ titleList.get(x).get(y).length][titleList.get(x).get(y).length]; // 初始化 行列
+                map.keySet().stream().forEach(key -> {
+                    String[] keys = key.split(ExcelDataCallBack.SIGN_K_V);
+                    int rowNum = Integer.parseInt(keys[0]);
+                    int cellNum = Integer.parseInt(keys[1]);
+                    tableValues[rowNum][cellNum] = map.get(key);
+                });
+                for (int i = 0; i < tableValues.length; i++) { // 行
                     row = sheet.createRow(i + startRows[y]);
-                    List<Object> values = new ArrayList<>();
-                    values = dataCallBack.getValues(x, y, row, list.get(i), values);
-                    for (int j = 0; j < values.size(); j++) { // 列
+                    Object[] rowValues = tableValues[i];
+                    for (int j = 0; j < rowValues.length; j++) { // 列
                         cell = row.createCell(j + startCells[y]);
                         HSSFCellStyle style = workbook.createCellStyle();
-                        style = styleCallBack.getCellStyle(style, i + startRows[y], j + startCells[y], list.size(), x, y);
+                        style = styleCallBack.getCellStyle(style, i + startRows[y], j + startCells[y], map.size(), x, y);
                         cell.setCellStyle(style);
-                        setValue(cell, values.get(j));
+                        setValue(cell, rowValues[j]);
                     }
                 }
             }
