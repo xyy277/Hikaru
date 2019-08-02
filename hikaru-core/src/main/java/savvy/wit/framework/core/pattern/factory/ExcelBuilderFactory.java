@@ -7,6 +7,7 @@ import savvy.wit.framework.core.base.model.Table;
 import savvy.wit.framework.core.pattern.builder.ExcelBuilder;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,11 @@ import java.util.Map;
  * Author : zhoujiajun
  * Date : 2019/7/31 15:45
  * Version : 1.0
- * Description : 
+ * Description :
+ * 1、初始化 sheet、table
+ * 2、创建   sheet、table
+ * 3、组装数据
+ * 4、构建excel
  ******************************/
 public class ExcelBuilderFactory implements ExcelBuilder {
 
@@ -93,7 +98,8 @@ public class ExcelBuilderFactory implements ExcelBuilder {
      */
     public <T> ExcelBuilder packing(int sheetNum, int tableNum, List<T> data, ExcelDataCallBack<T> dataCallBack) {
         Table table = this.tables[sheetNum][tableNum];
-        table.setData(dataCallBack.getData(sheetNum, tableNum, data));
+        Map<String, Object> result = new HashMap<>();
+        table.setData(dataCallBack.getData(sheetNum, tableNum, data, result));
         return factory;
     }
 

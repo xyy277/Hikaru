@@ -83,9 +83,9 @@ public class ExcelUtil {
              * 格式包括：
              * 合并单元格设置宽度
              */
-            for (int i = 0; i < titleList.size(); i++) {
+            for (int i = 0; i < titleList.size(); i++) {  // 多表
                 List<String[]> titles = titleList.get(i);
-                for (int j = 0; j < titles.size(); j++) {
+                for (int j = 0; j < titles.size(); j++) { // 单表
                     String[] title = titles.get(j);
                     List<CellRangeAddress> cellRangeAddressList = new ArrayList<>();
                     cellRangeAddressList = mergedRegionCallBack.addMergedRegion(workbook, sheet, title, x, j, cellRangeAddressList);
@@ -110,8 +110,16 @@ public class ExcelUtil {
                 if (map == null || map.size() <1) {
                     continue;
                 }
+                Integer rowIndex = map.keySet().stream()
+                        .map(key -> Integer.parseInt(key.split(ExcelDataCallBack.SIGN_K_V)[0]))
+                        .max((o1, o2) -> o1.compareTo(o2))
+                        .get();
+                Integer cellIndex = map.keySet().stream()
+                        .map(key -> Integer.parseInt(key.split(ExcelDataCallBack.SIGN_K_V)[1]))
+                        .max((o1, o2) -> o1.compareTo(o2))
+                        .get();
                 // 将整张表的数据转为2dArray
-                Object[][] tableValues = new Object[map.size()/ titleList.get(x).get(y).length][titleList.get(x).get(y).length]; // 初始化 行列
+                Object[][] tableValues = new Object[rowIndex + 1][cellIndex + 1]; // 初始化 行列
                 map.keySet().stream().forEach(key -> {
                     String[] keys = key.split(ExcelDataCallBack.SIGN_K_V);
                     int rowNum = Integer.parseInt(keys[0]);
@@ -124,7 +132,7 @@ public class ExcelUtil {
                     for (int j = 0; j < rowValues.length; j++) { // 列
                         cell = row.createCell(j + startCells[y]);
                         HSSFCellStyle style = workbook.createCellStyle();
-                        style = styleCallBack.getCellStyle(style, i + startRows[y], j + startCells[y], map.size(), x, y);
+                        style = styleCallBack.getCellStyle(row, style, i + startRows[y], j + startCells[y], rowIndex + 1, x, y);
                         cell.setCellStyle(style);
                         setValue(cell, rowValues[j]);
                     }
@@ -141,6 +149,13 @@ public class ExcelUtil {
         }
         String time = DateUtil.getNow("ddMMyyyy");
         return response == null ? new File(fileName + "-" + time + ".xls") : null;
+    }
+
+    private static void setBorder(HSSFCellStyle style) {
+        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
     }
 
     /**
@@ -210,7 +225,7 @@ public class ExcelUtil {
                 HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
                 // 图片导出到单元格
                 HSSFClientAnchor[] anchors = new HSSFClientAnchor[byteArrayOutputStreams.length];
-                anchors = imageCallBack.ProcessingImage(num, anchors);
+                anchors = imageCallBack.processingImage(num, anchors);
                 if (anchors != null && anchors.length > 0) {
                     for (int i = 0; i < anchors.length; i++) {
                         // 插入图片

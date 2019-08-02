@@ -1,8 +1,10 @@
 package savvy.wit.framework.core.pattern.builder;
 
+import savvy.wit.framework.core.base.callback.ExcelDataCallBack;
 import savvy.wit.framework.core.base.model.Excel;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.Map;
 
 /*******************************
@@ -40,6 +42,16 @@ public interface ExcelBuilder {
      * @return 建造者
      */
     ExcelBuilder packing(int sheetNum, int tableNum, Map<String, Object> data);
+
+    /**
+     * 组装数据
+     * @param sheetNum sheet 页下标
+     * @param tableNum table 表下标
+     * @param data     数据
+     * @param <T>      数据类型
+     * @return
+     */
+    <T> ExcelBuilder packing(int sheetNum, int tableNum, List<T> data, ExcelDataCallBack<T>dataCallBack);
 
     /**
      * 创建Sheet页

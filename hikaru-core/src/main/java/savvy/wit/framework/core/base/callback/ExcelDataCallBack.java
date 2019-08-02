@@ -22,8 +22,8 @@ public interface ExcelDataCallBack<T> {
      * 一列数据为某个对象的所有属性值或可自定义属性
      * @param sheetNum  sheet number - sheet 下标，一个excel 多个sheet
      * @param tableNum  table number - table 下标，一个sheet 多个table
-     * @param list      对象集合
+     * @param data      对象集合
      * @return 一张表中所有数据
      */
-    Map<String, Object> getData(int sheetNum, int tableNum, List<T> list);
+    Map<String, Object> getData(int sheetNum, int tableNum, List<T> data, Map<String, Object> result);
 }
