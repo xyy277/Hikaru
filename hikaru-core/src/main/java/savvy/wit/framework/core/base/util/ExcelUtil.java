@@ -5,10 +5,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import savvy.wit.framework.core.base.callback.ExcelDataCallBack;
-import savvy.wit.framework.core.base.callback.ExcelImageCallBack;
-import savvy.wit.framework.core.base.callback.ExcelMergedRegionCallBack;
-import savvy.wit.framework.core.base.callback.ExcelStyleCallBack;
+import savvy.wit.framework.core.base.callback.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +34,7 @@ import java.util.*;
  * v2.为了缩短导出时间，将采用多线程模式对该类进行重构，以满足多个sheet的同时构建
  *
  * 相关测试
- * @see savvy.wit.framework.test.ExcelTest
+ * @see excel
  ******************************/
 public class ExcelUtil {
 
@@ -66,7 +63,8 @@ public class ExcelUtil {
      */
     public static File getExcel(HttpServletResponse response, String fileName, String[] sheetNames, List<List<String[]>> titleList,
                                 ExcelMergedRegionCallBack mergedRegionCallBack, List<List<Map<String,Object>>> arrayList,
-                                List<int[]> startRowList, List<int[]> startCellList, ExcelDataCallBack dataCallBack, ExcelStyleCallBack styleCallBack,
+                                List<int[]> startRowList, List<int[]> startCellList, ExcelDataCallBack dataCallBack,
+                                HSSFCellStyleInitCallBack hssfCellStyleInitCallBack, ExcelStyleCallBack styleCallBack,
                                 ExcelImageCallBack imageCallBack, BufferedImage[]... bufferedImages) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = null; HSSFRow row = null; Cell cell = null;
@@ -105,6 +103,8 @@ public class ExcelUtil {
              * 每列信息通过回调的方式确定由正文起始（起始行列从0 开始计算）第一列到正文最后一列
              * 随后对每一个单元格中的样式进行回调处理，回调参数 （HSSFCellStyle，行号，列号，数据容量）
              */
+            List<HSSFCellStyle> styles = new ArrayList<>();
+            styles = hssfCellStyleInitCallBack.initStyle(workbook, styles);
             for (int y = 0; y < lists.size(); y++) {
                 Map<String, Object> map = lists.get(y); // 整张表数据
                 if (map == null || map.size() <1) {
@@ -131,8 +131,7 @@ public class ExcelUtil {
                     Object[] rowValues = tableValues[i];
                     for (int j = 0; j < rowValues.length; j++) { // 列
                         cell = row.createCell(j + startCells[y]);
-                        HSSFCellStyle style = workbook.createCellStyle();
-                        style = styleCallBack.getCellStyle(row, style, i + startRows[y], j + startCells[y], rowIndex + 1, x, y);
+                        HSSFCellStyle style = styleCallBack.getCellStyle(row, styles, i + startRows[y], j + startCells[y], rowIndex + 1, x, y);
                         cell.setCellStyle(style);
                         setValue(cell, rowValues[j]);
                     }

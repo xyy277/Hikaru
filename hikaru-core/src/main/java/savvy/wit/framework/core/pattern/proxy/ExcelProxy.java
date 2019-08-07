@@ -1,9 +1,6 @@
 package savvy.wit.framework.core.pattern.proxy;
 
-import savvy.wit.framework.core.base.callback.ExcelDataCallBack;
-import savvy.wit.framework.core.base.callback.ExcelImageCallBack;
-import savvy.wit.framework.core.base.callback.ExcelMergedRegionCallBack;
-import savvy.wit.framework.core.base.callback.ExcelStyleCallBack;
+import savvy.wit.framework.core.base.callback.*;
 import savvy.wit.framework.core.base.model.Excel;
 import savvy.wit.framework.core.base.util.ExcelUtil;
 
@@ -77,6 +74,10 @@ public class ExcelProxy implements AbstractExcelProxy {
      */
     protected ExcelDataCallBack dataCallBack;
     /**
+     * 初始化单元格样式
+     */
+    protected HSSFCellStyleInitCallBack hssfCellStyleInitCallBack;
+    /**
      * 回调处理任意单元格样式
      */
     protected ExcelStyleCallBack styleCallBack;
@@ -118,6 +119,11 @@ public class ExcelProxy implements AbstractExcelProxy {
         return proxy;
     }
 
+    public ExcelProxy initStyle(HSSFCellStyleInitCallBack hssfCellStyleInitCallBack) {
+        proxy.hssfCellStyleInitCallBack = hssfCellStyleInitCallBack;
+        return proxy;
+    }
+
     /**
      * 样式处理
      *
@@ -147,7 +153,7 @@ public class ExcelProxy implements AbstractExcelProxy {
      */
     public ExcelProxy produce() {
         proxy.file = ExcelUtil.getExcel(response, excel.getName(), sheetNames, titleList, mergedRegionCallBack, dataList,
-                startRowList, startCellList, null, styleCallBack,imageCallBack, bufferedImages);
+                startRowList, startCellList, null,hssfCellStyleInitCallBack, styleCallBack,imageCallBack, bufferedImages);
         cleanAll();
         return proxy;
     }

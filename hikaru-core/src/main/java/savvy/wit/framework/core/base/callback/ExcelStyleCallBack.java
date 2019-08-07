@@ -4,6 +4,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import java.util.List;
 import java.util.Map;
 
 /*******************************
@@ -29,5 +30,5 @@ public interface ExcelStyleCallBack {
      * @param tableNum  表下标 number - sheet中多个表对应的下标
      * @return
      */
-    HSSFCellStyle getCellStyle(HSSFRow row, HSSFCellStyle style, int rowNum, int cellNum, int size, int sheetNum, int tableNum);
+    HSSFCellStyle getCellStyle(HSSFRow row, List<HSSFCellStyle> style, int rowNum, int cellNum, int size, int sheetNum, int tableNum);
 }

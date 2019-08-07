@@ -35,9 +35,11 @@ import java.util.List;
 public class ExcelTest {
 
     private Excel excel;
+
     List<User> list1 = new ArrayList<>();
     List<Statistic> list2 = new ArrayList<>();
     List<Statistic> list3 = new ArrayList<>();
+
     private void data() {
         for (int i = 0; i < 5; i++) {
             User user = new User();
@@ -87,6 +89,7 @@ public class ExcelTest {
                         result.put(key + 3, user.getUsername());
                         result.put(key + 4, user.getPassword());
                         result.put(key + 5, user.getTotal());
+                        result.put(key + 6, user.getTotal());
                     }
                     return result;
                 })
@@ -124,155 +127,169 @@ public class ExcelTest {
 
     @Test
     public void test() {
-        ExcelProxy.proxy(excel).addMergeRegion((workbook, sheet, title, sheetNum, tableNum, cellRangeAddressList) -> {
-            // 每列宽
-            for (int i = 0; i < 8; i++) {
-                sheet.setColumnWidth(i, i == 0 ? 5 * 256 : i == 1 ? 15 * 256 : 12 * 256);
-            }
-            HSSFCellStyle style;
-            Row row;
-            Cell cell;
-            // 行
-            row = sheet.createRow(0);
-            row.setHeight((short) 400);
-            cell = row.createCell(1);
-            cell.setCellValue("Anexo 2");
-
-            row = sheet.createRow(1);
-            row.setHeight((short) 880);
-            cell = row.createCell(1);
-            style = workbook.createCellStyle();
-            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-            style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-            cell.setCellValue("Estatísticas Semanais do Atendimento e Depacho às Emergências do CISP Nacional");
-            cell.setCellStyle(style);
-            cellRangeAddressList.add(new CellRangeAddress(1 ,1 ,1, 7));
-
-            row = sheet.createRow(2);
-            row.setHeight((short) 500);
-            cell = row.createCell(1);
-            cell.setCellValue("（22/07/2019-26/07/2019）");
-            cell.setCellStyle(style);
-            cellRangeAddressList.add(new CellRangeAddress(2, 2, 1, 7));
-
-            row = sheet.createRow(3);
-            row.setHeight((short) 500);
-            cell = row.createCell(1);
-            style = workbook.createCellStyle();
-            style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
-            style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-            cell.setCellStyle(style);
-            cell.setCellValue("1.Dados do atendimento e despacho às Emergências ");
-            cellRangeAddressList.add(new CellRangeAddress(3, 3, 1, 7));
-
-            row = sheet.createRow(35);
-            row.setHeight((short) 500);
-            cell = row.createCell(1);
-            style = workbook.createCellStyle();
-            style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
-            style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-            cell.setCellStyle(style);
-            cell.setCellValue("2. Estatísticas de atendimento e despacho às Emergências ");
-            cellRangeAddressList.add(new CellRangeAddress(35, 35, 1, 7));
-
-            row = sheet.createRow(4);
-            row.setHeight((short) 300);
-
-            // 多表
-            for (int x = 0; x < 3; x++) {
-
-                if (x != tableNum) { // 仅当前表
-                    continue;
-                }
-
-                if (tableNum == 0) {
-                    // 第一张表合并单元格
-                    for (int i = 0; i <= list1.size(); i++) {
-                        cellRangeAddressList.add(new CellRangeAddress(6 + i, 6 + i, 6, 7));
+        ExcelProxy.proxy(excel)
+                .addMergeRegion((workbook, sheet, title, sheetNum, tableNum, cellRangeAddressList) -> {
+                    // 每列宽
+                    for (int i = 0; i < 8; i++) {
+                        sheet.setColumnWidth(i, i == 0 ? 5 * 256 : i == 1 ? 15 * 256 : 12 * 256);
                     }
-                }
+                    HSSFCellStyle style;
+                    Row row;
+                    Cell cell;
+                    // 行
+                    row = sheet.createRow(0);
+                    row.setHeight((short) 400);
+                    cell = row.createCell(1);
+                    cell.setCellValue("Anexo 2");
 
-                if (tableNum == 2) {
-                    // 第三张表合并单元格
-                    for (int i = 0; i <= list3.size(); i++) {
-                        cellRangeAddressList.add(new CellRangeAddress(26 + i, 26 + i, 2, 4));
-                        cellRangeAddressList.add(new CellRangeAddress(26 + i, 26 + i, 5, 7));
-                    }
-                }
-                // 表之间的合并单元格
-                cellRangeAddressList.add(new CellRangeAddress(
-                        x * 10 + 14, x * 10 + 14, 1, 7));
+                    row = sheet.createRow(1);
+                    row.setHeight((short) 880);
+                    cell = row.createCell(1);
+                    style = workbook.createCellStyle();
+                    style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+                    style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+                    cell.setCellValue("Estatísticas Semanais do Atendimento e Depacho às Emergências do CISP Nacional");
+                    cell.setCellStyle(style);
+                    cellRangeAddressList.add(new CellRangeAddress(1 ,1 ,1, 7));
 
-                row = sheet.createRow(5 + x * 10);
-                style = createStyle(workbook);
-                style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-                style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-                style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-                style.setFillForegroundColor(HSSFColor.GREEN.index);
-                row.setHeight((short) 400);
-                for (int i = 0; i <= 7; i++) {
-                    cell = row.createCell(i);
-                    if (i > 0) {
-                        cell.setCellStyle(style);
-                    }
-                }
-                cell = row.getCell(1);
-                cell.setCellValue("Data");
-                cellRangeAddressList.add(new CellRangeAddress(5 + 10 * x, 6 + 10 * x, 1, 1));
+                    row = sheet.createRow(2);
+                    row.setHeight((short) 500);
+                    cell = row.createCell(1);
+                    cell.setCellValue("（22/07/2019-26/07/2019）");
+                    cell.setCellStyle(style);
+                    cellRangeAddressList.add(new CellRangeAddress(2, 2, 1, 7));
 
-                cell = row.getCell(2);
-                cell.setCellValue(x == 0 ? "Atendimento Diário às Emergências " :
-                        x == 1 ? "Alarme de Emergência Válido" : "Despacho Diário às Emergências ");
-                cellRangeAddressList.add(new CellRangeAddress(5 + 10 * x, 5 + 10 * x, 2, 7));
+                    row = sheet.createRow(3);
+                    row.setHeight((short) 500);
+                    cell = row.createCell(1);
+                    style = workbook.createCellStyle();
+                    style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+                    style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+                    cell.setCellStyle(style);
+                    cell.setCellValue("1.Dados do atendimento e despacho às Emergências ");
+                    cellRangeAddressList.add(new CellRangeAddress(3, 3, 1, 7));
 
-                row = sheet.createRow(6 + 10 * x);
-                style = createStyle(workbook);
-                style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-                style.setVerticalAlignment(HSSFCellStyle.VERTICAL_BOTTOM);
-                style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-                style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
-                for (int i = 0; i < 7; i++) {
-                    cell = row.createCell(i + 1);
-                    if (i == title.length - 1 && x != 2) {
+                    row = sheet.createRow(35);
+                    row.setHeight((short) 500);
+                    cell = row.createCell(1);
+                    style = workbook.createCellStyle();
+                    style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+                    style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+                    cell.setCellStyle(style);
+                    cell.setCellValue("2. Estatísticas de atendimento e despacho às Emergências ");
+                    cellRangeAddressList.add(new CellRangeAddress(35, 35, 1, 7));
+
+                    row = sheet.createRow(4);
+                    row.setHeight((short) 300);
+
+                    // 多表
+                    for (int x = 0; x < 3; x++) {
+
+                        if (x != tableNum) { // 仅当前表
+                            continue;
+                        }
+
+                        if (tableNum == 0) {
+                            // 第一张表合并单元格
+                            for (int i = 0; i <= list1.size(); i++) {
+                                cellRangeAddressList.add(new CellRangeAddress(6 + i, 6 + i, 6, 7));
+                            }
+                        }
+
+                        if (tableNum == 2) {
+                            // 第三张表合并单元格
+                            for (int i = 0; i <= list3.size(); i++) {
+                                cellRangeAddressList.add(new CellRangeAddress(26 + i, 26 + i, 2, 4));
+                                cellRangeAddressList.add(new CellRangeAddress(26 + i, 26 + i, 5, 7));
+                            }
+                        }
+                        // 表之间的合并单元格
+                        cellRangeAddressList.add(new CellRangeAddress(
+                                x * 10 + 14, x * 10 + 14, 1, 7));
+
+                        row = sheet.createRow(5 + x * 10);
+                        style = createStyle(workbook);
+                        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+                        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+                        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+                        style.setFillForegroundColor(HSSFColor.GREEN.index);
+                        row.setHeight((short) 400);
+                        for (int i = 0; i <= 7; i++) {
+                            cell = row.createCell(i);
+                            if (i > 0) {
+                                cell.setCellStyle(style);
+                            }
+                        }
+                        cell = row.getCell(1);
+                        cell.setCellValue("Data");
+                        cellRangeAddressList.add(new CellRangeAddress(5 + 10 * x, 6 + 10 * x, 1, 1));
+
+                        cell = row.getCell(2);
+                        cell.setCellValue(x == 0 ? "Atendimento Diário às Emergências " :
+                                x == 1 ? "Alarme de Emergência Válido" : "Despacho Diário às Emergências ");
+                        cellRangeAddressList.add(new CellRangeAddress(5 + 10 * x, 5 + 10 * x, 2, 7));
+
+                        row = sheet.createRow(6 + 10 * x);
                         style = createStyle(workbook);
                         style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
                         style.setVerticalAlignment(HSSFCellStyle.VERTICAL_BOTTOM);
                         style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-                        style.setFillForegroundColor(HSSFColor.PINK.index);
+                        style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+                        for (int i = 0; i < 7; i++) {
+                            cell = row.createCell(i + 1);
+                            if (i == title.length - 1 && x != 2) {
+                                style = createStyle(workbook);
+                                style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+                                style.setVerticalAlignment(HSSFCellStyle.VERTICAL_BOTTOM);
+                                style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+                                style.setFillForegroundColor(HSSFColor.PINK.index);
+                            }
+                            cell.setCellStyle(style);
+                            if (i < title.length) {
+                                cell.setCellValue(title[i]);
+                            }
+                        }
+                        row.setHeight((short) 500);
                     }
-                    cell.setCellStyle(style);
-                    if (i < title.length) {
-                        cell.setCellValue(title[i]);
+                    return cellRangeAddressList;
+        })
+                .initStyle((workbook, styles) -> {
+                    for (int i = 0; i < 3; i++) {
+                        HSSFCellStyle style = createStyle(workbook);
+                        if (i == 0) {
+                            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+                            style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+                        } else if (i == 1) {
+                            style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+                            style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+                        } else {
+                            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+                            style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+                            style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+                            style.setFillForegroundColor(HSSFColor.PINK.index);
+                        }
+                        styles.add(style);
                     }
-                }
-                row.setHeight((short) 500);
-            }
-            return cellRangeAddressList;
-        }).getCellStyle((row, style, rowNum, cellNum, size, sheetNum, tableNum) -> {
-            if (cellNum == 6) {
-                Cell cell = row.createCell(cellNum + 1);
-                border(style);
-                cell.setCellStyle(style);
-            }
-            row.setHeight((short) 450);
-            if (cellNum == 1) {
-                style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-                style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-                if (rowNum - 7 - tableNum * 10 > size - (tableNum == 2 ? 0 : 1)) {
-                    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-                    style.setFillForegroundColor(HSSFColor.PINK.index);
-                }
-            } else {
-                style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
-                style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-            }
-            border(style);
-            return style;
-        }).processingImg((num, anchors) -> {
-            anchors[0] = new HSSFClientAnchor(0,0,0,0, (short) 1, 37, (short)4, 49);
-            anchors[1] = new HSSFClientAnchor(0,0,0,0, (short) 4, 37, (short)8, 49);
-            return anchors;
-        }).produce();
+                    return styles;
+                })
+                .getCellStyle((row, styles, rowNum, cellNum, size, sheetNum, tableNum) -> {
+                    row.setHeight((short) 450);
+                    if (cellNum == 0) {
+                        if (rowNum <= size - (tableNum != 2 ? 2 : 1)) {
+                            return styles.get(0);
+                        } else {
+                            return styles.get(2);
+                        }
+                    } else {
+                        return styles.get(1);
+                    }
+                })
+                .processingImg((num, anchors) -> {
+                    anchors[0] = new HSSFClientAnchor(0,0,0,0, (short) 1, 37, (short)4, 49);
+                    anchors[1] = new HSSFClientAnchor(0,0,0,0, (short) 4, 37, (short)8, 49);
+                    return anchors;
+                })
+                .produce();
     }
 
     private HSSFCellStyle createStyle(HSSFWorkbook workbook) {
