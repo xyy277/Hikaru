@@ -12,6 +12,7 @@ import org.junit.Test;
 import savvy.wit.framework.core.base.callback.ExcelDataCallBack;
 import savvy.wit.framework.core.base.model.Excel;
 import savvy.wit.framework.core.base.util.DateUtil;
+import savvy.wit.framework.core.base.util.ObjectUtil;
 import savvy.wit.framework.core.pattern.factory.ExcelBuilderFactory;
 import savvy.wit.framework.core.pattern.proxy.ExcelProxy;
 import savvy.wit.framework.test.Statistic;
@@ -19,9 +20,12 @@ import savvy.wit.framework.test.User;
 
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -36,9 +40,9 @@ public class ExcelTest {
 
     private Excel excel;
 
-    List<User> list1 = new ArrayList<>();
-    List<Statistic> list2 = new ArrayList<>();
-    List<Statistic> list3 = new ArrayList<>();
+    private List<User> list1 = new ArrayList<>();
+    private List<Statistic> list2 = new ArrayList<>();
+    private List<Statistic> list3 = new ArrayList<>();
 
     private void data() {
         for (int i = 0; i < 5; i++) {
@@ -75,27 +79,32 @@ public class ExcelTest {
                 .initSheet(1)
                 .initTable(3)
                 .createSheet(0, "test Sheet 1",
-                        ImageIO.read(new File("G:\\GitHub\\hikaru\\hikaru-server\\test.jpg")),
-                        ImageIO.read(new File("G:\\GitHub\\hikaru\\hikaru-server\\test2.jpg")))
+                        ImageIO.read(new File("G:\\personal\\image\\20190504200807.jpg")),
+                        ImageIO.read(new File("G:\\personal\\image\\20190504200815.jpg")))
                 .createTable(0,0, 7, 1,
                         null, "Validas", "Consultas", "Registo", "Invalidas", "Total")
-                .packing(0, 0, list1, (sheetNum, tableNum, data, result) -> {
+                .packing(0, 0, list1, (sheetNum, tableNum, data, clazz, result) -> {
                     for (int row = 0; row < data.size(); row++) {
                         User user = data.get(row);
                         String key = row + ExcelDataCallBack.SIGN_K_V;
-                        result.put(key + 0, user.getBirthday());
-                        result.put(key + 1, user.getName());
-                        result.put(key + 2, user.getNickname());
-                        result.put(key + 3, user.getUsername());
-                        result.put(key + 4, user.getPassword());
-                        result.put(key + 5, user.getTotal());
-                        result.put(key + 6, user.getTotal());
+                        int cell = 0;
+                        for (Field field : clazz.getDeclaredFields()) {
+                            if (cell == clazz.getDeclaredFields().length - 1) {
+                                // 计算一行总和
+                                result.put(key + (cell+1), Stream.of(clazz.getDeclaredFields())
+                                        .filter(field1 -> !field1.getName().equals("birthday"))
+                                        .map(field1 -> ObjectUtil.getValueByFiled(user,field1))
+                                        .collect(Collectors.summarizingInt(value -> Integer.parseInt(value.toString())))
+                                        .getSum());
+                            }
+                            result.put(key + cell++, ObjectUtil.getValueByFiled(user, field));
+                        }
                     }
                     return result;
                 })
                 .createTable(0, 1, 17, 1,
                         null, "Policia", "Transito", "Medico", "Bombeiro", "Municipal", "Total")
-                .packing(0,1, list2, (sheetNum, tableNum, data, result) -> {
+                .packing(0,1, list2, (sheetNum, tableNum, data, clazz, result) -> {
                     for (int row = 0; row < data.size(); row++) {
                         Statistic statistic = data.get(row);
                         String key = row + ExcelDataCallBack.SIGN_K_V;
@@ -111,7 +120,7 @@ public class ExcelTest {
                 })
                 .createTable(0, 2, 27, 1,
                         null, "Ocorrências em tratamento",null, null, "Ocorrências tratadas")
-                .packing(0, 2, list3, (sheetNum, tableNum, data, result) -> {
+                .packing(0, 2, list3, (sheetNum, tableNum, data, clazz, result) -> {
                     for (int row = 0; row < data.size(); row++) {
                         Statistic statistic = data.get(row);
                         String key = row + ExcelDataCallBack.SIGN_K_V;
@@ -128,7 +137,7 @@ public class ExcelTest {
     @Test
     public void test() {
         ExcelProxy.proxy(excel)
-                .addMergeRegion((workbook, sheet, title, sheetNum, tableNum, cellRangeAddressList) -> {
+                .addMergeRegion((workbook, sheet, title, sheetNum, tableNum, tableSize, cellRangeAddressList) -> {
                     // 每列宽
                     for (int i = 0; i < 8; i++) {
                         sheet.setColumnWidth(i, i == 0 ? 5 * 256 : i == 1 ? 15 * 256 : 12 * 256);

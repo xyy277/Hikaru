@@ -23,7 +23,9 @@ public interface ExcelDataCallBack<T> {
      * @param sheetNum  sheet number - sheet 下标，一个excel 多个sheet
      * @param tableNum  table number - table 下标，一个sheet 多个table
      * @param data      对象集合
+     * @param clazz     对象类型
+     * @param result    数据
      * @return 一张表中所有数据
      */
-    Map<String, Object> getData(int sheetNum, int tableNum, List<T> data, Map<String, Object> result);
+    Map<String, Object> getData(int sheetNum, int tableNum, List<T> data, Class<T> clazz, Map<String, Object> result);
 }

@@ -91,7 +91,7 @@ public class ExcelBuilderFactory implements ExcelBuilder {
      * 组装数据
      * @param sheetNum      sheet 页下标
      * @param tableNum      table 页下标
-     * @param data          数据
+     * @param data          数据 (当data为null或者空的时候，获取泛型T会失败)
      * @param dataCallBack  数据处理
      * @param <T>           数据类型 - 转换为Map<String, Object>
      * @return 代理
@@ -99,7 +99,11 @@ public class ExcelBuilderFactory implements ExcelBuilder {
     public <T> ExcelBuilder packing(int sheetNum, int tableNum, List<T> data, ExcelDataCallBack<T> dataCallBack) {
         Table table = this.tables[sheetNum][tableNum];
         Map<String, Object> result = new HashMap<>();
-        table.setData(dataCallBack.getData(sheetNum, tableNum, data, result));
+        Class<T> clazz = null;
+        if (data != null && data.size() > 0) {
+            clazz = (Class<T>) data.get(0).getClass();
+        }
+        table.setData(dataCallBack.getData(sheetNum, tableNum, data, clazz, result));
         return factory;
     }
 

@@ -153,7 +153,7 @@ public class ExcelProxy implements AbstractExcelProxy {
      */
     public ExcelProxy produce() {
         proxy.file = ExcelUtil.getExcel(response, excel.getName(), sheetNames, titleList, mergedRegionCallBack, dataList,
-                startRowList, startCellList, null,hssfCellStyleInitCallBack, styleCallBack,imageCallBack, bufferedImages);
+                startRowList, startCellList, hssfCellStyleInitCallBack, styleCallBack,imageCallBack, bufferedImages);
         cleanAll();
         return proxy;
     }

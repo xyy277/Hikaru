@@ -27,9 +27,10 @@ public interface ExcelMergedRegionCallBack {
      * @param sheet                 当前sheet
      * @param sheetNum              sheet number
      * @param tableNum              table number
+     * @param tableSize             table size
      * @param cellRangeAddressList  合并单元格数组
-     * @return
+     * @return 锚点集合
      */
-    List<CellRangeAddress> addMergedRegion(HSSFWorkbook workbook, Sheet sheet, String[] title, int sheetNum, int tableNum, List<CellRangeAddress> cellRangeAddressList);
+    List<CellRangeAddress> addMergedRegion(HSSFWorkbook workbook, Sheet sheet, String[] title, int sheetNum, int tableNum, int tableSize, List<CellRangeAddress> cellRangeAddressList);
 
 }

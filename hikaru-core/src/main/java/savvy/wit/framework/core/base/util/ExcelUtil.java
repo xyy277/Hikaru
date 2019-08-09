@@ -59,42 +59,41 @@ public class ExcelUtil {
      * @param imageCallBack             图片位置设置回调
      * @param bufferedImages            图片数组
      *                                   传入对象类型
-     * @return
+     * @return file
      */
     public static File getExcel(HttpServletResponse response, String fileName, String[] sheetNames, List<List<String[]>> titleList,
                                 ExcelMergedRegionCallBack mergedRegionCallBack, List<List<Map<String,Object>>> arrayList,
-                                List<int[]> startRowList, List<int[]> startCellList, ExcelDataCallBack dataCallBack,
+                                List<int[]> startRowList, List<int[]> startCellList,
                                 HSSFCellStyleInitCallBack hssfCellStyleInitCallBack, ExcelStyleCallBack styleCallBack,
                                 ExcelImageCallBack imageCallBack, BufferedImage[]... bufferedImages) {
         HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = null; HSSFRow row = null; Cell cell = null;
+        HSSFSheet sheet; HSSFRow row; Cell cell;
         for (int x = 0; x < sheetNames.length; x++) { // x - sheet number
             int[] startRows = startRowList.get(x);
             int[] startCells = startCellList.get(x);
             String sheetName = sheetNames[x];
             List<Map<String, Object>> lists = arrayList.get(x); // 当前sheet 中多个表格的data
             sheet = workbook.createSheet(sheetName);
-            /**
+            /*
              * 通过sheet 自定义表头及表格式
              * 自定义表头包括：
              * 自定义行、列、值、样式等
              * 格式包括：
              * 合并单元格设置宽度
              */
-            for (int i = 0; i < titleList.size(); i++) {  // 多表
-                List<String[]> titles = titleList.get(i);
-                for (int j = 0; j < titles.size(); j++) { // 单表
-                    String[] title = titles.get(j);
-                    List<CellRangeAddress> cellRangeAddressList = new ArrayList<>();
-                    cellRangeAddressList = mergedRegionCallBack.addMergedRegion(workbook, sheet, title, x, j, cellRangeAddressList);
-                    if (cellRangeAddressList != null) {
-                        for (CellRangeAddress cellRangeAddress : cellRangeAddressList) {
-                            sheet.addMergedRegion(cellRangeAddress);
-                        }
+            List<String[]> titles = titleList.get(x);  // 多表
+            for (int j = 0; j < titles.size(); j++) { // 单表
+                int size = rowIndex(lists.get(j));
+                String[] title = titles.get(j);
+                List<CellRangeAddress> cellRangeAddressList = new ArrayList<>();
+                cellRangeAddressList = mergedRegionCallBack.addMergedRegion(workbook, sheet, title, x, j, size, cellRangeAddressList);
+                if (cellRangeAddressList != null) {
+                    for (CellRangeAddress cellRangeAddress : cellRangeAddressList) {
+                        sheet.addMergedRegion(cellRangeAddress);
                     }
                 }
             }
-            /**
+            /*
              * 正文主要通过自定义模板时预留的正文其实row、cell 的值
              * 来确定正文左上角由坐标(cell, row)固定
              * 正文内容由传入List<List<T>> 中数据类型T确定
@@ -110,14 +109,8 @@ public class ExcelUtil {
                 if (map == null || map.size() <1) {
                     continue;
                 }
-                Integer rowIndex = map.keySet().stream()
-                        .map(key -> Integer.parseInt(key.split(ExcelDataCallBack.SIGN_K_V)[0]))
-                        .max((o1, o2) -> o1.compareTo(o2))
-                        .get();
-                Integer cellIndex = map.keySet().stream()
-                        .map(key -> Integer.parseInt(key.split(ExcelDataCallBack.SIGN_K_V)[1]))
-                        .max((o1, o2) -> o1.compareTo(o2))
-                        .get();
+                Integer rowIndex = rowIndex(map);
+                Integer cellIndex = cellIndex(map);
                 // 将整张表的数据转为2dArray
                 Object[][] tableValues = new Object[rowIndex + 1][cellIndex + 1]; // 初始化 行列
                 map.keySet().stream().forEach(key -> {
@@ -150,25 +143,53 @@ public class ExcelUtil {
         return response == null ? new File(fileName + "-" + time + ".xls") : null;
     }
 
-    private static void setBorder(HSSFCellStyle style) {
+    private static int rowIndex(Map<String, Object> map) {
+        int result = 0;
+        if (map != null && map.size() > 0) {
+            result = map.keySet().stream()
+                    .map(key -> Integer.parseInt(key.split(ExcelDataCallBack.SIGN_K_V)[0]))
+                    .max((o1, o2) -> o1.compareTo(o2))
+                    .get();
+        }
+        return result;
+    }
+
+    private static int cellIndex(Map<String, Object> map) {
+        int result = 0;
+        if (map != null && map.size() > 0) {
+            result = map.keySet().stream()
+                    .map(key -> Integer.parseInt(key.split(ExcelDataCallBack.SIGN_K_V)[1]))
+                    .max((o1, o2) -> o1.compareTo(o2))
+                    .get();
+        }
+        return result;
+    }
+
+    private static HSSFCellStyle getBorderStyle(HSSFWorkbook workbook) {
+        HSSFCellStyle style = workbook.createCellStyle();
+        return setBorder(style);
+    }
+
+    private static HSSFCellStyle setBorder(HSSFCellStyle style) {
         style.setBorderTop(HSSFCellStyle.BORDER_THIN);
         style.setBorderRight(HSSFCellStyle.BORDER_THIN);
         style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
         style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+        return style;
     }
 
     /**
      * 单元格填充数据
-     * @param cell
-     * @param value
+     * @param cell cell
+     * @param value data
      */
     private static void setValue(Cell cell, Object value) {
         if (value instanceof String) {
             cell.setCellValue((String) value);
         } else if (value instanceof Double) {
-            cell.setCellValue((Double) value);
+            cell.setCellValue(String.valueOf(value));
         } else if (value instanceof Date) {
-            cell.setCellValue((Date) value);
+            cell.setCellValue(String.valueOf(value));
         } else if (value instanceof Calendar) {
             cell.setCellValue((Calendar) value);
         } else if (value instanceof RichTextString) {
@@ -180,8 +201,8 @@ public class ExcelUtil {
 
     /**
      * 写出流
-     * @param workbook
-     * @param out
+     * @param workbook book
+     * @param out      stream
      */
     private static void writeStream(Workbook workbook, OutputStream out) {
         try {
@@ -198,17 +219,16 @@ public class ExcelUtil {
                     e.printStackTrace();
                 }
             }
-            out = null;
         }
     }
 
     /**
      * 插入图片
-     * @param num
-     * @param images
-     * @param sheet
-     * @param imageCallBack
-     * @param workbook
+     * @param num               sheetNum
+     * @param images            images
+     * @param sheet             sheet
+     * @param imageCallBack     callback
+     * @param workbook          book
      */
     private static void setImages(int num, BufferedImage[] images, HSSFSheet sheet, ExcelImageCallBack imageCallBack, Workbook workbook) {
         // 图片处理
@@ -239,18 +259,18 @@ public class ExcelUtil {
 
     /**
      * 获取response输出流
-     * @param res
-     * @param fileName
+     * @param response         response
+     * @param fileName         fileName
      * @return
      */
-    private static OutputStream getOutPutStream(HttpServletResponse res, String fileName) {
+    private static OutputStream getOutPutStream(HttpServletResponse response, String fileName) {
         OutputStream out = null;
         try {
-            if (res != null) {
-                res.addHeader("content-type", "application/force-download;");
-                res.addHeader("content-disposition", "attachment; filename=" +
+            if (response != null) {
+                response.addHeader("content-type", "application/force-download;");
+                response.addHeader("content-disposition", "attachment; filename=" +
                         URLEncoder.encode(fileName + ".xls", "utf-8").replaceAll("\\+", " "));
-                out = res.getOutputStream();
+                out = response.getOutputStream();
             }else {
                 out = new FileOutputStream(fileName + ".xls");
             }
