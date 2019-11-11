@@ -46,6 +46,9 @@ public class ApplicationConfig implements CommandLineRunner {
     private boolean refactor;
     private String pack;
 
+    @Value("${hikaru.datasource.init}")
+    private boolean init;
+
     @Value("${server.address}")
     private String address;
     @Value("${server.port}")
@@ -85,20 +88,23 @@ public class ApplicationConfig implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
         log.info("ApplicationConfig start init");
-        String automation = env.getProperty("hikaru.table.automation");
-        String refactor = env.getProperty("hikaru.table.refactor");
-        String pack = env.getProperty("hikaru.table.pack");
-        if(StringUtil.isNotBlank(automation))
-            this.automation = Boolean.parseBoolean(automation);
-        if(StringUtil.isNotBlank(refactor))
-            this.refactor = Boolean.parseBoolean(refactor);
-        if(StringUtil.isNotBlank(pack))
-            this.pack = pack;
-        // 库我也帮你建吧
-        Daos.get().execute("CREATE DATABASE IF NOT EXISTS "
-                + env.getProperty("hikaru.database.name")
-                + " DEFAULT CHARSET utf8 COLLATE utf8_general_ci");
-        ApplicationInitialization.me().initialization(this.automation, this.refactor, this.pack);
+        // 初始化数据源dao
+        if (init) {
+            String automation = env.getProperty("hikaru.table.automation");
+            String refactor = env.getProperty("hikaru.table.refactor");
+            String pack = env.getProperty("hikaru.table.pack");
+            if(StringUtil.isNotBlank(automation))
+                this.automation = Boolean.parseBoolean(automation);
+            if(StringUtil.isNotBlank(refactor))
+                this.refactor = Boolean.parseBoolean(refactor);
+            if(StringUtil.isNotBlank(pack))
+                this.pack = pack;
+            // 库我也帮你建吧
+            Daos.get().execute("CREATE DATABASE IF NOT EXISTS "
+                    + env.getProperty("hikaru.database.name")
+                    + " DEFAULT CHARSET utf8 COLLATE utf8_general_ci");
+            ApplicationInitialization.me().initialization(this.automation, this.refactor, this.pack);
+        }
         log.info("ApplicationConfig init completed");
         String url = address + ":" + port + contextPath;
         LogFactory.open(200)

@@ -1,7 +1,9 @@
 package com.gsafety.hikaru.application;
 
 import com.gsafety.hikaru.application.hikaru.HikaruApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
@@ -18,6 +20,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient // 启用consul注册
 // Enable默认都只默认扫描当前及以下的包，需要指定
 @EnableFeignClients(basePackages = "com.gsafety.hikaru.feign")
+// 默认不初始化数据库
+//@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 public class Application {
 
     public static void main(String[] args) {
