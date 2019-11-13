@@ -1,11 +1,14 @@
 package com.gsafety.hikaru.api;
 
 import com.gsafety.hikaru.common.middleware.kafka.KafkaProviderService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import savvy.wit.framework.core.base.pool.ThreadPool;
 import savvy.wit.framework.core.base.service.log.Log;
@@ -29,6 +32,7 @@ import java.util.TimerTask;
  ******************************/
 @RestController
 @RequestMapping("/kafka")
+@Api(value = "测试kafka", description = "测试kafka")
 public class KafkaController {
 
     private Log log = LogFactory.getLog();
@@ -45,7 +49,8 @@ public class KafkaController {
      * @param num 线程数
      * @return
      */
-    @RequestMapping("/{topic}/{amount}/{num}")
+    @RequestMapping(value = "/{topic}/{amount}/{num}", method = RequestMethod.GET)
+    @ApiOperation(value = " 推送消息", notes = " 推送消息")
     public ResponseEntity kafkaSender(@PathVariable String topic, @PathVariable int amount, @PathVariable int num) {
         if (amount * num >= 1000) {
             return new ResponseEntity("too much producer", HttpStatus.PAYLOAD_TOO_LARGE);
@@ -70,14 +75,17 @@ public class KafkaController {
         return  new ResponseEntity(amount + "个 topic: " + topic + DateUtil.getNow("yyyyMMdd-") + num + " 个线程 started \t" + DateUtil.getNow(), HttpStatus.OK);
     }
 
-    @RequestMapping("/stop")
+    @RequestMapping(value = "/stop", method = RequestMethod.GET)
+    @ApiOperation(value = " 停止", notes = " 停止")
     public ResponseEntity stop() {
         int index = 0;
         if (ThreadPool.me().getPoolList() != null) {
             index = ThreadPool.me().getPoolList().size();
-            ThreadPool.me().getPoolList().forEach(thread -> {
-                thread.interrupt();
-            });
+            for (Thread thread : ThreadPool.me().getPoolList()) {
+                while (thread.isInterrupted()) {
+                    thread.interrupt();
+                }
+            }
         }else
             index = TimerAdapter.me().getTimers().size();
         TimerAdapter.me().cancel();

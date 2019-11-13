@@ -1,6 +1,7 @@
 package savvy.wit.framework.core.pattern.builder;
 
 import savvy.wit.framework.core.base.cache.SQLCache;
+import savvy.wit.framework.core.base.callback.LogicCallBack;
 import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.pattern.proxy.SqlProxy;
@@ -107,6 +108,18 @@ public class SqlBuilder implements SqlProxy {
 
         param.put(placeholder, builder.toString());
         return LazyInit.INITIALIZATION;
+    }
+
+    @Override
+    public SqlProxy param(String placeholder, Object value, boolean condition) {
+        if (condition)
+           return  param(placeholder, value);
+        return LazyInit.INITIALIZATION;
+    }
+
+    @Override
+    public SqlProxy param(String placeholder, Object value, LogicCallBack callBack) {
+        return param(placeholder, value, callBack.fun());
     }
 
     /**

@@ -65,12 +65,15 @@ public class FetchTest {
         list.add("12312");
         list.add("vasd");
         list.add(3);
+        String a = "Aa";
+        String b = "AA";
         /**
          * TODO: 自动生成关联sql
          */
         fetch(SqlBuilder.ask().proxy("SELECT  * FROM sunday s_1 LEFT JOIN monday m_2 ON (s_1.monday_id = m_2.id) WHERE s_1.monday_id IN ${ids}")
-                .param("ids", new String[]{"123123", "asdasdas"})
+                .param("ids", new String[]{"123123", "asdasdas"}, a.equalsIgnoreCase(b))
                 .param("mid", "123123123123")
+                .param("mid", 1, () -> a.equals(b))
                 .param("asdasd", list).request());
     }
 

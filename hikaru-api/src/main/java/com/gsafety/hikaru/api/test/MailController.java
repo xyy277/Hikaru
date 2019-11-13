@@ -39,8 +39,10 @@ public class MailController {
         List<File> fileList = new ArrayList<>();
         fileList.add(new File("G:\\GitHub\\hikaru\\hikaru-server\\test.png"));
         fileList.add(new File("G:\\GitHub\\hikaru\\hikaru-server\\test.gif"));
+        Mail email = JsonUtil.fromJson(mail, Mail.class);
         try {
-            mailSender.send(recipient, JsonUtil.fromJson(mail, Mail.class), fileList);
+            mailSender.send(recipient, email, fileList);
+            mailSender.sendFullTextMail(recipient, email);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.error(new Error(500, e.getMessage()));

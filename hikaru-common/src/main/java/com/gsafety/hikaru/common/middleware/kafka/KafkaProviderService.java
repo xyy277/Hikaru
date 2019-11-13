@@ -1,5 +1,7 @@
 package com.gsafety.hikaru.common.middleware.kafka;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaProviderService {
 
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
@@ -26,6 +29,7 @@ public class KafkaProviderService {
      * @param value 推送的数据
      */
     public void sender(String topic, String value) {
+        log.info(value);
         kafkaTemplate.send(topic, value);
     }
 }

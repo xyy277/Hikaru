@@ -25,4 +25,6 @@ public interface MailSender {
     void send(String recipient, Mail mail, List<File> attachments) throws MessagingException, UnsupportedEncodingException;
 
     void send(List<String> recipients, Mail mail, List<File> attachments) throws MessagingException, UnsupportedEncodingException;
+
+    void sendFullTextMail(String recipient, Mail mail) throws MessagingException;
 }

@@ -1,5 +1,7 @@
 package savvy.wit.framework.core.pattern.proxy;
 
+import savvy.wit.framework.core.base.callback.LogicCallBack;
+
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 
@@ -7,7 +9,8 @@ package savvy.wit.framework.core.pattern.proxy;
  * Author : zhoujiajun
  * Date : 2019/3/22 11:36
  * Version : 1.0
- * Description : 
+ * Description :
+ * @see
  ******************************/
 public interface SqlProxy {
 
@@ -26,6 +29,25 @@ public interface SqlProxy {
      * @return
      */
     SqlProxy param(String placeholder, Object value);
+
+    /**
+     * 动态设置参数增加条件判断
+     * @param placeholder
+     * @param value
+     * @param condition
+     * @return
+     */
+    SqlProxy param(String placeholder, Object value, boolean condition);
+
+    /**
+     * 动态设置参数增加条件判断
+     * @param placeholder
+     * @param value
+     * @param callBack
+     * @return
+     */
+    SqlProxy param(String placeholder, Object value, LogicCallBack callBack);
+
 
     /**
      * 开启注入
