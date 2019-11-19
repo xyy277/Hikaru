@@ -39,52 +39,52 @@ public class ExcelProxy implements AbstractExcelProxy {
     /**
      * 响应对象
      */
-    protected HttpServletResponse response;
+    private HttpServletResponse response;
     /**
      * sheet页名数组
      */
-    protected String[] sheetNames;
+    private String[] sheetNames;
     /**
      * 每个表的附表头数组
      */
-    protected List<List<String[]>> titleList = new ArrayList<>();
+    private List<List<String[]>> titleList = new ArrayList<>();
     /**
      * 组装好的数据
      */
-    protected List<List<Map<String, Object>>> dataList = new ArrayList<>();
+    private List<List<Map<String, Object>>> dataList = new ArrayList<>();
     /**
      * 每个表起始行
      */
-    protected List<int[]> startRowList = new ArrayList<>();
+    private List<int[]> startRowList = new ArrayList<>();
     /**
      * 每个表起始列
      */
-    protected List<int[]> startCellList =  new ArrayList<>();
+    private List<int[]> startCellList =  new ArrayList<>();
     /**
      * 所有sheet的图片集
      */
-    protected BufferedImage[][] bufferedImages;
+    private BufferedImage[][] bufferedImages;
     /**
      * 回调设置 sheet结构 样式 自定义表头等
      */
-    protected ExcelMergedRegionCallBack mergedRegionCallBack;
+    private ExcelMergedRegionCallBack mergedRegionCallBack;
 
-    /**
+    /*
      * 获取一行中所有列数据 （已弃用）
      */
-    protected ExcelDataCallBack dataCallBack;
+//    private ExcelDataCallBack dataCallBack;
     /**
      * 初始化单元格样式
      */
-    protected HSSFCellStyleInitCallBack hssfCellStyleInitCallBack;
+    private HSSFCellStyleInitCallBack hssfCellStyleInitCallBack;
     /**
      * 回调处理任意单元格样式
      */
-    protected ExcelStyleCallBack styleCallBack;
+    private ExcelStyleCallBack styleCallBack;
     /**
      * 回调处理图像插入位置
      */
-    protected ExcelImageCallBack imageCallBack;
+    private ExcelImageCallBack imageCallBack;
 
     /**
      * 代理Excel对象
@@ -188,7 +188,7 @@ public class ExcelProxy implements AbstractExcelProxy {
         proxy.startRowList = new ArrayList<>();
         proxy.startCellList = new ArrayList<>();
         proxy.bufferedImages = null;
-        proxy.dataCallBack = null;
+//        proxy.dataCallBack = null;
         proxy.mergedRegionCallBack = null;
         proxy.styleCallBack = null;
         proxy.imageCallBack = null;
@@ -205,7 +205,7 @@ public class ExcelProxy implements AbstractExcelProxy {
         for (int i = 0; i < sheetNames.length; i++) {
             sheetNames[i] = excel.getSheets()[i].getName();
         }
-        /**
+        /*
          * init
          */
         titleList = new ArrayList<>();

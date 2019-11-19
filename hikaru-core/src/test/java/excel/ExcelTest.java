@@ -79,8 +79,8 @@ public class ExcelTest {
                 .initSheet(1)
                 .initTable(3)
                 .createSheet(0, "test Sheet 1",
-                        ImageIO.read(new File("G:\\personal\\image\\20190504200807.jpg")),
-                        ImageIO.read(new File("G:\\personal\\image\\20190504200815.jpg")))
+                        ImageIO.read(new File("G:\\GitHub\\hikaru\\hikaru-server\\test.jpg")),
+                        ImageIO.read(new File("G:\\GitHub\\hikaru\\hikaru-server\\test2.jpg")))
                 .createTable(0,0, 7, 1,
                         null, "Validas", "Consultas", "Registo", "Invalidas", "Total")
                 .packing(0, 0, list1, (sheetNum, tableNum, data, clazz, result) -> {

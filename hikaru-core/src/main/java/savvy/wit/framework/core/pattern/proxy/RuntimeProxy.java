@@ -1,6 +1,5 @@
 package savvy.wit.framework.core.pattern.proxy;
 
-import savvy.wit.framework.core.base.pool.ThreadPool;
 import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.factory.LogFactory;

@@ -142,6 +142,10 @@ public class ApplicationConfig implements CommandLineRunner {
                     false);
             RuntimeProxy.get().execute(
                     "chrome",
+                    "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe " + url,
+                    false);
+            RuntimeProxy.get().execute(
+                    "chrome",
                     "C:\\Users\\" + "Administrator" + "\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe " + url,
                     false);
         }

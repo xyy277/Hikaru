@@ -113,7 +113,7 @@ public class ExcelUtil {
                 Integer cellIndex = cellIndex(map);
                 // 将整张表的数据转为2dArray
                 Object[][] tableValues = new Object[rowIndex + 1][cellIndex + 1]; // 初始化 行列
-                map.keySet().stream().forEach(key -> {
+                map.keySet().forEach(key -> {
                     String[] keys = key.split(ExcelDataCallBack.SIGN_K_V);
                     int rowNum = Integer.parseInt(keys[0]);
                     int cellNum = Integer.parseInt(keys[1]);
@@ -144,39 +144,19 @@ public class ExcelUtil {
     }
 
     private static int rowIndex(Map<String, Object> map) {
-        int result = 0;
-        if (map != null && map.size() > 0) {
-            result = map.keySet().stream()
-                    .map(key -> Integer.parseInt(key.split(ExcelDataCallBack.SIGN_K_V)[0]))
-                    .max((o1, o2) -> o1.compareTo(o2))
-                    .get();
-        }
-        return result;
+        return map != null && map.size() > 0 ? map.keySet().stream()
+                .map(key -> Integer.parseInt(key.split(ExcelDataCallBack.SIGN_K_V)[0]))
+                .max(Comparator.naturalOrder())
+                .get() : 0;
     }
 
     private static int cellIndex(Map<String, Object> map) {
-        int result = 0;
-        if (map != null && map.size() > 0) {
-            result = map.keySet().stream()
-                    .map(key -> Integer.parseInt(key.split(ExcelDataCallBack.SIGN_K_V)[1]))
-                    .max((o1, o2) -> o1.compareTo(o2))
-                    .get();
-        }
-        return result;
+        return map != null && map.size() > 0 ? map.keySet().stream()
+                .map(key -> Integer.parseInt(key.split(ExcelDataCallBack.SIGN_K_V)[1]))
+                .max(Integer::compareTo)
+                .get(): 0;
     }
 
-    private static HSSFCellStyle getBorderStyle(HSSFWorkbook workbook) {
-        HSSFCellStyle style = workbook.createCellStyle();
-        return setBorder(style);
-    }
-
-    private static HSSFCellStyle setBorder(HSSFCellStyle style) {
-        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
-        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-        return style;
-    }
 
     /**
      * 单元格填充数据
@@ -261,7 +241,7 @@ public class ExcelUtil {
      * 获取response输出流
      * @param response         response
      * @param fileName         fileName
-     * @return
+     * @return OutputStream
      */
     private static OutputStream getOutPutStream(HttpServletResponse response, String fileName) {
         OutputStream out = null;
