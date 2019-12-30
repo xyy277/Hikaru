@@ -47,9 +47,6 @@ public class ServiceTest {
                 .setEnumClassList("com.gsafety.hikaru.model.enumerate");                                                             // 设置泛型package
         userService = new UserServiceImpl(Daos.get());
 
-        log.log( () -> {
-//            Daos.get().dropAndCreate(User.class);
-        });
     }
 
 

@@ -58,7 +58,7 @@ public class OptionalTest {
         log.log(pattern.matcher(string.toString()));
         log.log(string.count("c"));
         log.log(string.contains("6"));
-        log.log(() -> string.contains("a"));
+        string.contains("a");
 
         log.log(1 != (4 & 5));
     }

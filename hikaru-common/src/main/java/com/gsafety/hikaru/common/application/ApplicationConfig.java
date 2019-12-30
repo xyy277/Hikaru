@@ -113,7 +113,7 @@ public class ApplicationConfig implements CommandLineRunner {
                 .close();
 
         // 初始化完成打开浏览器
-        Browser.open(true, url);
+        Browser.open(false, url);
     }
 
 

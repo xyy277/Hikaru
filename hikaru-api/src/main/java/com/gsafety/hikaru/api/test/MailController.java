@@ -37,8 +37,6 @@ public class MailController {
                                    @ApiParam(value = "邮件内容")@RequestParam String mail) {
         MailSender mailSender = Mails.getSender(sender, pwd);
         List<File> fileList = new ArrayList<>();
-        fileList.add(new File("G:\\GitHub\\hikaru\\hikaru-server\\test.png"));
-        fileList.add(new File("G:\\GitHub\\hikaru\\hikaru-server\\test.gif"));
         Mail email = JsonUtil.fromJson(mail, Mail.class);
         try {
             mailSender.send(recipient, email, fileList);

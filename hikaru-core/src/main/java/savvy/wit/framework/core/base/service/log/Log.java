@@ -13,8 +13,6 @@ import savvy.wit.framework.core.base.callback.LogCallBack;
  ******************************/
 public interface Log {
 
-    void log(LogCallBack callBack);
-
     void sql(Object o);
 
     void log(Object o);

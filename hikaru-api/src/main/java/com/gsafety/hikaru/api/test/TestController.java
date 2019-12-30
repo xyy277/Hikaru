@@ -2,6 +2,7 @@ package com.gsafety.hikaru.api.test;
 
 
 import com.gsafety.hikaru.common.global.Result;
+import com.gsafety.hikaru.common.helper.LocaleMessage;
 import com.gsafety.hikaru.model.business.User;
 import com.gsafety.hikaru.service.UserService;
 import io.swagger.annotations.Api;
@@ -40,7 +41,19 @@ public class TestController {
     private Log log = LogFactory.getLog();
 
     @Autowired
+    LocaleMessage localeMessage;
+
+    @Autowired
     private UserService userService;
+
+    @savvy.wit.framework.core.base.annotations.Log("hello")
+    @RequestMapping(value = "/ok", method = RequestMethod.GET)
+    public ResponseEntity<String> ok() {
+        int[] ints = new int[0];
+        System.out.println(ints[2]);
+        System.out.println(localeMessage.getMessage("heartbeat.ok"));
+        return new ResponseEntity(localeMessage.getMessage("heartbeat.ok"), HttpStatus.OK);
+    }
 
 
     @RequestMapping(value = "/{num}", method = RequestMethod.GET)

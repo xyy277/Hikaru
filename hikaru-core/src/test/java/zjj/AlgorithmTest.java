@@ -39,7 +39,6 @@ public class AlgorithmTest {
             String paramString = initParamString();
             log.log(  "首个仅出现一次的字符是：" +   StringRetrieve.getBoOnlyOnceCode(paramString));
             zjj.Test.test(paramString);
-            log.log(() -> Thread.sleep(1000 * 5));
             break;
         }
     }

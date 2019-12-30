@@ -8,6 +8,7 @@ import savvy.wit.framework.core.pattern.factory.Config;
 import savvy.wit.framework.core.pattern.factory.Daos;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -94,15 +95,6 @@ public class LogExcutor implements Log {
 //        }catch (IOException e) {
 //            e.printStackTrace();
 //        }
-    }
-
-    @Override
-    public void log(LogCallBack callBack) {
-        try {
-            callBack.toLog();
-        }catch (Exception e) {
-            this.error(e, 3);
-        }
     }
 
     @Override
@@ -370,7 +362,7 @@ public class LogExcutor implements Log {
             intercept = Arrays.asList(objects).stream()
                     .filter(o -> o.toString().indexOf("||") != -1)
                     .map(o -> o.toString().substring(0, o.toString().lastIndexOf("||")))
-                    .max((o1, o2) -> o1.toString().length()-o2.toString().length())
+                    .max(Comparator.comparingInt(o2 -> o2.toString().length()))
                     .get().toString().length();
         }
         for (Object o : objects) {
@@ -388,7 +380,7 @@ public class LogExcutor implements Log {
             intercept = Arrays.asList(objects).stream()
                     .filter(o -> o.toString().indexOf("||") != -1)
                     .map(o -> o.toString().substring(0, o.toString().lastIndexOf("||")))
-                    .max((o1, o2) -> o1.toString().length()-o2.toString().length())
+                    .max(Comparator.comparingInt(o2 -> o2.toString().length()))
                     .get().toString().length();
         }
         for (Object o : objects) {

@@ -30,6 +30,14 @@ public class LocaleMessage {
     @Autowired
     private MessageSource messageSource;
 
+    public MessageSource getMessageSource() {
+        return messageSource;
+    }
+
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
     public Locale getLocale() {
         return locale;
     }

@@ -40,7 +40,7 @@ import java.util.List;
  * Description : 
  ******************************/
 @EnableWebMvc // SpringWebMvc
-@ComponentScan({"com.gsafety.hikaru", "savvy.wit.framework.core.base.service.dao",
+@ComponentScan({"com.gsafety.hikaru", "savvy.wit.framework.core.base.service",
 "com.gsafety.hikaru.common"}) // 扫描注册bean
 @ServletComponentScan("com.gsafety.hikaru.common") // 扫描自定义 监听器 过滤器
 @EnableAspectJAutoProxy(proxyTargetClass = true) // 启用AOP自动配置

@@ -1,5 +1,8 @@
 package savvy.wit.framework.core.base.callback;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import savvy.wit.framework.core.base.annotations.Log;
+
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 
@@ -11,5 +14,11 @@ package savvy.wit.framework.core.base.callback;
  ******************************/
 public interface LogCallBack {
 
-    void toLog() throws Exception;
+    /**
+     * 日志回调
+     * @param joinPoint 连接点
+     * @param log       注解
+     * @param result    目标结果
+     */
+    void execute(ProceedingJoinPoint joinPoint, Log log,Object result);
 }

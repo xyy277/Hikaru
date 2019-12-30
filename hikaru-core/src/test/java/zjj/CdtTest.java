@@ -13,6 +13,7 @@ import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.service.BaseService;
 import savvy.wit.framework.core.service.impl.BaseServiceImpl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class CdtTest {
 
 
     @org.junit.Test
-    public void test() {
+    public void test() throws SQLException {
         ConfigFactory.me().setSource(System.getProperty("user.dir") + "\\hikaru-core\\src\\main\\resources\\properties\\db.properties");
 
         BaseService baseService = new BaseServiceImpl(Daos.get());
@@ -67,10 +68,8 @@ public class CdtTest {
         }
         Counter counter = Counter.create();
         log.log(lists);
-        log.log(()-> {
-            counter.setValue(Daos.get().fetch("select * from user " + cdt.getCondition()));
-            log.log(counter.getValue());
-        });
+        counter.setValue(Daos.get().fetch("select * from user " + cdt.getCondition()));
+        log.log(counter.getValue());
         String json = JsonUtil.map2Json(counter.getValue());
         log.log(json);
     }
