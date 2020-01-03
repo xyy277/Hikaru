@@ -1,5 +1,7 @@
 package savvy.wit.framework.core.base.util;
 
+import java.util.UUID;
+
 /**
  * Created by aj907 on 2018/4/27.
  */
@@ -99,6 +101,10 @@ public class StringUtil extends DateUtil {
             sb.append( POOL.charAt(random(POOL.length())) );
         }
         return sb.toString();
+    }
+
+    public static String uuid() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
 }

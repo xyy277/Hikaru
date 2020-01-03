@@ -147,6 +147,10 @@ public class LogExcutor implements Log {
                 logs = "\t"+String.valueOf(log);
                 System.out.println(logs);
                         break;
+            case "[Ljava.lang.StackTraceElement;":
+                for (StackTraceElement o : (StackTraceElement[]) log) {
+                    log(o, 3);
+                }
             default:
                 logs = "["+LOG_DEFAULT+"] "+getLog(2)+"\t"+String.valueOf(log);
                 System.out.println(logs);

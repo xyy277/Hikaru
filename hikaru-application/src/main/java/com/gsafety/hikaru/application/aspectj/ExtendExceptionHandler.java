@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * Version : 1.0
  * Description : 
  ******************************/
-@ControllerAdvice // 作用于@RequestMapping method
+//@ControllerAdvice // 作用于@RequestMapping method
 public class ExtendExceptionHandler {
 
     private Logger log = LoggerFactory.getLogger(ExtendExceptionHandler.class);
 
     @ExceptionHandler(Exception.class)
-    public Result modelNotFoundExceptionHandler(Exception exception) {
+    public Result apiExceptionHandler(Exception exception) {
         log.error("exception happened",exception);
         return Result.error(new Error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "exception happened"));
     }

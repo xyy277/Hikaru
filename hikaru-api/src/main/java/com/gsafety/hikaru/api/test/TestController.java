@@ -2,7 +2,7 @@ package com.gsafety.hikaru.api.test;
 
 
 import com.gsafety.hikaru.common.global.Result;
-import com.gsafety.hikaru.common.helper.LocaleMessage;
+import savvy.wit.framework.core.base.service.message.LocaleMessage;
 import com.gsafety.hikaru.model.business.User;
 import com.gsafety.hikaru.service.UserService;
 import io.swagger.annotations.Api;
@@ -13,14 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import savvy.wit.framework.core.base.service.log.Log;
+import savvy.wit.framework.core.base.annotations.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.CDT;
-import savvy.wit.framework.core.pattern.factory.LogFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -38,7 +40,6 @@ import java.util.stream.Collectors;
 @Api(value = "测试控制器", description = "api开发标准")
 public class TestController {
 
-    private Log log = LogFactory.getLog();
 
     @Autowired
     LocaleMessage localeMessage;
@@ -46,7 +47,7 @@ public class TestController {
     @Autowired
     private UserService userService;
 
-    @savvy.wit.framework.core.base.annotations.Log("hello")
+    @Log
     @RequestMapping(value = "/ok", method = RequestMethod.GET)
     public ResponseEntity<String> ok() {
         int[] ints = new int[0];

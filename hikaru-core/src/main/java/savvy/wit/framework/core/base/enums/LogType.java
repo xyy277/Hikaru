@@ -12,6 +12,9 @@ package savvy.wit.framework.core.base.enums;
 public enum LogType {
 
     SYSTEM,
+    BUSINESS,
+    EXCEPTION,
+    ERROR,
     DDL,
     DML,
     CURD,
@@ -22,5 +25,5 @@ public enum LogType {
     QUERY,
     LOGIN,
     LOGOUT,
-
+    PWD,
 }

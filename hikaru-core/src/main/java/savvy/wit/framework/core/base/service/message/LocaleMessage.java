@@ -1,6 +1,7 @@
-package com.gsafety.hikaru.common.helper;
+package savvy.wit.framework.core.base.service.message;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -22,6 +23,9 @@ import java.util.Map;
 @Component
 @Lazy
 public class LocaleMessage {
+
+    @Value("${language}")
+    private String language;
 
     private String result;
 
@@ -52,6 +56,9 @@ public class LocaleMessage {
 
     public String getMessage(String key) {
         if (this.locale == null) {
+            if (language != null)
+                this.locale = new Locale(language);
+            else
             this.locale = LocaleContextHolder.getLocale();
         }
         return messageSource.getMessage(key, null, this.locale);

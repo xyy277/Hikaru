@@ -20,7 +20,7 @@ import java.lang.annotation.*;
 public @interface Log {
 
 
-    String id() default "id";
+    String id() default "";
 
     Class<?> name() default Object.class;
 

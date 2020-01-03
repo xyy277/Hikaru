@@ -1,9 +1,12 @@
 package savvy.wit.framework.core.base.service.log;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import savvy.wit.framework.core.base.callback.LogCallBack;
+import savvy.wit.framework.core.base.callback.LogThrowableCallBack;
 import savvy.wit.framework.core.base.util.ClassUtil;
+import savvy.wit.framework.core.base.util.StringUtil;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -59,11 +62,18 @@ public abstract class AbstractLogAspectJ {
     /**
      * 异常通知：目标方法抛出异常时执行
      */
-    @AfterThrowing("log()")
-    public void afterThrowing() {
-
+    @AfterThrowing(value = "log()", throwing = "throwable")
+    public void afterThrowing(JoinPoint joinPoint, Throwable throwable) {
+        handleThrowable(joinPoint, throwable, throwableBack());
     }
 
+
+
+    public LogThrowableCallBack throwableBack () {
+        return (joinPoint, throwable) -> {
+
+        };
+    }
 
     /**
      *
@@ -75,7 +85,7 @@ public abstract class AbstractLogAspectJ {
     public void around(ProceedingJoinPoint joinPoint) throws Throwable {
         // 执行源方法
         Object result = joinPoint.proceed();
-        recordMessage(joinPoint, logback(), result);
+        handleMessage(joinPoint, logback(), result);
     }
 
     public LogCallBack logback() {
@@ -84,9 +94,19 @@ public abstract class AbstractLogAspectJ {
         };
     }
 
-    private void recordMessage(ProceedingJoinPoint joinPoint, LogCallBack callBack, Object result) throws NoSuchMethodException {
+    private void handleMessage(ProceedingJoinPoint joinPoint, LogCallBack callBack, Object result) throws NoSuchMethodException {
         savvy.wit.framework.core.base.annotations.Log log = ClassUtil.me().getDeclaredAnnotation(joinPoint, savvy.wit.framework.core.base.annotations.Log.class);
-        callBack.execute(joinPoint, log, result);
+        /*
+        在log id为默认情况下
+        动态提供uuid
+         */
+        Logs logs = new Logs(StringUtil.isBlank(log.id()) ? StringUtil.uuid() : log.id(), log.name(), log.type());
+        callBack.execute(joinPoint, logs, result);
+    }
+
+    private void handleThrowable(JoinPoint joinPoint, Throwable throwable, LogThrowableCallBack callBack) {
+
+        callBack.execute(joinPoint, throwable);
     }
 
 }
