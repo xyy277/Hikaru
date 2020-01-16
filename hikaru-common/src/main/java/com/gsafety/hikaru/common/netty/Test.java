@@ -17,7 +17,10 @@ import java.util.concurrent.TimeUnit;
 public class Test {
 
     public static void main(String[] args) throws Exception {
-        Client.sendMsg("c = 83");
+        for (;;) {
+            Client.sendMsg("c = 83");
+            TimeUnit.SECONDS.sleep(3);
+        }
 
     }
 }
