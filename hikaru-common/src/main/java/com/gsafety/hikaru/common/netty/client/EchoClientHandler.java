@@ -9,6 +9,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
+import savvy.wit.framework.core.base.util.HexStringUtils;
+
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 
@@ -33,7 +35,8 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("客户端与服务端通道-开启：" + ctx.channel().localAddress() + "channelActive");
 
-        String sendInfo = "Hello 这里是客户端  你好啊！";
+        String sendInfo = "c=40";///0x0d
+        sendInfo = HexStringUtils.toHex(sendInfo) + 0x0d;
         System.out.println("客户端准备发送的数据包：" + sendInfo);
         ctx.writeAndFlush(Unpooled.copiedBuffer(sendInfo, CharsetUtil.UTF_8)); // 必须有flush
 
