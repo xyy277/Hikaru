@@ -13,9 +13,9 @@ import io.netty.handler.codec.serialization.ObjectEncoder;
 
 public class Client {
 
-    public static String HOST = "203.118.52.123";
+    public static String HOST = "127.0.0.1";
 
-    public static int PORT = 12302;
+    public static int PORT = 5080;
 
     public static Bootstrap bootstrap=getBootstrap();
 
