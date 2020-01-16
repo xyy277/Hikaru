@@ -47,12 +47,15 @@ public class TestController {
     @Autowired
     private UserService userService;
 
-    @Log
     @RequestMapping(value = "/ok", method = RequestMethod.GET)
     public ResponseEntity<String> ok() {
-        int[] ints = new int[0];
-        System.out.println(ints[2]);
         System.out.println(localeMessage.getMessage("heartbeat.ok"));
+        return new ResponseEntity(localeMessage.getMessage("heartbeat.ok"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/ok", method = RequestMethod.POST)
+    public ResponseEntity<String> ok2(@RequestBody String num) {
+        System.out.println(localeMessage.getPackingMessage("${heartbeat.ok}"+ num));
         return new ResponseEntity(localeMessage.getMessage("heartbeat.ok"), HttpStatus.OK);
     }
 

@@ -44,7 +44,7 @@ public class Strings {
             c = chars[var];
             if (c >= 65 && c <=90) {
                 if (var > 0) {
-                    o.append('_');
+                    o.append((char)95);
                 }
                 c = (char)(c + 32);
             }
@@ -59,8 +59,8 @@ public class Strings {
         char c;
         for (int var = 0; var < chars.length; var++) {
             c = chars[var];
-            if (var > 0 && c == '_' && ++var <chars.length) {
-                while (chars[var] == '_') {
+            if (var > 0 && c == 95 && ++var <chars.length) {
+                while (chars[var] == 95) {
                     var++;
                 }
                 c = (char)(chars[var] - 32);

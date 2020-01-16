@@ -1,5 +1,8 @@
 package savvy.wit.framework.core.base.service.log;
 
+import java.io.Serializable;
+import java.util.Arrays;
+
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 
@@ -9,7 +12,9 @@ package savvy.wit.framework.core.base.service.log;
  * Version : 1.0
  * Description : 
  ******************************/
-public class LogMessage {
+public class LogMessage implements Serializable {
+
+    private static final long serialVersionUID = -459867260744413972L;
 
     private String type;
 
@@ -69,5 +74,17 @@ public class LogMessage {
 
     public void setSuffix(String suffix) {
         this.suffix = suffix;
+    }
+
+    @Override
+    public String toString() {
+        return "LogMessage{" +
+                "type='" + type + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", prefix='" + prefix + '\'' +
+                ", param=" + Arrays.toString(param) +
+                ", result=" + result +
+                ", suffix='" + suffix + '\'' +
+                '}';
     }
 }

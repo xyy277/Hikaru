@@ -92,4 +92,11 @@ public class LocaleMessage {
         return source;
     }
 
+    public String[] getPakingMessage(String... sources) {
+        String[] values = new String[sources.length];
+        for (int i = 0; i < sources.length; i++) {
+            values[i] = getPackingMessage(sources[i]);
+        }
+        return values;
+    }
 }

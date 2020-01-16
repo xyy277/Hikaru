@@ -2,6 +2,7 @@ package test;
 
 import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.util.DateUtil;
+import savvy.wit.framework.core.base.util.Strings;
 import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.decorate.Counter;
 import savvy.wit.framework.core.pattern.factory.Files;
@@ -38,6 +39,20 @@ public class PrintTest {
                 .printL("                         /\\     |/                             ")
                 .printL("Application Startup takes: " + DateUtil.formatDateTime(counter.destroy()))
                 .close();
+        System.out.println((int)'_');
+        System.out.println((char)95);
+        System.out.println(Strings.hump2Line("getDateFormat"));
+        System.out.println(Strings.line2Hump(Strings.hump2Line("getDateFormat")));
+        int a,b,c,d;
+        /*
+         a + 2b = 60
+         a + 2c = 30
+         c - d = 3
+         d + a * c =
+          */
+
+
+
 //        LogFactory.print("Hello Hikaru !");
 //        for (File file : Files.getFiles("C:\\Users\\Administrator\\Desktop\\hikaru\\server")) {
 ////            String encoding = Files.getEncoding(file);

@@ -10,6 +10,8 @@ import savvy.wit.framework.core.pattern.factory.Files;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.structure.physical.loopStructure.circle.Loop;
 
+import java.util.concurrent.TimeUnit;
+
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : test for StringRetrieve
@@ -34,12 +36,12 @@ public class AlgorithmTest {
     }
 
     @Test
-    public void testAlgorithm() {
+    public void testAlgorithm() throws InterruptedException {
         while (true) {
             String paramString = initParamString();
             log.log(  "首个仅出现一次的字符是：" +   StringRetrieve.getBoOnlyOnceCode(paramString));
             zjj.Test.test(paramString);
-            break;
+            TimeUnit.MILLISECONDS.sleep(500);
         }
     }
 
