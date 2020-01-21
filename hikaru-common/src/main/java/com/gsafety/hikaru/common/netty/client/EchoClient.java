@@ -14,6 +14,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.bytes.ByteArrayEncoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import savvy.wit.framework.core.base.util.HexStringUtils;
+
 /*******************************
  * Copyright (C),2018-2099, ZJJ
  * Title : 
@@ -55,7 +57,13 @@ public class EchoClient {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             System.out.println("正在连接中...");
                             ch.pipeline().addLast(new StringEncoder(Charset.forName("GBK")));
-                            ch.pipeline().addLast(handle);
+                            ch.pipeline().addLast(handle.setHandler(ctx -> {
+                                String sendInfo = "c=40\r";///0x0d
+                                sendInfo = HexStringUtils.bytesToHex(sendInfo.getBytes());
+                                System.out.println(sendInfo);
+                                ctx.writeAndFlush(sendInfo);
+                            }));
+
                             ch.pipeline().addLast(new ByteArrayEncoder());
                             ch.pipeline().addLast(new ChunkedWriteHandler());
 
@@ -80,7 +88,7 @@ public class EchoClient {
     }
 
     public static void main(String[] args) throws Exception {
-        EchoClient clientrequest = new EchoClient("1", 1);
+        EchoClient clientrequest = new EchoClient("122.11.205.255", 12302);
         clientrequest.start();
 
     }

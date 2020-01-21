@@ -1,45 +1,178 @@
-<!DOCTYPE html>
 <html>
+
 <head>
-	<title></title>
+    <title>THU Audio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <script  src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+
 </head>
+
 <body>
-	
-</body>`
+<div class="container row main-container">
+    <div class="col s12 dd-container">
+        <div class="card dd-card">
+            <div class="card-content black-text file-field">
+                <div id="drop-container">
+                    <i class="material-icons large upload-icon">cloud_upload</i>
+                    <span class="drag-txt"><b>Drag and drop audio here</b></span>
+                    <span class="or-txt">or</span>
+                    <form action="#">
+                        <div class="waves-effect waves-light btn" id="browse-container">
+                            <span>Browse files</span>
+                            <input type="file" id="browse-button" accept="audio/*">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 uf-container">
+        <div class="card uf-card">
+            <span>source audio</span>
+            <audio id="img-card"  controls></audio><br>
+        </div>
+        <div class="waves-effect waves-light btn" id="upload-button" >
+            <span>Upload and Detect Audio</span>
+        </div>
+        <div class="waves-effect waves-light btn" id="go-back">
+            <span>Go Back</span>
+        </div>
+    </div>
+    <div class="col s12 dt-container">
+        <div class="card dt-card" id="stat-table">
+
+        </div>
+        <div class="waves-effect waves-light btn" id="go-start">
+            <span>Go Back</span>
+        </div>
+    </div>
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div style="width: 100%; overflow: hidden;">
+                <div style="width: 100px; float: left;">
+                    <div class="preloader-wrapper big active">
+                        <div class="spinner-layer spinner-blue-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="loading-text">
+                    <h5>Loading...</h5></div>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>
- 
- <script> 
-    var socket;  
-    if(typeof(WebSocket) == "undefined") {  
-        console.log("您的浏览器不支持WebSocket");  
-    }else{  
-        console.log("您的浏览器支持WebSocket");  
-        	//实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接  
-            //等同于socket = new WebSocket("ws://localhost:8888/hikaru/ws/20");  
-            socket = new WebSocket("ws://localhost:8888/hikaru/ws/20");  
-            //打开事件  
-            socket.onopen = function() {  
-                console.log("Socket 已打开");  
-                //socket.send("这是来自客户端的消息" + location.href + new Date());  
-            };  
-            //获得消息事件  
-            socket.onmessage = function(msg) {
-                console.log(msg.data);  
-                //发现消息进入    开始处理前端触发逻辑
-            };  
-            //关闭事件  
-            socket.onclose = function() {
-                console.log("Socket已关闭");  
-            };  
-            //发生了错误事件  
-            socket.onerror = function() {
-                alert("Socket发生了错误");  
-                //此时可以尝试刷新页面
-            }  
-            //离开页面时，关闭socket
-            //jquery1.8中已经被废弃，3.0中已经移除
-            // $(window).unload(function(){
-            //     socket.close();  
-            //});  
+<script type="text/javascript">
+    var socket;
+    if(typeof(WebSocket) == "undefined") {
+        console.log("您的浏览器不支持WebSocket");
+    }else{
+        console.log("您的浏览器支持WebSocket");
+        //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+        //等同于socket = new WebSocket("ws://localhost:10002/hikaru/ws/20");
+        socket = new WebSocket("ws://localhost:10002/hikaru/ws/20");
+        //打开事件
+        socket.onopen = function() {
+            console.log("Socket 已打开");
+            //socket.send("这是来自客户端的消息" + location.href + new Date());
+        };
+        //获得消息事件
+        socket.onmessage = function(msg) {
+            console.log(msg.data);
+            //发现消息进入    开始处理前端触发逻辑
+        };
+        //关闭事件
+        socket.onclose = function() {
+            console.log("Socket已关闭");
+        };
+        //发生了错误事件
+        socket.onerror = function() {
+            alert("Socket发生了错误");
+            //此时可以尝试刷新页面
+        }
+        //离开页面时，关闭socket
+        //jquery1.8中已经被废弃，3.0中已经移除
+        // $(window).unload(function(){
+        //     socket.close();
+        //});
     }
-    </script>
+
+    $(document).ready(function() {
+
+        var dropContainer = document.getElementById('drop-container');
+        dropContainer.ondragover = dropContainer.ondragend = function() {
+            return false;
+        };
+
+        dropContainer.ondrop = function(e) {
+            e.preventDefault();
+            loadAudio(e.dataTransfer.files[0])
+        };
+
+        $("#browse-button").change(function() {
+            loadAudio($("#browse-button").prop("files")[0]);
+        });
+
+
+        $('#go-back, #go-start').click(function() {
+            $('#img-card').removeAttr("src");
+            $('#stat-table').html('');
+            switchCard(0);
+        });
+
+        $('#upload-button').click(function() {
+            $('.modal').modal('open');
+        });
+    });
+
+    window.AudioContext= window.AudioContext||window.webkitAudioContext||window.mozAudioContext;
+    window.RAF =  (function(){
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {window.setTimeout(callback, 1000 / 60); };
+    })();
+    var AC = new AudioContext();
+
+    loadAudio = function(file) {
+        send(file);
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            $('#img-card').attr('src', event.target.result);
+        };
+        reader.readAsDataURL(file);
+    };
+    let total = 0;
+    // 进度条
+    let progress = 0;
+
+
+    function send(file) {
+        var fr = new FileReader();
+        fr.onload = function(e){
+            var fileResult = e.target.result;
+            AC.decodeAudioData(fileResult , function(buffer){
+                console.log(buffer);
+
+                socket.send(buffer);
+
+            }, function(e){
+                console.log(e)
+                alert("文件解码失败")
+            })
+        }
+        fr.readAsArrayBuffer(file);
+    }
+
+</script>

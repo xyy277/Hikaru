@@ -1,15 +1,13 @@
 package com.gsafety.hikaru.common.netty.client;
 
-import java.nio.charset.Charset;
-import java.util.concurrent.CountDownLatch;
-
+import com.gsafety.hikaru.common.netty.ChannelActiveHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.CharsetUtil;
-import savvy.wit.framework.core.base.util.HexStringUtils;
+
+import java.nio.charset.Charset;
+import java.util.concurrent.CountDownLatch;
 
 /*******************************
  * Copyright (C),2018-2099, ZJJ
@@ -24,6 +22,13 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private CountDownLatch lathc;
     private String result;//服务端返回的结果
 
+    private ChannelActiveHandler handler;
+
+    public EchoClientHandler setHandler(ChannelActiveHandler handler) {
+        this.handler = handler;
+        return this;
+    }
+
     public EchoClientHandler(CountDownLatch lathc) {
         this.lathc = lathc;
     }
@@ -34,12 +39,13 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("客户端与服务端通道-开启：" + ctx.channel().localAddress() + "channelActive");
-
-        String sendInfo = "c=40";///0x0d
-        sendInfo = HexStringUtils.toHex(sendInfo) + 0x0d;
-        System.out.println("客户端准备发送的数据包：" + sendInfo);
-        ctx.writeAndFlush(Unpooled.copiedBuffer(sendInfo, CharsetUtil.UTF_8)); // 必须有flush
-
+//
+//        String sendInfo = "c=40\r";///0x0d
+//        sendInfo = HexStringUtils.bytesToHex(sendInfo.getBytes());
+//        System.out.println(sendInfo);
+//        ctx.writeAndFlush(sendInfo); // 必须有flush
+        handler.handle(ctx);
+        ctx.flush();
     }
 
     /**
