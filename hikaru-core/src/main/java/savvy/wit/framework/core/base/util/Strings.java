@@ -157,7 +157,7 @@ public class Strings {
             if (start) {
                 if (c == '}') {
                     start = false;
-                    map.put(key.toString(), callBack.use(key.toString()));
+                    map.put(key.toString(), callBack.getParamValue(key.toString()));
                     key = new StringBuilder();
                 } else {
                     key.append(c);

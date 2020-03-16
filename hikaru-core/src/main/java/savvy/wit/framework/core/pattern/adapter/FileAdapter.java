@@ -105,7 +105,7 @@ public class FileAdapter {
             BufferedReader br = getBuffReader(file, inEnCoding);
             String line;
             while ((line = br.readLine()) != null) {
-                callBack.use(line);
+                callBack.getParamValue(line);
             }
             if (br != null) br.close();
         } catch (Exception e) {
@@ -119,7 +119,7 @@ public class FileAdapter {
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, encoding));
             String line;
             while ((line = br.readLine()) != null) {
-                callBack.use(line);
+                callBack.getParamValue(line);
             }
             if (br != null) br.close();
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class FileAdapter {
             BufferedReader br = getBuffReader(file, inEnCoding);
             String line;
             while ((line = br.readLine()) != null) {
-                callBack.use(line);
+                callBack.getParamValue(line);
             }
             if (br != null) br.close();
         } catch (Exception e) {
@@ -149,7 +149,7 @@ public class FileAdapter {
             BufferedReader br = getBuffReader(file, inEnCoding);
             String line;
             while ((line = br.readLine()) != null) {
-                callBack.use(line);
+                callBack.getParamValue(line);
             }
             if (br != null) br.close();
         } catch (Exception e) {

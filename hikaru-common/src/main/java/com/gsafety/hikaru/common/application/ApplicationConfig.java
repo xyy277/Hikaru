@@ -1,6 +1,7 @@
 package com.gsafety.hikaru.common.application;
 
 import com.gsafety.hikaru.common.application.init.ApplicationInitialization;
+import com.gsafety.hikaru.service.SocketClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import savvy.wit.framework.core.base.util.Cmd;
 import savvy.wit.framework.core.base.util.StringUtil;
 import savvy.wit.framework.core.pattern.factory.Daos;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
@@ -56,6 +58,13 @@ public class ApplicationConfig implements CommandLineRunner {
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
+    @Value("${pa.demo.vlc.rtp}")
+    private String vlcRtp;
+    @Value("${vlc.rc.host}")
+    private String vlcHost;
+    @Value("${vlc.rc.port}")
+    private int vlcPort;
+
     /**
      * 第二种方式获取，boolean若没有配置会报错
      * 使用第二种配置，需要确保配置文件中有如下配置
@@ -87,7 +96,22 @@ public class ApplicationConfig implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        log.info("ApplicationConfig start init");
+        log.info("ApplicationConfig start init netty");
+
+        Cmd.get().proxy("vlc -I rc --rc-host="+vlcHost+":"+vlcPort);
+        SocketClient.getInstance().init(vlcHost, vlcPort);
+        // 设置rtp流
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            SocketClient.getInstance().enqueue(vlcRtp);
+        }).start();
+
+        log.info(ApplicationConfig.class.getSimpleName() + " init netty completed");
+        log.info("ApplicationConfig start init Dao");
         // 初始化数据源dao
         if (init) {
             String automation = env.getProperty("hikaru.table.automation");
@@ -105,7 +129,7 @@ public class ApplicationConfig implements CommandLineRunner {
                     + " DEFAULT CHARSET utf8 COLLATE utf8_general_ci");
             ApplicationInitialization.me().initialization(this.automation, this.refactor, this.pack);
         }
-        log.info("ApplicationConfig init completed");
+        log.info("ApplicationConfig init Dao completed");
         String url = address + ":" + port + contextPath;
         LogFactory.open(200)
                 .printL("Hello Hikaru !", "Welcome")

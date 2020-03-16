@@ -1,6 +1,5 @@
 package com.gsafety.hikaru.service.impl;
 
-import com.gsafety.hikaru.common.helper.RedisUtil;
 import com.gsafety.hikaru.feign.TestFeign;
 import com.gsafety.hikaru.model.business.User;
 import com.gsafety.hikaru.service.UserService;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 import savvy.wit.framework.core.base.service.cdt.Cdt;
 import savvy.wit.framework.core.base.service.log.Log;
 import savvy.wit.framework.core.base.service.dao.Dao;
+import savvy.wit.framework.core.base.util.RedisUtil;
 import savvy.wit.framework.core.pattern.factory.CDT;
 import savvy.wit.framework.core.pattern.factory.LogFactory;
 import savvy.wit.framework.core.service.impl.BaseServiceImpl;
