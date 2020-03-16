@@ -78,9 +78,10 @@ public class ExcelTest {
         excel = ExcelBuilderFactory.construct("test Excel 1")
                 .initSheet(1)
                 .initTable(3)
-                .createSheet(0, "test Sheet 1",
-                        ImageIO.read(new File("G:\\GitHub\\hikaru\\hikaru-server\\test.jpg")),
-                        ImageIO.read(new File("G:\\GitHub\\hikaru\\hikaru-server\\test2.jpg")))
+                .createSheet(0, "test Sheet 1"
+//                        , ImageIO.read(new File("G:\\GitHub\\hikaru\\hikaru-server\\test.jpg"))
+//                        , ImageIO.read(new File("G:\\GitHub\\hikaru\\hikaru-server\\test2.jpg"))
+                )
                 .createTable(0,0, 7, 1,
                         null, "Validas", "Consultas", "Registo", "Invalidas", "Total")
                 .packing(0, 0, list1, (sheetNum, tableNum, data, clazz, result) -> {

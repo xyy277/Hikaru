@@ -167,6 +167,27 @@ public class ExcelBuilderFactory implements ExcelBuilder {
         return factory;
     }
 
+
+    public static ExcelBuilderFactory simple(String sheetName, Map<String, Object> data, String... titles) {
+        factory = LazyInit.INITIALIZATION;
+        factory.initSheet(1);
+        factory.initTable(1);
+        factory.createSheet(0, sheetName);
+        factory.createTable(0,0, 1, 0, titles);
+        factory.packing(0,0, data);
+        return factory;
+    }
+
+    public static <T> ExcelBuilderFactory simple(String sheetName, String[] titles,  List<T> data, ExcelDataCallBack<T> dataCallBack) {
+        factory = LazyInit.INITIALIZATION;
+        factory.initSheet(1);
+        factory.initTable(1);
+        factory.createSheet(0, sheetName);
+        factory.createTable(0,0, 1, 0, titles);
+        factory.packing(0,0, data, dataCallBack);
+        return factory;
+    }
+
     private static class LazyInit {
         private static final ExcelBuilderFactory INITIALIZATION = new ExcelBuilderFactory();
     }

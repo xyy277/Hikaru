@@ -86,7 +86,16 @@ public class ExcelUtil {
                 int size = rowIndex(lists.get(j));
                 String[] title = titles.get(j);
                 List<CellRangeAddress> cellRangeAddressList = new ArrayList<>();
-                cellRangeAddressList = mergedRegionCallBack.addMergedRegion(workbook, sheet, title, x, j, size, cellRangeAddressList);
+                if (mergedRegionCallBack != null)
+                    cellRangeAddressList = mergedRegionCallBack.addMergedRegion(workbook, sheet, title, x, j, size, cellRangeAddressList);
+                else {
+                    row = sheet.createRow(startRows[0] - 1);
+                    for (int i = 0; i < title.length; i++) {
+                        cell = row.createCell(i);
+                        cell.setCellStyle(createStyle(workbook));
+                        cell.setCellValue(title[i]);
+                    }
+                }
                 if (cellRangeAddressList != null) {
                     for (CellRangeAddress cellRangeAddress : cellRangeAddressList) {
                         sheet.addMergedRegion(cellRangeAddress);
@@ -103,7 +112,8 @@ public class ExcelUtil {
              * 随后对每一个单元格中的样式进行回调处理，回调参数 （HSSFCellStyle，行号，列号，数据容量）
              */
             List<HSSFCellStyle> styles = new ArrayList<>();
-            styles = hssfCellStyleInitCallBack.initStyle(workbook, styles);
+            if (hssfCellStyleInitCallBack != null)
+                styles = hssfCellStyleInitCallBack.initStyle(workbook, styles);
             for (int y = 0; y < lists.size(); y++) {
                 Map<String, Object> map = lists.get(y); // 整张表数据
                 if (map == null || map.size() <1) {
@@ -124,7 +134,9 @@ public class ExcelUtil {
                     Object[] rowValues = tableValues[i];
                     for (int j = 0; j < rowValues.length; j++) { // 列
                         cell = row.createCell(j + startCells[y]);
-                        HSSFCellStyle style = styleCallBack.getCellStyle(row, styles, i + startRows[y], j + startCells[y], rowIndex + 1, x, y);
+                        HSSFCellStyle style = createStyle(workbook);
+                        if (styleCallBack != null)
+                            style = styleCallBack.getCellStyle(row, styles, i + startRows[y], j + startCells[y], rowIndex + 1, x, y);
                         cell.setCellStyle(style);
                         setValue(cell, rowValues[j]);
                     }
@@ -258,6 +270,19 @@ public class ExcelUtil {
             e.printStackTrace();
         }
         return out;
+    }
+
+    public static HSSFCellStyle createStyle(HSSFWorkbook workbook) {
+        HSSFCellStyle style = workbook.createCellStyle();
+        border(style);
+        return style;
+    }
+
+    public static void border(HSSFCellStyle style) {
+        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
     }
 
 }
