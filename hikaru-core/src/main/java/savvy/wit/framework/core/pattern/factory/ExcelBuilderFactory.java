@@ -5,9 +5,11 @@ import savvy.wit.framework.core.base.model.Excel;
 import savvy.wit.framework.core.base.model.Sheet;
 import savvy.wit.framework.core.base.model.Table;
 import savvy.wit.framework.core.base.util.ObjectUtil;
+import savvy.wit.framework.core.pattern.adapter.FileAdapter;
 import savvy.wit.framework.core.pattern.builder.ExcelBuilder;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,7 +173,7 @@ public class ExcelBuilderFactory implements ExcelBuilder {
     }
 
 
-    public static ExcelBuilderFactory simple(String sheetName, Map<String, Object> data, String... titles) {
+    public ExcelBuilderFactory simple(String sheetName, Map<String, Object> data, String... titles) {
         factory = LazyInit.INITIALIZATION;
         factory.initSheet(1);
         factory.initTable(1);
@@ -181,7 +183,7 @@ public class ExcelBuilderFactory implements ExcelBuilder {
         return factory;
     }
 
-    public static <T> ExcelBuilderFactory simple(String sheetName, String[] titles,  List<T> data, ExcelDataCallBack<T> dataCallBack) {
+    public <T> ExcelBuilderFactory simple(String sheetName, String[] titles,  List<T> data, ExcelDataCallBack<T> dataCallBack) {
         factory = LazyInit.INITIALIZATION;
         factory.initSheet(1);
         factory.initTable(1);
@@ -191,7 +193,7 @@ public class ExcelBuilderFactory implements ExcelBuilder {
         return factory;
     }
 
-    public static <T> ExcelBuilderFactory simple(String sheetName, List<T> data, String... titles) {
+    public <T> ExcelBuilderFactory simple(String sheetName, List<T> data, String... titles) {
         factory = LazyInit.INITIALIZATION;
         factory.initSheet(1);
         factory.initTable(1);
@@ -215,6 +217,62 @@ public class ExcelBuilderFactory implements ExcelBuilder {
         };
         factory.packing(0,0, data, dataCallBack);
         return factory;
+    }
+
+    public static Map<String, Object> properties2Excel(File file) {
+        Map<String, Object> data = new HashMap<>();
+        List<String> list = new ArrayList();
+        FileAdapter.me().readFile( (br, bw) -> {
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                if (line.equals("")) {
+                    continue;
+                }
+                if ((!line.contains("{")) || (line.contains("{") && line.contains(":"))) {
+                    list.add(line);
+                }
+            }
+        }, file);
+        String end = "}";
+        int row = 0;
+        List<String> cacheKey = new ArrayList<>();
+        for (int index = 0; index < list.size(); index++) {
+
+            // 每行字符串 是否添加 是否是树形结构---------------------
+            String line = list.get(index);
+            // start
+            if (line.contains("{") && line.contains(":")) {
+                cacheKey.add(line.split(":")[0]); // 添加到key
+                continue; // 跳过
+            }
+            // end
+            if (line.contains(end) && cacheKey.size() > 0) {
+                cacheKey.remove(cacheKey.size() -1);
+                continue;
+            } else if (line.contains(end) && cacheKey.size() == 0) {
+                continue;
+            }
+
+            // 计算单元格位置 ----------------------------------------
+            String position = row + ExcelDataCallBack.SIGN_K_V;
+            row ++;
+            // 存数据
+            String[] cells = new String[2];
+            // 配置文件key的树形结构 test.ok.yes...
+            StringBuilder data_key = new StringBuilder();
+            for (int i = 0; i < cacheKey.size(); i++) {
+                data_key.append(cacheKey.get(i));
+                if (i <= cacheKey.size() - 1)
+                    data_key.append(".");
+            }
+            // 存储数据
+            cells[0] = data_key.append(line.split(":")[0]).toString();
+            cells[1] = line.split(":")[1];
+            for (int cell = 0; cell < cells.length; cell++) {
+                data.put(position + cell, cells[cell].replaceAll("\"", "").replaceAll(" ", "").replaceAll(",", ""));
+            }
+        }
+        return data;
     }
 
     private static class LazyInit {

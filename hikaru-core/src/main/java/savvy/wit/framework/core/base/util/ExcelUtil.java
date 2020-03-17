@@ -259,9 +259,9 @@ public class ExcelUtil {
         OutputStream out = null;
         try {
             if (response != null) {
-                response.addHeader("content-type", "application/force-download;");
-                response.addHeader("content-disposition", "attachment; filename=" +
-                        URLEncoder.encode(fileName + ".xls", "utf-8").replaceAll("\\+", " "));
+                response.addHeader("content-type", "application/octet-stream;");
+                String name =  URLEncoder.encode(fileName + ".xls", "utf-8").replaceAll("\\+", " ");
+                response.addHeader("content-disposition", "attachment; filename=" + name);
                 out = response.getOutputStream();
             }else {
                 out = new FileOutputStream(fileName + ".xls");

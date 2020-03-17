@@ -1,5 +1,6 @@
 package com.gsafety.hikaru.application.config;
 
+import com.google.common.collect.Sets;
 import io.swagger.annotations.Api;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,7 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .produces(Sets.newHashSet("application/octet-stream"))
                 .select()
                 // 带Api注解
 //                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))

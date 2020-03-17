@@ -93,7 +93,7 @@ public class BARIXSchedule {
 
     @PostConstruct
     private void postConstruct(){
-        startCron();
+//        startCron();
     }
     // 项目启动的时候就启动定时任务，初始的corn可以去数据库里读取
     private void startCron() {
