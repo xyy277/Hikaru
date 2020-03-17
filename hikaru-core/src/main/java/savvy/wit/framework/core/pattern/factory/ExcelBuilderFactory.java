@@ -4,9 +4,12 @@ import savvy.wit.framework.core.base.callback.ExcelDataCallBack;
 import savvy.wit.framework.core.base.model.Excel;
 import savvy.wit.framework.core.base.model.Sheet;
 import savvy.wit.framework.core.base.model.Table;
+import savvy.wit.framework.core.base.util.ObjectUtil;
 import savvy.wit.framework.core.pattern.builder.ExcelBuilder;
 
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,6 +187,32 @@ public class ExcelBuilderFactory implements ExcelBuilder {
         factory.initTable(1);
         factory.createSheet(0, sheetName);
         factory.createTable(0,0, 1, 0, titles);
+        factory.packing(0,0, data, dataCallBack);
+        return factory;
+    }
+
+    public static <T> ExcelBuilderFactory simple(String sheetName, List<T> data, String... titles) {
+        factory = LazyInit.INITIALIZATION;
+        factory.initSheet(1);
+        factory.initTable(1);
+        factory.createSheet(0, sheetName);
+        factory.createTable(0,0, 1, 0, titles);
+        ExcelDataCallBack<T> dataCallBack = (sheetNum, tableNum, list, clazz, result) -> {
+            List<String> cells = new ArrayList<>();
+            if (list!= null && list.size() > 0) {
+                T t = list.get(0);
+                for (Field field : t.getClass().getDeclaredFields()) {
+                    cells.add(field.getName());
+                }
+            } else
+                return result;
+            for (int row = 0; row < list.size(); row++) {
+                for (int cell = 0; cell < cells.size(); cell++) {
+                    result.put(row+ExcelDataCallBack.SIGN_K_V+cell, ObjectUtil.getValueByFiledName(list.get(row), cells.get(cell)));
+                }
+            }
+            return result;
+        };
         factory.packing(0,0, data, dataCallBack);
         return factory;
     }
